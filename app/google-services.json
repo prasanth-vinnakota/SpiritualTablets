@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "187478475878",
+    "firebase_url": "https://spiritualtablatesdev.firebaseio.com",
+    "project_id": "spiritualtablatesdev",
+    "storage_bucket": "spiritualtablatesdev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187478475878:android:de548e4d786ba07809d9a7",
+        "android_client_info": {
+          "package_name": "com.example.spiritualtablets"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187478475878-rjmvqo3rhj7ncfh5ji1d37hqjaeh3d8c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbcdNg7csAGvA4CQL2ft3ZL66sDdqhDJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "187478475878-rjmvqo3rhj7ncfh5ji1d37hqjaeh3d8c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

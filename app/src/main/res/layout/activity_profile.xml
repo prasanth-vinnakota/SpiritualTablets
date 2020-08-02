@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/visit_tool_bar"
+        layout="@layout/app_bar_layout"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_below="@+id/visit_tool_bar"
+        android:id="@+id/visit_profile_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/user_photo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/visit_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/username"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/background_dark"
+        android:layout_below="@+id/visit_profile_image"/>
+
+    <TextView
+        android:id="@+id/visit_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/email"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/visit_user_name"/>
+
+
+    <TextView
+        android:id="@+id/visit_profile_status"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/user_status"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/background_dark"
+        android:layout_below="@+id/visit_email"/>
+
+        <TextView
+            android:id="@+id/visit_dob"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/date_of_birth"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/background_dark"
+            android:layout_below="@+id/visit_profile_status"/>
+
+
+        <TextView
+            android:id="@+id/visit_mobile_number"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/mobile_no"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/background_dark"
+            android:layout_below="@+id/visit_dob"/>
+
+        <TextView
+            android:id="@+id/visit_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/location"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/background_dark"
+            android:layout_below="@+id/visit_mobile_number"/>
+
+
+
+
+        <Button
+        android:id="@+id/send_message_request_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/visit_location"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:textColor="@android:color/background_light"
+        android:background="@color/colorPrimary"
+        android:textStyle="bold"
+        android:text="@string/send_request"
+        android:textAllCaps="false"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/accept_or_decline_message_request_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/send_message_request_button"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:textColor="@android:color/background_light"
+        android:background="@color/colorPrimary"
+        android:text="@string/decline_request"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textSize="25sp" />
+
+</RelativeLayout>
+
+</ScrollView>

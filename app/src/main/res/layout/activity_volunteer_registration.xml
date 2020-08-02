@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".VolunteerRegistrationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/volunteer_registration_form"
+                    android:textColor="@android:color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/volunteer_register_message"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/volunteer_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:autofillHints="@string/your_email_address"
+                    android:hint="@string/your_email_address"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/volunteer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:autofillHints="@string/your_name"
+                    android:hint="@string/your_name"
+                    android:inputType="textPersonName"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/volunteer_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:autofillHints="@string/your_address"
+                    android:hint="@string/your_address"
+                    android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/volunteer_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:autofillHints="@string/your_whats_app_number"
+                    android:hint="@string/your_whats_app_number"
+                    android:inputType="phone"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/in_what_way_you_are_happy_to_contribute"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <RadioGroup
+                    android:id="@+id/volunteer_way_of_contribution"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/admin_works"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_works"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/creating_flyers"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/creating_flyers"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/any_digital_work"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/any_digital_works"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/social_media"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/social_media"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/event_management"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/event_management"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/taking_meditation_classes"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/taking_meditation_classes"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/counselling"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/counselling"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/others_contribute"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/others"
+                        android:textColor="@android:color/black" />
+                </RadioGroup>
+
+                <EditText
+                    android:id="@+id/others_contribute_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/your_answer"
+                    android:autofillHints="@string/your_answer"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:visibility="gone"
+                    android:inputType="text"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/how_much_time_you_can_contribute"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <RadioGroup
+                    android:id="@+id/volunteer_time_to_contribute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/one_hour_a_day"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_1_hour_a_day"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/one_hour_a_week"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_1_hour_a_week"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/one_hour_a_month"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_1_hour_a_month"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/ten_minutes_a_week"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_10_minutes_a_week"
+                        android:textColor="@android:color/black"/>
+
+                    <RadioButton
+                        android:id="@+id/others_timing"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/others"
+                        android:textColor="@android:color/black"/>
+
+
+                </RadioGroup>
+
+                <EditText
+                    android:id="@+id/others_timing_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/your_answer"
+                    android:autofillHints="@string/your_answer"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:visibility="gone"
+                    android:inputType="text"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/when_is_the_best_time_to_contact_you_and_which_mode_of_communication_do_you_prefer"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/volunteer_best_time_to_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:autofillHints="@string/your_answer"
+                    android:hint="@string/your_answer"
+                    android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/what_days_are_good_for_you"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+
+                <CheckBox
+                    android:id="@+id/monday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/monday"
+                    android:textColor="@android:color/black"/>
+
+                <CheckBox
+                    android:id="@+id/tuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tuesday"
+                    android:textColor="@android:color/black"/>
+
+                <CheckBox
+                    android:id="@+id/wednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wednesday"
+                    android:textColor="@android:color/black"/>
+
+                <CheckBox
+                    android:id="@+id/thursday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/thursday"
+                    android:textColor="@android:color/black"/>
+
+                <CheckBox
+                    android:id="@+id/friday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/friday"
+                    android:textColor="@android:color/black"/>
+
+                <CheckBox
+                    android:id="@+id/saturday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/saturday"
+                    android:textColor="@android:color/black"/>
+
+                <CheckBox
+                    android:id="@+id/sunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sunday"
+                    android:textColor="@android:color/black"/>
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/comments"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/volunteer_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:autofillHints="@string/your_answer"
+                    android:hint="@string/your_answer"
+                    android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/submit"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/custom_button"
+            android:onClick="submit"/>
+
+
+
+    </LinearLayout>
+</ScrollView>

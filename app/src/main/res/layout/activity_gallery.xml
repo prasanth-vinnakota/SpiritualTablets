@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    tools:context=".GalleryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bungee"
+            android:gravity="center"
+            android:text="@string/gallery"
+            android:textSize="40sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/bungee"
+            android:gravity="center"
+            android:text="@string/spiritual_tablets_workshop_at_madugulla"
+            android:textSize="18sp" />
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/image1"
+            android:contentDescription="@string/spiritual_tablets_workshop_at_madugulla" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/bungee"
+            android:gravity="center"
+            android:text="@string/spiritual_tablets_workshop_in_soul_trends"
+            android:textSize="18sp" />
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/image2"
+            android:contentDescription="@string/spiritual_tablets_workshop_in_soul_trends" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/bungee"
+            android:gravity="center"
+            android:text="@string/spiritual_tablets_workshop_at_kadtal"
+            android:textSize="18sp" />
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/image3"
+            android:contentDescription="@string/spiritual_tablets_workshop_at_kadtal" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/bungee"
+            android:gravity="center"
+            android:text="@string/unknown_gallery_name"
+            android:textSize="18sp" />
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/image4"
+            android:contentDescription="@string/unknown_gallery_name" />
+
+    </LinearLayout>
+
+</ScrollView>

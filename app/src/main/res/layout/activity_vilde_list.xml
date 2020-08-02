@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".VideoListActivity"
+    android:background="@drawable/background_gradient">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/full_logo"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/videos_list"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <ListView
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:id="@+id/video_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/colorPrimaryDark"/>
+
+
+</LinearLayout>

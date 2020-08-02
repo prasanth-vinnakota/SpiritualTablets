@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/settings_page_toolbar"
+        layout="@layout/app_bar_layout">
+    </include>
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/set_profile_image"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:civ_border_width="5dp"
+        android:layout_below="@+id/settings_page_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/user_photo"/>
+
+    <EditText
+        android:focusable="auto"
+        android:id="@+id/set_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_profile_image"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        android:textColor="#00504B"
+        android:textStyle="bold"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
+        android:textAlignment="center"/>
+
+    <EditText
+        android:focusable="auto"
+        android:id="@+id/set_profile_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#00504B"
+        android:layout_below="@+id/set_user_name"
+        android:inputType="textMultiLine"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
+        android:textAlignment="center"/>
+    
+    <Button
+        android:id="@+id/update_settings_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_profile_status"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:text="@string/update"
+        android:background="#00504B"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"/>
+
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/show_dob_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/update_settings_button"
+        android:text="Show DOB to others     "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textOff="@string/no"
+        android:textOn="@string/yes"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="15sp"
+        android:gravity="center"
+        android:thumb="@drawable/sw_thumb"
+        app:track="@drawable/sw_track"
+        app:showText="true"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/show_profile_status_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/show_dob_switch"
+        android:text="Show Profile Status to others     "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textOff="@string/no"
+        android:textOn="@string/yes"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="15sp"
+        android:gravity="center"
+        android:thumb="@drawable/sw_thumb"
+        app:track="@drawable/sw_track"
+        app:showText="true"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/show_mobile_number_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textOff="@string/no"
+        android:textOn="@string/yes"
+        android:layout_below="@id/show_profile_status_switch"
+        android:text="Show Mobile Number to others     "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="15sp"
+        android:gravity="center"
+        android:thumb="@drawable/sw_thumb"
+        android:layout_marginBottom="30dp"
+        app:track="@drawable/sw_track"
+        app:showText="true"/>
+
+</RelativeLayout>
+
+</ScrollView>

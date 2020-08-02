@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:foreground="?android:attr/selectableItemBackground"
+    android:id="@+id/cardview_id"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="230dp"
+    android:clickable="true"
+    xmlns:cardview="http://schemas.android.com/tools"
+    android:layout_margin="5dp"
+    cardview:cardCornerRadius="4dp"
+    android:focusable="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="10">
+
+            <ImageView
+                android:id="@+id/book_image_id"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:scaleType="centerCrop"
+                android:background="#2d2d2d"/>
+
+            <TextView
+                android:id="@+id/book_title_id"
+                android:textColor="#2d2d2d"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/book_title"
+                android:textSize="13sp"/>
+
+        </LinearLayout>
+
+</androidx.cardview.widget.CardView>

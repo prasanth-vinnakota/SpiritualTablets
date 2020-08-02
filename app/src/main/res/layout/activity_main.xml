@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/loading_background"
+    tools:context=".MainActivity"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/nav_user_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/app_name"
+        android:textSize="50sp"
+        android:textAlignment="center"
+        android:fontFamily="@font/bangers"
+        android:transitionName="home_text" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/bangers"
+        android:text="@string/research_foundation"
+        android:transitionName="home_image"
+        android:textAlignment="center"
+        android:textSize="50sp" />
+
+</LinearLayout>

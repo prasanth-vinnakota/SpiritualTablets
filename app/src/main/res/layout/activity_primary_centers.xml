@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".contact_us.PrimaryCentersActivity"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="30dp"
+    android:background="@drawable/background_gradient">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20sp"
+            android:src="@drawable/full_logo" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="30dp"
+            android:layout_marginHorizontal="10dp">
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/city_name"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contact_person"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contact_number"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/vishakapatnam"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/mani"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09246648401"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/hyderabad"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/vedavati"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09246990284"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/vijayawada"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/rajylakshmi"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09246648422"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/chennai"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/murali"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09042555531"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/chennai"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/dr_devi"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09566259967"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/banglore"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/manju"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_08147093633"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/mumbai"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/rambabu"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_08879880553"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/kolkata"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sushma"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09331840065"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/delhi"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/nagalaxmi"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09899880891"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/orissa"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/harish"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09776715143"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/pune"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/himangi"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09370538862"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/andaman"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/suresh"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_9933267030"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/orissa"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/satish"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_07749050588"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/chattisgadh"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginHorizontal="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/suvarna"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_09584237898"
+                    android:gravity="center"
+                    android:background="#fff"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </TableRow>
+
+
+        </TableLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>

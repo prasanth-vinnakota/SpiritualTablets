@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.spiritualtablets">
+
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/full_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/full_logo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".VideoPlayerActivity"></activity>
+        <activity android:name=".VideoListActivity" />
+        <activity android:name=".EventsByLanguageActivity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:parentActivityName=".FindFriendsActivity" />
+        <activity
+            android:name=".FindFriendsActivity"
+            android:parentActivityName=".ChatMainActivity" />
+        <activity android:name=".GroupChatActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".ChatMainActivity" />
+        <activity
+            android:name=".ChatMainActivity"
+            android:parentActivityName=".DashBoardActivity" />
+        <activity android:name=".VolunteerRegistrationActivity" />
+        <activity android:name=".DailyTipActivity" />
+        <activity android:name=".EventsActivity" />
+        <activity android:name=".contact_us.PrimaryCentersActivity" />
+        <activity android:name=".ContactUsActivity" />
+        <activity android:name=".about_us.FounderActivity" />
+        <activity android:name=".OutletsActivity" />
+        <activity android:name=".about_us.PyramidDoctorsActivity" />
+        <activity android:name=".about_us.PrincipleActivity" />
+        <activity android:name=".about_us.HistoryActivity" />
+        <activity android:name=".about_us.IntroductionActivity" />
+        <activity android:name=".AboutUsActivity" />
+        <activity android:name=".NewsLettersActivity" />
+        <activity android:name=".AudioPlayerActivity" />
+        <activity android:name=".AudioActivity" />
+        <activity android:name=".ViewBookActivity" />
+        <activity android:name=".EnglishBookListActivity" />
+        <activity android:name=".TeluguBookListActivity" />
+        <activity android:name=".GalleryActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".NoInternetActivity" />
+        <activity android:name=".DashBoardActivity" />
+        <activity android:name=".LoggedInActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+    </application>
+
+</manifest>

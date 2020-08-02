@@ -1,0 +1,189 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_gradient"
+    android:orientation="vertical"
+    android:weightSum="10"
+    tools:context=".AboutUsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/about_us"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="34sp" />
+
+
+    </RelativeLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:alignmentMode="alignMargins"
+        android:columnCount="2"
+        android:columnOrderPreserved="false"
+        android:padding="10dp"
+        android:rowCount="4">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <Button
+                android:background="@android:color/transparent"
+                android:id="@+id/introduction"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="introduction"
+                android:text="@string/introduction" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+            <Button
+                android:background="@android:color/transparent"
+                android:id="@+id/history"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="history"
+                android:text="@string/history_origin" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+            <Button
+                android:background="@android:color/transparent"
+                android:id="@+id/principle"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="principle"
+                android:text="@string/principle" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+            <Button
+                android:background="@android:color/transparent"
+                android:id="@+id/pyramid_doctors"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="pyramidDoctors"
+                android:text="@string/pyramid_doctors" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+            <Button
+                android:background="@android:color/transparent"
+                android:id="@+id/counsellors"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="counsellors"
+                android:text="@string/counsellors" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+            <Button
+                android:background="@android:color/transparent"
+                android:id="@+id/outlets"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="outlets"
+                android:text="@string/outlets" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+            <Button
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="founder"
+                android:text="@string/founder" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </GridLayout>
+
+</LinearLayout>
+
