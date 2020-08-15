@@ -2,6 +2,7 @@ package com.example.spiritualtablets;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     private Context mContext;
     private List<DataItem> mData;
 
-    public BooksRecyclerViewAdapter(Context mContext, List<DataItem> mData) {
+    BooksRecyclerViewAdapter(Context mContext, List<DataItem> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -31,13 +32,13 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view =LayoutInflater.from(mContext).inflate(R.layout.cardview_item_book,parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.cardview_item_book,parent, false);
 
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
         holder.tv_book_title.setText(mData.get(position).getTitle());
         holder.img_book_thumbnail.setImageResource(mData.get(position).getThumbnail());
@@ -70,6 +71,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
             tv_book_title = itemView.findViewById(R.id.book_title_id);
             img_book_thumbnail = itemView.findViewById(R.id.book_image_id);
             cardView = itemView.findViewById(R.id.cardview_id);
+
 
         }
     }

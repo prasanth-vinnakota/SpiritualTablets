@@ -251,118 +251,122 @@ public class LoggedInActivity extends AppCompatActivity {
         String userName = Objects.requireNonNull(username.getText()).toString();
         String passWord = Objects.requireNonNull(password.getText()).toString();
 
-        mAuth.signInWithEmailAndPassword(userName, passWord).addOnCompleteListener(LoggedInActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+        mAuth.signInWithEmailAndPassword(userName, passWord)
+                .addOnCompleteListener(LoggedInActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                if (task.isSuccessful()) {
+                        if (task.isSuccessful()) {
 
-                    if (Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
+                            if (Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
 
-                        mProgressBar.setVisibility(View.GONE);
+                                //mProgressBar.setVisibility(View.GONE);
+                                //progressDialog.dismiss();
 
-                        String device_token = FirebaseInstanceId.getInstance().getToken();
+                                String device_token = FirebaseInstanceId.getInstance().getToken();
 
-                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("device_token");
+                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("device_token");
 
-                        userRef.setValue(device_token)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                userRef.setValue(device_token)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                if (task.isSuccessful()) {
+
+                                                    Intent intent = new Intent(LoggedInActivity.this, DashBoardActivity.class);
+                                                    Snackbar.make(coordinatorLayout, "Logging in", Snackbar.LENGTH_SHORT).show();
+                                                    progressDialog.dismiss();
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage().toString(), Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+                            } else {
+
+                                //create a Builder object
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedInActivity.this);
+
+                                //set title to builder
+                                builder.setTitle("Email is not verified");
+
+                                //set icon
+                                builder.setIcon(R.drawable.danger);
+
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                //set message
+                                assert user != null;
+                                builder.setMessage("Your e-mail address " + user.getEmail() + " is not verified, please verify your email address and login again");
+
+                                //set Button
+                                builder.setPositiveButton("send verification email", new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                        if (task.isSuccessful()) {
+                                        //set progress bar visible
+                                        mProgressBar.setVisibility(View.VISIBLE);
 
-                                            Intent intent = new Intent(LoggedInActivity.this, DashBoardActivity.class);
-                                            Snackbar.make(coordinatorLayout, "Logging in", Snackbar.LENGTH_SHORT).show();
-                                            progressDialog.dismiss();
-                                            startActivity(intent);
-                                            finish();
-                                        } else {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage().toString(), Toast.LENGTH_LONG).show();
-                                        }
+                                        //send verification email
+                                        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(LoggedInActivity.this, new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                //email send
+                                                if (task.isSuccessful()) {
+
+                                                    //set progress bar gone
+                                                    mProgressBar.setVisibility(View.GONE);
+
+                                                    //show message
+                                                    Snackbar.make(coordinatorLayout, "Verification email sent", Snackbar.LENGTH_SHORT).show();
+
+                                                }
+                                                //email not sent
+                                                else {
+
+                                                    //set progress bar gone
+                                                    mProgressBar.setVisibility(View.GONE);
+
+                                                    //show message
+                                                    Snackbar.make(coordinatorLayout, Objects.requireNonNull(task.getException()).toString(), Snackbar.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                                     }
                                 });
-                    } else {
 
-                        //create a Builder object
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoggedInActivity.this);
+                                progressDialog.dismiss();
+                                mProgressBar.setVisibility(View.GONE);
 
-                        //set title to builder
-                        builder.setTitle("Email is not verified");
+                                //build and show builder
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
 
-                        //set icon
-                        builder.setIcon(R.drawable.danger);
-
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                        //set message
-                        assert user != null;
-                        builder.setMessage("Your e-mail address " + user.getEmail() + " is not verified, please verify your email address and login again");
-
-                        //set Button
-                        builder.setPositiveButton("send verification email", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                //set progress bar visible
-                                mProgressBar.setVisibility(View.VISIBLE);
-
-                                //send verification email
-                                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(LoggedInActivity.this, new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                        //email send
-                                        if (task.isSuccessful()) {
-
-                                            //set progress bar gone
-                                            mProgressBar.setVisibility(View.GONE);
-
-                                            //show message
-                                            Snackbar.make(coordinatorLayout, "Verification email sent", Snackbar.LENGTH_SHORT).show();
-
-                                        }
-                                        //email not sent
-                                        else {
-
-                                            //set progress bar gone
-                                            mProgressBar.setVisibility(View.GONE);
-
-                                            //show message
-                                            Snackbar.make(coordinatorLayout, Objects.requireNonNull(task.getException()).toString(), Snackbar.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
                             }
-                        });
+                        } else {
 
-                        progressDialog.dismiss();
-                        //mProgressBar.setVisibility(View.GONE);
+                            //set progress bar gone
+                            //mProgressBar.setVisibility(View.GONE);
+                            progressDialog.dismiss();
 
-                        //build and show builder
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                            //show message
+                            Toast.makeText(getApplicationContext(), "Error : " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
 
+                        }
                     }
-                } else {
-
-                    //set progress bar gone
-                    mProgressBar.setVisibility(View.GONE);
-
-                    //show message
-                    Toast.makeText(getApplicationContext(), "Error : " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-
-                }
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                mProgressBar.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //mProgressBar.setVisibility(View.GONE);
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
 
     }
 

@@ -19,6 +19,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:fontFamily="@font/bungee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -59,6 +60,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/july_2018"
+                    android:fontFamily="@font/lemonada"
                     android:onClick="july2018"/>
 
             </com.google.android.material.card.MaterialCardView>
@@ -75,6 +77,7 @@
                 app:cardElevation="8dp">
 
                 <Button
+                    android:fontFamily="@font/lemonada"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -99,6 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/lemonada"
                     android:background="@android:color/transparent"
                     android:text="@string/september_2016"
                     android:onClick="september2016"/>
@@ -117,6 +121,7 @@
                 app:cardElevation="8dp">
 
                 <Button
+                    android:fontFamily="@font/lemonada"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -141,6 +146,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/lemonada"
                     android:background="@android:color/transparent"
                     android:text="@string/january_2016"
                     android:onClick="january2016"/>
@@ -164,6 +170,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/october_2015"
+                    android:fontFamily="@font/lemonada"
                     android:onClick="october2015"/>
 
             </com.google.android.material.card.MaterialCardView>
@@ -186,6 +193,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/august_2015"
+                    android:fontFamily="@font/lemonada"
                     android:onClick="august2015"/>
 
             </com.google.android.material.card.MaterialCardView>
@@ -204,6 +212,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/lemonada"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/july_2015"
@@ -228,6 +237,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/april_2015"
+                    android:fontFamily="@font/lemonada"
                     android:onClick="april2015"/>
 
             </com.google.android.material.card.MaterialCardView>
@@ -246,6 +256,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/lemonada"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/january_2015"
@@ -270,6 +281,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/september_2014"
+                    android:fontFamily="@font/lemonada"
                     android:onClick="september2014"/>
 
             </com.google.android.material.card.MaterialCardView>
@@ -289,6 +301,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/lemonada"
                     android:background="@android:color/transparent"
                     android:text="@string/july_2014"
                     android:onClick="july2014"/>
@@ -313,6 +326,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/february_2014"
+                    android:fontFamily="@font/lemonada"
                     android:onClick="february2014"/>
 
             </com.google.android.material.card.MaterialCardView>
@@ -332,6 +346,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/lemonada"
                     android:background="@android:color/transparent"
                     android:text="@string/april_2013"
                     android:onClick="april2013"/>
@@ -355,6 +370,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/may_2013"
+                    android:fontFamily="@font/lemonada"
                     android:onClick="may2013"/>
 
             </com.google.android.material.card.MaterialCardView>
@@ -373,6 +389,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/lemonada"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/july_2013"
@@ -397,6 +414,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/december_2012"
+                    android:fontFamily="@font/lemonada"
                     android:onClick="december2012"/>
 
             </com.google.android.material.card.MaterialCardView>

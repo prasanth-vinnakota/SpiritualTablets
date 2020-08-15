@@ -16,7 +16,9 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
@@ -203,6 +205,10 @@ public class VolunteerRegistrationActivity extends Activity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
+                            String current_user_id = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                            DatabaseReference books_ref = FirebaseDatabase.getInstance().getReference("Users").child(current_user_id).child("books");
+                            books_ref.setValue("yes");
+
                             View dialogView = getLayoutInflater().inflate(R.layout.volunteer_registration_dialog, null);
 
                             Button ok = dialogView.findViewById(R.id.volunteer_ok_button);
@@ -230,7 +236,7 @@ public class VolunteerRegistrationActivity extends Activity {
                                             "\nkey : " + volunteer_registration.getKey());
 
                                     Intent intent2 = new Intent(Intent.ACTION_VIEW);
-                                    intent2.setData(Uri.parse("mailto:spiritualhealthcare2012@gmail.com"));
+                                    intent2.setData(Uri.parse("mailto:spiritualtablet@gmail.com"));
                                     intent2.putExtra(Intent.EXTRA_SUBJECT, "volunteer registration");
                                     intent2.putExtra(Intent.EXTRA_TEXT, "email : " + volunteer_mail +
                                             "\nname : " + volunteer_name +

@@ -7,10 +7,19 @@ public class EventItem {
     private String timing;
     private String image;
     private String link;
+    private String language;
 
 
 
     public EventItem(){}
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public String getLink() {
         return link;

@@ -43,7 +43,7 @@ public class AudioActivity extends AppCompatActivity {
 
 
         RecyclerView myrv = findViewById(R.id.audio_recycler_view_id);
-        AudioRecyclerViewAdapter myAdapter = new AudioRecyclerViewAdapter(getApplicationContext(),lstDataItem);
+        AudioRecyclerViewAdapter myAdapter = new AudioRecyclerViewAdapter(AudioActivity.this,lstDataItem);
         myrv.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
         myrv.setAdapter(myAdapter);
 

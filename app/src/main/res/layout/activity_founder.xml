@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingTop="30dp"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
@@ -29,9 +28,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/founder"
+            android:fontFamily="@font/lemonada"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"/>
+
+
 
         <ImageView
             android:layout_width="300dp"
@@ -42,9 +44,22 @@
             android:layout_marginTop="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/click_here_to_listen_his_speech"
+            android:fontFamily="@font/lemonada"
+            android:textSize="20sp"
+            android:onClick="loadGkSirSpeech"
+            android:textColor="@android:color/holo_red_dark"/>
+
+        <TextView
+            android:layout_marginTop="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/founder_desc"
             android:textSize="15sp"
+            android:fontFamily="@font/lemonada"
             android:textColor="@color/colorPrimaryDark"/>
+
+
 
     </LinearLayout>
 

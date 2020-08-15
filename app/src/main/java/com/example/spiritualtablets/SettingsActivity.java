@@ -60,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Toolbar toolbar = findViewById(R.id.settings_page_toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -107,11 +107,10 @@ public class SettingsActivity extends AppCompatActivity {
         dobSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
 
                     userRef.child("settings").child("dob").setValue("true");
-                }
-                else{
+                } else {
 
                     userRef.child("settings").child("dob").setValue("false");
                 }
@@ -121,11 +120,10 @@ public class SettingsActivity extends AppCompatActivity {
         mobileNumberSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
 
                     userRef.child("settings").child("mobile_number").setValue("true");
-                }
-                else{
+                } else {
 
                     userRef.child("settings").child("mobile_number").setValue("false");
                 }
@@ -135,11 +133,10 @@ public class SettingsActivity extends AppCompatActivity {
         profileStatusSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
 
                     userRef.child("settings").child("profile_status").setValue("true");
-                }
-                else{
+                } else {
 
                     userRef.child("settings").child("profile_status").setValue("false");
                 }
@@ -158,7 +155,7 @@ public class SettingsActivity extends AppCompatActivity {
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1, 1)
-                    .start(this);
+                    .start(SettingsActivity.this);
 
         }
 
@@ -189,9 +186,9 @@ public class SettingsActivity extends AppCompatActivity {
 
                                         userRef.child("image").setValue(uri.toString());
 
-                                            progressDialog.dismiss();
-                                            initFields();
-                                            Toast.makeText(SettingsActivity.this, "Profile Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
+                                        initFields();
+                                        Toast.makeText(SettingsActivity.this, "Profile Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }
@@ -220,7 +217,8 @@ public class SettingsActivity extends AppCompatActivity {
                     if (snapshot.child("profile_status").getValue() != null)
                         userStatus.setText(Objects.requireNonNull(snapshot.child("profile_status").getValue()).toString());
 
-                    Picasso.get().load(Objects.requireNonNull(snapshot.child("image").getValue()).toString()).placeholder(R.drawable.user_photo).into(userProfileImage);
+                    if (snapshot.child("image").getValue() != null)
+                        Picasso.get().load(Objects.requireNonNull(snapshot.child("image").getValue()).toString()).placeholder(R.drawable.user_photo).into(userProfileImage);
                 }
             }
 
@@ -233,29 +231,26 @@ public class SettingsActivity extends AppCompatActivity {
         userRef.child("settings").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
 
-                    if (Objects.requireNonNull(snapshot.child("dob").getValue()).toString().equals("true")){
+                    if (Objects.requireNonNull(snapshot.child("dob").getValue()).toString().equals("true")) {
 
                         dobSwitch.setChecked(true);
-                    }
-                    else {
+                    } else {
                         dobSwitch.setChecked(false);
                     }
 
-                    if (Objects.requireNonNull(snapshot.child("mobile_number").getValue()).toString().equals("true")){
+                    if (Objects.requireNonNull(snapshot.child("mobile_number").getValue()).toString().equals("true")) {
 
                         mobileNumberSwitch.setChecked(true);
-                    }
-                    else {
+                    } else {
                         mobileNumberSwitch.setChecked(false);
                     }
 
-                    if (Objects.requireNonNull(snapshot.child("profile_status").getValue()).toString().equals("true")){
+                    if (Objects.requireNonNull(snapshot.child("profile_status").getValue()).toString().equals("true")) {
 
                         profileStatusSwitch.setChecked(true);
-                    }
-                    else {
+                    } else {
                         profileStatusSwitch.setChecked(false);
                     }
                 }

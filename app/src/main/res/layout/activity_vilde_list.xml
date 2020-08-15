@@ -17,10 +17,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/videos_list"
-        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/lemonada"
         android:gravity="center"
-        android:layout_marginTop="20dp"/>
+        android:text="@string/videos_list"
+        android:textSize="30sp" />
 
     <ListView
         android:layout_marginTop="20dp"
@@ -30,7 +31,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:choiceMode="singleChoice"
-        android:listSelector="@color/colorPrimaryDark"/>
+        android:listSelector="@android:color/white"/>
 
 
 </LinearLayout>

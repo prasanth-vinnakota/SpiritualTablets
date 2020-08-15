@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    android:id="@+id/event_item_card_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@android:color/transparent">
+    android:layout_marginBottom="30dp"
+    android:layout_marginTop="20dp"
+    app:cardBackgroundColor="@android:color/darker_gray">
+
+    <LinearLayout
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <ImageView
         android:id="@+id/events_image"
@@ -60,12 +73,7 @@
         android:text="@string/event_name"
         android:textSize="20sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@android:color/black" />
 
 </LinearLayout>
 
+</androidx.cardview.widget.CardView>

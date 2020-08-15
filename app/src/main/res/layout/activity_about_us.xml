@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:fontFamily="@font/bungee"
             android:text="@string/about_us"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
@@ -50,6 +51,7 @@
                 android:background="@android:color/transparent"
                 android:id="@+id/introduction"
                 android:layout_gravity="center"
+                android:fontFamily="@font/lemonada"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:onClick="introduction"
@@ -72,6 +74,7 @@
                 android:id="@+id/history"
                 android:layout_gravity="center"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/lemonada"
                 android:layout_width="match_parent"
                 android:onClick="history"
                 android:text="@string/history_origin" />
@@ -95,6 +98,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:onClick="principle"
+                android:fontFamily="@font/lemonada"
                 android:text="@string/principle" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -112,6 +116,7 @@
             <Button
                 android:background="@android:color/transparent"
                 android:id="@+id/pyramid_doctors"
+                android:fontFamily="@font/lemonada"
                 android:layout_gravity="center"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
@@ -136,6 +141,7 @@
                 android:layout_gravity="center"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:fontFamily="@font/lemonada"
                 android:onClick="counsellors"
                 android:text="@string/counsellors" />
 
@@ -154,6 +160,7 @@
             <Button
                 android:background="@android:color/transparent"
                 android:id="@+id/outlets"
+                android:fontFamily="@font/lemonada"
                 android:layout_gravity="center"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
@@ -165,6 +172,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:fontFamily="@font/lemonada"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_marginLeft="10dp"

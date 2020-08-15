@@ -3,8 +3,13 @@
     package="com.example.spiritualtablets">
 
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission-sdk-23 android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission-sdk-23 android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission-sdk-23 android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -15,46 +20,112 @@
         android:roundIcon="@drawable/full_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".VideoPlayerActivity"></activity>
-        <activity android:name=".VideoListActivity" />
-        <activity android:name=".EventsByLanguageActivity" />
+        <activity android:name=".KannadaBookListActivity"/>
+        <activity android:name=".HindiBookListActivity"/>
+        <activity android:name=".AddEventActivity" />
+        <activity
+            android:name=".chat_bot.ChatBotActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VideoPlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VideoListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EventsByLanguageActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ProfileActivity"
-            android:parentActivityName=".FindFriendsActivity" />
+            android:parentActivityName=".FindFriendsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".FindFriendsActivity"
-            android:parentActivityName=".ChatMainActivity" />
-        <activity android:name=".GroupChatActivity" />
+            android:parentActivityName=".ChatMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GroupChatActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SettingsActivity"
-            android:parentActivityName=".ChatMainActivity" />
+            android:parentActivityName=".ChatMainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ChatMainActivity"
-            android:parentActivityName=".DashBoardActivity" />
-        <activity android:name=".VolunteerRegistrationActivity" />
-        <activity android:name=".DailyTipActivity" />
-        <activity android:name=".EventsActivity" />
-        <activity android:name=".contact_us.PrimaryCentersActivity" />
-        <activity android:name=".ContactUsActivity" />
-        <activity android:name=".about_us.FounderActivity" />
-        <activity android:name=".OutletsActivity" />
-        <activity android:name=".about_us.PyramidDoctorsActivity" />
-        <activity android:name=".about_us.PrincipleActivity" />
-        <activity android:name=".about_us.HistoryActivity" />
-        <activity android:name=".about_us.IntroductionActivity" />
-        <activity android:name=".AboutUsActivity" />
-        <activity android:name=".NewsLettersActivity" />
-        <activity android:name=".AudioPlayerActivity" />
-        <activity android:name=".AudioActivity" />
-        <activity android:name=".ViewBookActivity" />
-        <activity android:name=".EnglishBookListActivity" />
-        <activity android:name=".TeluguBookListActivity" />
-        <activity android:name=".GalleryActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".NoInternetActivity" />
-        <activity android:name=".DashBoardActivity" />
-        <activity android:name=".LoggedInActivity" />
-        <activity android:name=".MainActivity">
+            android:parentActivityName=".DashBoardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VolunteerRegistrationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DailyTipActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EventsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contact_us.PrimaryCentersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ContactUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".about_us.FounderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OutletsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".about_us.PyramidDoctorsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".about_us.PrincipleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".about_us.HistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".about_us.IntroductionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NewsLettersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AudioPlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AudioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ViewBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EnglishBookListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TeluguBookListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignUpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NoInternetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DashBoardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoggedInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

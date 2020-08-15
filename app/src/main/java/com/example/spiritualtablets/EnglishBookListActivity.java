@@ -23,16 +23,16 @@ public class EnglishBookListActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         lstDataItem =new ArrayList<>();
-        lstDataItem.add(new DataItem("Direct And Indirect Knowledge", "English", R.drawable.direct_and_indirect_knowledge));
-        lstDataItem.add(new DataItem("Lakshmi Paravathi Saraswathi", "English", R.drawable.lakshmi_parvathi_sarswathi));
         lstDataItem.add(new DataItem("Meditation", "English", R.drawable.meditation));
+        lstDataItem.add(new DataItem("Lakshmi Paravathi Saraswathi", "English", R.drawable.lakshmi_parvathi_sarswathi));
+        lstDataItem.add(new DataItem("Direct And Indirect Knowledge", "English", R.drawable.direct_and_indirect_knowledge));
         lstDataItem.add(new DataItem("Purpose of Life", "English", R.drawable.purpose_of_life));
         lstDataItem.add(new DataItem("Six Passions", "English", R.drawable.six_passions));
         lstDataItem.add(new DataItem("Soul Family", "English", R.drawable.soul_family));
-        lstDataItem.add(new DataItem("Thyroi*d", "English", R.drawable.thyriod));
+        lstDataItem.add(new DataItem("Thyroid", "English", R.drawable.thyriod));
 
         RecyclerView myrv = findViewById(R.id.recycler_view_id);
-        BooksRecyclerViewAdapter myAdapter = new BooksRecyclerViewAdapter(getApplicationContext(), lstDataItem);
+        BooksRecyclerViewAdapter myAdapter = new BooksRecyclerViewAdapter(EnglishBookListActivity.this, lstDataItem);
         myrv.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
         myrv.setAdapter(myAdapter);
     }

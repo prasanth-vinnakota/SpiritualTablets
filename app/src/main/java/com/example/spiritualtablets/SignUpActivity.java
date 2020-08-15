@@ -85,6 +85,8 @@ public class SignUpActivity extends AppCompatActivity {
         imgUserPhoto = findViewById(R.id.user_image);
         signUpSlogan = findViewById(R.id.sign_up_slogan);
 
+        mAuth = FirebaseAuth.getInstance();
+
         signUpFirstName = findViewById(R.id.sign_up_first_name);
         signUpLastName = findViewById(R.id.sign_up_last_name);
         signUpEmail = findViewById(R.id.sign_up_email);
@@ -97,7 +99,6 @@ public class SignUpActivity extends AppCompatActivity {
         signUpCity = findViewById(R.id.sign_up_city);
 
         signUpText = findViewById(R.id.sign_up_text);
-
 
 
         imgUserPhoto.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +172,7 @@ public class SignUpActivity extends AppCompatActivity {
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 assert result != null;
                 Exception exception = result.getError();
+                Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -180,7 +182,7 @@ public class SignUpActivity extends AppCompatActivity {
         CropImage.activity(pickedImageUrl)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(true)
-                .start(this);
+                .start(SignUpActivity.this);
     }
 
     private boolean validateFirstName() {
@@ -207,49 +209,49 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validateDob(){
+    private boolean validateDob() {
         String dob = Objects.requireNonNull(signUpDob.getText()).toString();
 
-        if (dob.isEmpty()){
+        if (dob.isEmpty()) {
             signUpDob.setError("Field cannot be empty");
             return false;
-        }else {
+        } else {
             signUpDob.setError(null);
             return true;
         }
     }
 
-    private boolean validateCountry(){
+    private boolean validateCountry() {
         String country = Objects.requireNonNull(signUpCountry.getText()).toString();
 
-        if (country.isEmpty()){
+        if (country.isEmpty()) {
             signUpCountry.setError("Field cannot be empty");
             return false;
-        }else {
+        } else {
             signUpCountry.setError(null);
             return true;
         }
     }
 
-    private boolean validateState(){
+    private boolean validateState() {
         String state = Objects.requireNonNull(signUpState.getText()).toString();
 
-        if (state.isEmpty()){
+        if (state.isEmpty()) {
             signUpState.setError("Field cannot be empty");
             return false;
-        }else {
+        } else {
             signUpState.setError(null);
             return true;
         }
     }
 
-    private boolean validateCity(){
+    private boolean validateCity() {
         String city = Objects.requireNonNull(signUpCity.getText()).toString();
 
-        if (city.isEmpty()){
+        if (city.isEmpty()) {
             signUpCity.setError("Field cannot be empty");
             return false;
-        }else {
+        } else {
             signUpCity.setError(null);
             return true;
         }
@@ -302,17 +304,9 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean validatePassword() {
 
         String password = Objects.requireNonNull(signUpPassword.getText()).toString();
-        String validation = "^" +
-                "(?=.*[a-zA-Z])" + //any letter
-                "(?=.*[@#$%^&+=])" + //one special chatter
-                ".{6,}" +  //at least six characters
-                "$";
 
         if (password.isEmpty()) {
             signUpPassword.setError("Field cannot be empty");
-            return false;
-        } else if (!password.matches(validation)) {
-            signUpPassword.setError("Password should have one special character and must contain at least 6 characters");
             return false;
         } else {
             signUpPassword.setError(null);
@@ -334,14 +328,16 @@ public class SignUpActivity extends AppCompatActivity {
 
         progressDialog.show();
 
+
         //show error
-        if (!validateFirstName() | !validateLastName() | !validateEmail() | !validateMobileNo() | !validatePassword() | !validateImage() | !validateDob() | !validateCountry() | !validateState() | !validateCity()) {
+        if (!validateFirstName() | !validateLastName() | !validateEmail() | !validateMobileNo() | !validatePassword() | !validateDob() | !validateCountry() | !validateState() | !validateCity()) {
 
             progressDialog.dismiss();
             return;
         }
 
-        final String fullName = Objects.requireNonNull(signUpFirstName.getText()).toString() + " "+ Objects.requireNonNull(signUpLastName.getText()).toString();
+
+        final String fullName = Objects.requireNonNull(signUpFirstName.getText()).toString() + " " + Objects.requireNonNull(signUpLastName.getText()).toString();
         final String email = Objects.requireNonNull(signUpEmail.getText()).toString();
         String password = Objects.requireNonNull(signUpPassword.getText()).toString();
         final String date_of_birth = signUpDob.getText().toString();
@@ -349,164 +345,168 @@ public class SignUpActivity extends AppCompatActivity {
         final String state = Objects.requireNonNull(signUpState.getText()).toString();
         final String city = Objects.requireNonNull(signUpCity.getText()).toString();
 
-        mAuth = FirebaseAuth.getInstance();
 
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                if (task.isSuccessful()) {
-                    final String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                        if (task.isSuccessful()) {
+                            final String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-                    reference.setValue(true);
+                            final DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                            db_ref.setValue(true);
 
+                            if (validateImage()) {
 
-                    StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("user_photos");
-                    final StorageReference imageFilePath = mStorage.child(userId + ".jpg");
-                    imageFilePath.putFile(pickedImageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+                                StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("user_photos");
+                                final StorageReference imageFilePath = mStorage.child(userId + ".jpg");
+                                imageFilePath.putFile(pickedImageUrl)
+                                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
 
-                            imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(final Uri uri) {
-
-                                    UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(fullName)
-                                            .setPhotoUri(pickedImageUrl)
-                                            .build();
-
-
-                                    mAuth.getCurrentUser().updateProfile(profileUpdate)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-
-                                                    if (task.isSuccessful()) {
-
-                                                        DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-
-                                                        String device_token = FirebaseInstanceId.getInstance().getToken();
-
-                                                        db_ref.child("full_name").setValue(fullName);
-                                                        db_ref.child("email").setValue(email);
-                                                        db_ref.child("mobile_no").setValue(mobileNumberWithCountryCode);
-                                                        db_ref.child("device_token").setValue(device_token);
-                                                        db_ref.child("profile_status").setValue("Available");
-                                                        db_ref.child("image").setValue(uri.toString());
-                                                        db_ref.child("date_of_birth").setValue(date_of_birth);
-                                                        db_ref.child("country").setValue(country);
-                                                        db_ref.child("state").setValue(state);
-                                                        db_ref.child("city").setValue(city);
-                                                        db_ref.child("account_created_time").setValue(ServerValue.TIMESTAMP);
-                                                        db_ref.child("settings").child("mobile_number").setValue("false");
-                                                        db_ref.child("settings").child("dob").setValue("false");
-                                                        db_ref.child("settings").child("profile_status").setValue("true");
-
-
-                                                        signUpFirstName.setText("");
-                                                        signUpLastName.setText("");
-                                                        signUpEmail.setText("");
-                                                        signUpCountryCode.setText("");
-                                                        signUpMobileNumber.setText("");
-                                                        signUpCountry.setText("");
-                                                        signUpState.setText("");
-                                                        signUpCity.setText("");
-                                                        signUpDob.setText("");
-                                                        signUpPassword.setText("");
-                                                        signUpImage.setImageURI(null);
-
-                                                        progressDialog.dismiss();
-
-                                                        //create a Builder object
-                                                        AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
-
-                                                        //set builder title
-                                                        builder.setTitle("Registered Successfully");
-
-                                                        //set builder icon
-                                                        builder.setIcon(R.drawable.success);
-
-                                                        //set message
-                                                        builder.setMessage("You have to verify your email address, and login with your credentials");
-
-                                                        //set Button
-                                                        builder.setPositiveButton("send verification email", new DialogInterface.OnClickListener() {
+                                                imageFilePath.getDownloadUrl()
+                                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                             @Override
-                                                            public void onClick(DialogInterface dialog, int which) {
+                                                            public void onSuccess(final Uri uri) {
 
-                                                                //set progress bar visible
-                                                                progressDialog.show();
+                                                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                                                        .setDisplayName(fullName)
+                                                                        .setPhotoUri(uri)
+                                                                        .build();
 
-                                                                //send verification email
-                                                                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                                                        //email send
-                                                                        if (task.isSuccessful()) {
-
-                                                                            //set progress bar gone
-                                                                            progressDialog.dismiss();
-
-                                                                            //show message
-                                                                            Toast.makeText(getApplicationContext(), "Verification Email Sent", Toast.LENGTH_SHORT).show();
-                                                                            FirebaseAuth.getInstance().signOut();
-                                                                            startActivity(new Intent(SignUpActivity.this, LoggedInActivity.class));
-
-                                                                            finish();
-
-
-                                                                        }
-                                                                        //email not sent
-                                                                        else {
-
-                                                                            //set progress bar gone
-                                                                            progressDialog.dismiss();
-
-                                                                            //show message
-                                                                            Toast.makeText(getApplicationContext(), "Error : " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-                                                                        }
-                                                                    }
-
-                                                                    ;
-                                                                });
+                                                                mAuth.getCurrentUser().updateProfile(profileUpdate);
+                                                                db_ref.child("image").setValue(uri.toString());
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                                             }
                                                         });
 
-                                                        progressDialog.dismiss();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                            }
 
-                                                        AlertDialog dialog = builder.create();
-                                                        dialog.show();
 
-                                                    } else {
+                            if (!validateImage()) {
+                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(fullName)
+                                        .build();
 
-                                                        progressDialog.dismiss();
+                                Objects.requireNonNull(mAuth.getCurrentUser()).updateProfile(profileUpdate);
+                            }
+
+                            String device_token = FirebaseInstanceId.getInstance().getToken();
+
+                            db_ref.child("full_name").setValue(fullName);
+                            db_ref.child("email").setValue(email);
+                            db_ref.child("mobile_no").setValue(mobileNumberWithCountryCode);
+                            db_ref.child("device_token").setValue(device_token);
+                            db_ref.child("profile_status").setValue("Available");
+                            db_ref.child("date_of_birth").setValue(date_of_birth);
+                            db_ref.child("country").setValue(country);
+                            db_ref.child("state").setValue(state);
+                            db_ref.child("city").setValue(city);
+                            db_ref.child("books").setValue("no");
+                            db_ref.child("account_created_time").setValue(ServerValue.TIMESTAMP);
+                            db_ref.child("settings").child("mobile_number").setValue("false");
+                            db_ref.child("settings").child("dob").setValue("false");
+                            db_ref.child("settings").child("profile_status").setValue("true");
 
 
-                                                        Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-                                                    }
-                                                }
-                                            });
-                                }
-                            });
+                            signUpFirstName.setText("");
+                            signUpLastName.setText("");
+                            signUpEmail.setText("");
+                            signUpCountryCode.setText("");
+                            signUpMobileNumber.setText("");
+                            signUpCountry.setText("");
+                            signUpState.setText("");
+                            signUpCity.setText("");
+                            signUpDob.setText("");
+                            signUpPassword.setText("");
+                            signUpImage.setImageURI(null);
 
-                        }
-                    })
-                            .addOnFailureListener(new OnFailureListener() {
+                            progressDialog.dismiss();
+
+                            //create a Builder object
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+
+                            //set builder title
+                            builder.setTitle("Registered Successfully");
+
+                            //set builder icon
+                            builder.setIcon(R.drawable.success);
+
+                            //set message
+                            builder.setMessage("You have to verify your email address, and login with your credentials");
+
+                            //set Button
+                            builder.setPositiveButton("send verification email", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    //set progress bar visible
+                                    progressDialog.show();
+
+                                    //send verification email
+                                    mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            //email send
+                                            if (task.isSuccessful()) {
+
+                                                //set progress bar gone
+                                                progressDialog.dismiss();
+
+                                                //show message
+                                                Toast.makeText(getApplicationContext(), "Verification Email Sent", Toast.LENGTH_SHORT).show();
+                                                FirebaseAuth.getInstance().signOut();
+                                                startActivity(new Intent(SignUpActivity.this, LoggedInActivity.class));
+
+                                                finish();
+
+
+                                            }
+                                            //email not sent
+                                            else {
+
+                                                //set progress bar gone
+                                                progressDialog.dismiss();
+
+                                                //show message
+                                                Toast.makeText(getApplicationContext(), "Error : " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+
+                                        ;
+                                    });
                                 }
                             });
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        })
+
+                            progressDialog.dismiss();
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
+
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
