@@ -30,8 +30,7 @@
                 android:singleLine="true"
                 android:layout_weight="9"
                 android:text="@string/username"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="18sp"/>
 
             <ImageView
                 android:id="@+id/user_display_layout_user_online"
@@ -48,7 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:text="@string/email"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -64,12 +62,14 @@
                 android:text="@string/accept"
                 android:textAllCaps="false"
                 android:textSize="16sp"
+                android:padding="10dp"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/user_display_layout_reject_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:layout_marginStart="10dp"
                 android:background="@android:color/holo_red_dark"
                 android:text="@string/reject"

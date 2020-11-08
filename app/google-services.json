@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:187478475878:android:de548e4d786ba07809d9a7",
+        "mobilesdk_app_id": "1:187478475878:android:80641d4756ee12cd09d9a7",
         "android_client_info": {
-          "package_name": "com.example.spiritualtablets"
+          "package_name": "developer.prasanth.spiritualtablets"
         }
       },
       "oauth_client": [
@@ -21,7 +21,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAbcdNg7csAGvA4CQL2ft3ZL66sDdqhDJ4"
+          "current_key": "AIzaSyBs5ytoOMdg1vuqu18Q8SiVavl6-v-kovQ"
         }
       ],
       "services": {

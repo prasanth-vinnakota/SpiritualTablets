@@ -7,7 +7,7 @@
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
     android:paddingBottom="30dp"
-    tools:context=".about_us.FounderActivity"
+    tools:context="developer.prasanth.spiritualtablets.about_us.FounderActivity"
     android:background="@drawable/background_gradient">
 
     <LinearLayout

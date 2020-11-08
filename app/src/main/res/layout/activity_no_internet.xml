@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".NoInternetActivity"
+    tools:context="developer.prasanth.spiritualtablets.NoInternetActivity"
     android:gravity="center"
     android:background="@drawable/background_gradient">
 

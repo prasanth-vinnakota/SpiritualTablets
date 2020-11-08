@@ -8,7 +8,7 @@
     android:paddingStart="20sp"
     android:paddingEnd="20sp"
     android:paddingBottom="30dp"
-    tools:context=".about_us.PrincipleActivity"
+    tools:context="developer.prasanth.spiritualtablets.about_us.PrincipleActivity"
     android:background="@drawable/background_gradient">
 
 

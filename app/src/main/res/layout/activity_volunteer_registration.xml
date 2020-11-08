@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".VolunteerRegistrationActivity">
+    tools:context="developer.prasanth.spiritualtablets.VolunteerRegistrationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/phone_number"
+                    android:text="@string/mobile_number_with_country_code"
                     android:textColor="@android:color/black"
                     android:textSize="25sp" />
 

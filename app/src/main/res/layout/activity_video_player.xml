@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VideoPlayerActivity">
+    tools:context="developer.prasanth.spiritualtablets.VideoPlayerActivity">
     
     <com.google.android.youtube.player.YouTubePlayerView
         android:id="@+id/youtubePlay"

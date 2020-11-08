@@ -8,7 +8,7 @@
     android:paddingTop="30dp"
     android:paddingStart="20dp"
     android:background="@drawable/background_gradient"
-    tools:context=".about_us.PyramidDoctorsActivity">
+    tools:context="developer.prasanth.spiritualtablets.about_us.PyramidDoctorsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

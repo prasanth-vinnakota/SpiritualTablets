@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView
+    android:background="@drawable/background_gradient"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".GalleryActivity">
 
     <LinearLayout
@@ -13,78 +12,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bungee"
-            android:gravity="center"
-            android:text="@string/gallery"
-            android:textSize="40sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textSize="25sp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#000"
+                    android:text="@string/gallery"
+                    android:fontFamily="@font/bungee"/>
+                
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/bungee"
-            android:gravity="center"
-            android:text="@string/spiritual_tablets_workshop_at_madugulla"
-            android:textSize="18sp" />
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:src="@drawable/image1"
-            android:contentDescription="@string/spiritual_tablets_workshop_at_madugulla" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/bungee"
-            android:gravity="center"
-            android:text="@string/spiritual_tablets_workshop_in_soul_trends"
-            android:textSize="18sp" />
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:src="@drawable/image2"
-            android:contentDescription="@string/spiritual_tablets_workshop_in_soul_trends" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/bungee"
-            android:gravity="center"
-            android:text="@string/spiritual_tablets_workshop_at_kadtal"
-            android:textSize="18sp" />
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:src="@drawable/image3"
-            android:contentDescription="@string/spiritual_tablets_workshop_at_kadtal" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/bungee"
-            android:gravity="center"
-            android:text="@string/unknown_gallery_name"
-            android:textSize="18sp" />
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:src="@drawable/image4"
-            android:contentDescription="@string/unknown_gallery_name" />
-
-    </LinearLayout>
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/galleryRV"/>
+            </LinearLayout>
 </ScrollView>

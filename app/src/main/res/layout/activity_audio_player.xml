@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@drawable/background_gradient"
-    tools:context=".AudioPlayerActivity">
+    tools:context="developer.prasanth.spiritualtablets.AudioPlayerActivity">
 
     <ImageView
         android:layout_marginTop="50dp"

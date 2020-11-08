@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoggedInActivity">
+    tools:context="developer.prasanth.spiritualtablets.LoggedInActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -115,6 +115,15 @@
                     android:text="@string/go"
                     android:textColor="#FFF"
                     android:transitionName="login_go_button" />
+
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/google"
+                    android:clickable="true"
+                    android:onClick="googleSignIn"
+                    android:background="@android:color/transparent"/>
 
                 <Button
                     android:layout_marginTop="20dp"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".EventsByLanguageActivity"
+    tools:context="developer.prasanth.spiritualtablets.EventsByLanguageActivity"
     android:background="@drawable/background_gradient">
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_events_button"

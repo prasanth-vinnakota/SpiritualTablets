@@ -8,7 +8,7 @@
     android:paddingStart="20dp"
     android:paddingTop="30dp"
     android:paddingBottom="30dp"
-    tools:context=".about_us.IntroductionActivity"
+    tools:context="developer.prasanth.spiritualtablets.about_us.IntroductionActivity"
     android:background="@drawable/background_gradient">
 
     <LinearLayout
