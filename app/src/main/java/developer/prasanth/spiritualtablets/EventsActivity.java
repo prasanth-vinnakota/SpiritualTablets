@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import developer.prasanth.spiritualtablets.R;
 import developer.prasanth.spiritualtablets.adapters.EventAdapter;
 import developer.prasanth.spiritualtablets.models.EventItem;
 import com.google.firebase.database.DataSnapshot;
@@ -50,7 +49,7 @@ public class EventsActivity extends AppCompatActivity {
         eventRV.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         final String[] countries = {"Select Country", "India", "United States"};
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, countries);
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, countries);
         countrySpinner.setAdapter(countryAdapter);
 
 
@@ -1196,7 +1195,7 @@ public class EventsActivity extends AppCompatActivity {
                     case "United States": {
 
                         final String[] states = {"Select State", "California"};
-                        ArrayAdapter<String> statesAdapter = new ArrayAdapter<String>(EventsActivity.this, R.layout.support_simple_spinner_dropdown_item, states);
+                        ArrayAdapter<String> statesAdapter = new ArrayAdapter<>(EventsActivity.this, R.layout.support_simple_spinner_dropdown_item, states);
                         stateSpinner.setAdapter(statesAdapter);
 
                         stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

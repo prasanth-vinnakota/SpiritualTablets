@@ -13,18 +13,6 @@
         android:textStyle="bold"
         android:text="@string/select_an_option_to_register"
         android:textColor="#000"/>
-
-    <Button
-        android:id="@+id/detail_registration"
-        android:visibility="gone"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/detail_registration"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        style="@style/Widget.AppCompat.Button.Colored"/>
-
     <Button
         android:id="@+id/rapid_registration"
         android:layout_marginTop="16dp"

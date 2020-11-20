@@ -17,7 +17,6 @@
     <string name="verify_mobile_no">Verify Mobile No</string>
     <string name="enter_verification_code_if_not_automatically_authenticated">Enter verification code if not automatically authenticated</string>
     <string name="verify">Verify</string>
-    <string name="enter_otp">Enter OTP</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="books">Books</string>
@@ -204,7 +203,7 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="report_post">Report Post</string>
-    <string name="patient_registration">Patient \n Registration</string>
+    <string name="participate_registration">Participate Registration</string>
     <string name="volunteer_registration">Volunteer Registration</string>
     <string name="events">Events</string>
     <string name="write_comment">Write Comment</string>
@@ -257,7 +256,7 @@
     <string name="request_for_counselling">Request for counselling</string>
     <string name="select_country">Select Country</string>
     <string name="select_state">Select State</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="please_send_required_mails_after_clicking_on_ok_it_will_redirect_you_to_mails">please send required mails. After clicking on ok it will redirect you to mails</string>
     <string name="send_required_mails">Send required mails</string>
     <string name="event_name">Event Name:</string>
@@ -275,7 +274,7 @@
     <string name="accept_request">Accept Request</string>
     <string name="decline_request">Decline Request</string>
     <string name="unfriend">Unfriend</string>
-    <string name="_91">+91</string>
+    <string name="_91">91</string>
     <string name="dob">DOB:</string>
     <string name="date_of_birth">Date of birth</string>
     <string name="country">Country</string>
@@ -316,8 +315,6 @@
     <string name="mobile_number_with_country_code">Mobile Number With Country Code</string>
     <string name="date_of_birth_full">Date Of Birth</string>
     <string name="you_don_t_have_any_counselor_yet">You don\'t have any counselor yet</string>
-    <string name="facebook_page_link">facebook page link</string>
-    <string name="youtube_page_link">youtube page link</string>
     <string name="video_name_must_not_contain">Video Name (Must Not Contain \' . \')</string>
     <string name="youtube_link_after">Youtube Link After \'=\'</string>
     <string name="admin_panel">Admin Panel</string>
@@ -454,5 +451,28 @@
     <string name="add_daily_quote">Add Daily Quote</string>
     <string name="view_spiritual_children">View Spiritual Children</string>
     <string name="work_assigned">Work Assigned</string>
+    <string name="facebook">FACEBOOK</string>
+    <string name="youtube_telugu">YOUTUBE TELUGU</string>
+    <string name="youtube_english">YOUTUBE ENGLISH</string>
+    <string name="youtube_hindi">YOUTUBE HINDI</string>
+    <string name="contact_details">Contact Details :</string>
+    <string name="ramyagunisetty_gmail_com">ramyagunisetty@gmail.com</string>
+    <string name="social_media_links">Social Media Links :</string>
+    <string name="asha_917013559118">Asha : +917013559118</string>
+    <string name="mails">Mails</string>
+    <string name="diksha_917899801922">Diksha : +917899801922</string>
+    <string name="uk_europe_usa"><![CDATA[UK, EUROPE & USA]]></string>
+    <string name="app">App</string>
+    <string name="prasanth_919100362607">Prasanth : +919100362607</string>
+    <string name="videos">Videos</string>
+    <string name="audios">Audios</string>
+    <string name="my_profile">My Profile</string>
+    <string name="show_dob_to_others">Show DOB to others</string>
+    <string name="show_profile_status_to_others">Show Profile Status to others</string>
+    <string name="show_mobile_number_to_others">Show Mobile Number to others</string>
+    <string name="edit">Edit</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="get_otp">Get OTP</string>
 
 </resources>

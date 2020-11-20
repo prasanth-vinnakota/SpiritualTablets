@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,33 +33,41 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.hbb20.CountryCodePicker;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class LoggedInActivity extends AppCompatActivity {
 
-    Button newUser, logIn, forgetPassword;
+    Button verify_otp,get_otp;
     ImageView image;
     TextView logoText, slogan;
-    TextInputEditText username, password;
+    private CountryCodePicker countryCodePicker;
+    TextInputLayout otp_parent;
+    TextInputEditText mobile_no, otp;
     ProgressBar mProgressBar;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseAuth.AuthStateListener firebaseAuthListener;
     private final static int RC_SIGN_IN = 123;
-    private CoordinatorLayout coordinatorLayout;
     private ProgressDialog progressDialog;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,26 +75,21 @@ public class LoggedInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_logged_in);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        coordinatorLayout = findViewById(R.id.login_activity);
-
-        newUser = findViewById(R.id.new_user);
-        logIn = findViewById(R.id.login);
-        forgetPassword = findViewById(R.id.forget_password);
 
         mProgressBar = findViewById(R.id.log_in_progress_bar);
         progressDialog = new ProgressDialog(LoggedInActivity.this);
-        progressDialog.setMessage("please wait while we are logging you in");
-        progressDialog.setTitle("Logging in");
 
         image = findViewById(R.id.logoImage);
-
+        verify_otp = findViewById(R.id.verify_otp);
+        get_otp = findViewById(R.id.get_otp);
         logoText = findViewById(R.id.welcome_text);
         slogan = findViewById(R.id.slogan_name);
+        countryCodePicker = findViewById(R.id.country_code_picker);
 
-        username = findViewById(R.id.login_email);
-        password = findViewById(R.id.password);
+        mobile_no = findViewById(R.id.login_mobile);
+        otp = findViewById(R.id.otp);
+        otp_parent = findViewById(R.id.otp_parent);
 
-        mAuth = FirebaseAuth.getInstance();
 
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -94,292 +98,67 @@ public class LoggedInActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if ((user != null)) {
-
-                    if (user.isEmailVerified()) {
-                        startActivity(new Intent(getApplicationContext(), DashBoardActivity.class));
-                    } else {
-
-                        //create a Builder object
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoggedInActivity.this);
-
-                        //set title to builder
-                        builder.setTitle("Email is not verified");
-
-                        //set icon
-                        builder.setIcon(R.drawable.danger);
-
-                        //set message
-                        builder.setMessage("Your e-mail address " + user.getEmail() + " is not verified, please verify your email address and login again");
-
-                        //set Button
-                        builder.setPositiveButton("send verification email", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                //set progress bar visible
-                                mProgressBar.setVisibility(View.VISIBLE);
-
-                                //send verification email
-                                Objects.requireNonNull(mAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(LoggedInActivity.this, new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                        //email send
-                                        if (task.isSuccessful()) {
-
-                                            //set progress bar gone
-                                            mProgressBar.setVisibility(View.GONE);
-
-                                            //show message
-                                            Toast.makeText(getApplicationContext(), "Verification Email Sent", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                        //email not sent
-                                        else {
-
-                                            //set progress bar gone
-                                            mProgressBar.setVisibility(View.GONE);
-
-                                            //show message
-                                            Toast.makeText(getApplicationContext(), "Error : " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
-                            }
-                        });
-
-                        mProgressBar.setVisibility(View.GONE);
-
-                        //build and show builder
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-
-                    }
+                    startActivity(new Intent(getApplicationContext(), DashBoardActivity.class));
                 }
             }
         };
 
-        newUser.setOnClickListener(new View.OnClickListener() {
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
-            public void onClick(View v) {
-
-                if (!checkInternetConnection())
-                    startActivity(new Intent(LoggedInActivity.this, NoInternetActivity.class));
-
-                Intent intent = new Intent(LoggedInActivity.this, SignUpActivity.class);
-                Pair[] pairs = new Pair[7];
-
-                pairs[0] = new Pair<View, String>(image, "home_image");
-                pairs[1] = new Pair<View, String>(logoText, "home_text");
-                pairs[2] = new Pair<View, String>(slogan, "login_desc");
-                pairs[3] = new Pair<View, String>(username, "login_username");
-                pairs[4] = new Pair<View, String>(password, "login_password");
-                pairs[5] = new Pair<View, String>(logIn, "login_go_button");
-                pairs[6] = new Pair<View, String>(newUser, "login_sign_up");
-
-                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoggedInActivity.this, pairs);
-                startActivity(intent, options.toBundle());
-
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                signInWithPhoneAuthCredentials(phoneAuthCredential);
+                progressDialog.dismiss();
             }
-        });
 
-        forgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onVerificationFailed(@NonNull FirebaseException e) {
 
-                if (!checkInternetConnection())
-                    startActivity(new Intent(LoggedInActivity.this, NoInternetActivity.class));
+                Toast.makeText(LoggedInActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
 
-                String email = Objects.requireNonNull(username.getText()).toString();
-
-                if (validateUsername())
-                    return;
-
-                mProgressBar.setVisibility(View.VISIBLE);
-
-                mAuth.sendPasswordResetEmail(email).addOnCompleteListener(LoggedInActivity.this, new OnCompleteListener<Void>() {
+            @Override
+            public void onCodeSent(@NonNull final String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+                Toast.makeText(LoggedInActivity.this, "OTP Sent to your mobile", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                verify_otp.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        if (task.isSuccessful()) {
-                            //set progress bar gone
-                            mProgressBar.setVisibility(View.GONE);
-
-                            //show message
-                            Toast.makeText(getApplicationContext(), "Password reset email sent to your email", Toast.LENGTH_SHORT).show();
-                        }
-                        //email not send
-                        else {
-
-                            //set progress bar gone
-                            mProgressBar.setVisibility(View.GONE);
-
-                            //show message
-                            Toast.makeText(getApplicationContext(), "Error : " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                    public void onClick(View view) {
+                        progressDialog.setMessage("Please wait while we are verifying the OTP");
+                        signInWithPhoneAuthCredentials(PhoneAuthProvider.getCredential(s, Objects.requireNonNull(otp.getText()).toString()));
                     }
                 });
+                otp_parent.setVisibility(View.VISIBLE);
+                get_otp.setVisibility(View.GONE);
+                verify_otp.setVisibility(View.VISIBLE);
 
             }
-        });
+        };
     }
 
-    private boolean validateUsername() {
+    private void signInWithPhoneAuthCredentials(PhoneAuthCredential phoneAuthCredential) {
 
-        String userName = Objects.requireNonNull(username.getText()).toString();
-        if (userName.isEmpty()) {
-            username.setError("Field cannot be empty");
-            return true;
-        } else {
-            username.setError(null);
-            return false;
-        }
-    }
-
-    private boolean validatePassword() {
-
-        String passWord = Objects.requireNonNull(password.getText()).toString();
-
-        if (passWord.isEmpty()) {
-            password.setError("Field cannot be empty");
-            return false;
-        } else {
-            password.setError(null);
-            return true;
-        }
-    }
-
-    public void loginUser(View view) {
-
-        if (!checkInternetConnection())
-            startActivity(new Intent(LoggedInActivity.this, NoInternetActivity.class));
-
-        if (validateUsername() | !validatePassword())
-            return;
-
-        //mProgressBar.setVisibility(View.VISIBLE);
-        progressDialog.show();
-
-        String userName = Objects.requireNonNull(username.getText()).toString();
-        String passWord = Objects.requireNonNull(password.getText()).toString();
-
-        mAuth.signInWithEmailAndPassword(userName, passWord)
-                .addOnCompleteListener(LoggedInActivity.this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithCredential(phoneAuthCredential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
                         if (task.isSuccessful()) {
-
-                            if (Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
-
-                                //mProgressBar.setVisibility(View.GONE);
-                                //progressDialog.dismiss();
-
-                                String device_token = FirebaseInstanceId.getInstance().getToken();
-
-                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("device_token");
-
-                                userRef.setValue(device_token)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                                if (task.isSuccessful()) {
-
-                                                    Intent intent = new Intent(LoggedInActivity.this, DashBoardActivity.class);
-                                                    Snackbar.make(coordinatorLayout, "Logging in", Snackbar.LENGTH_SHORT).show();
-                                                    progressDialog.dismiss();
-                                                    startActivity(intent);
-                                                    finish();
-                                                } else {
-                                                    progressDialog.dismiss();
-                                                    Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage().toString(), Toast.LENGTH_LONG).show();
-                                                }
-                                            }
-                                        });
-                            } else {
-
-                                //create a Builder object
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedInActivity.this);
-
-                                //set title to builder
-                                builder.setTitle("Email is not verified");
-
-                                //set icon
-                                builder.setIcon(R.drawable.danger);
-
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                                //set message
-                                assert user != null;
-                                builder.setMessage("Your e-mail address " + user.getEmail() + " is not verified, please verify your email address and login again");
-
-                                //set Button
-                                builder.setPositiveButton("send verification email", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        //set progress bar visible
-                                        mProgressBar.setVisibility(View.VISIBLE);
-
-                                        //send verification email
-                                        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(LoggedInActivity.this, new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                                //email send
-                                                if (task.isSuccessful()) {
-
-                                                    //set progress bar gone
-                                                    mProgressBar.setVisibility(View.GONE);
-
-                                                    //show message
-                                                    Snackbar.make(coordinatorLayout, "Verification email sent", Snackbar.LENGTH_SHORT).show();
-
-                                                }
-                                                //email not sent
-                                                else {
-
-                                                    //set progress bar gone
-                                                    mProgressBar.setVisibility(View.GONE);
-
-                                                    //show message
-                                                    Snackbar.make(coordinatorLayout, Objects.requireNonNull(task.getException()).toString(), Snackbar.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-
-                                progressDialog.dismiss();
-                                mProgressBar.setVisibility(View.GONE);
-
-                                //build and show builder
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
-
-                            }
-                        } else {
-
-                            //set progress bar gone
-                            //mProgressBar.setVisibility(View.GONE);
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            String current_user_id = Objects.requireNonNull(user).getUid();
+                            String full_mobile_number = "+"+countryCodePicker.getFullNumberWithPlus()+ Objects.requireNonNull(mobile_no.getText()).toString();
+                            DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id);
+                            db_ref.child("mobile_no").setValue(full_mobile_number);
+                            db_ref.child("device_token").setValue(FirebaseInstanceId.getInstance().getToken());
+                            db_ref.child("profile_status").setValue("Available");
                             progressDialog.dismiss();
-
-                            //show message
-                            Toast.makeText(getApplicationContext(), "Error : " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-
+                            startActivity(new Intent(LoggedInActivity.this, DashBoardActivity.class));
+                        } else {
+                            Toast.makeText(LoggedInActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
                         }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //mProgressBar.setVisibility(View.GONE);
-                        progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
                 });
-
     }
 
     public boolean checkInternetConnection() {
@@ -412,7 +191,7 @@ public class LoggedInActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.GONE);
 
         //show toast message
-        Snackbar.make(coordinatorLayout, "No internet connection", Snackbar.LENGTH_SHORT).show();
+        Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
 
         return false;
     }
@@ -456,15 +235,14 @@ public class LoggedInActivity extends AppCompatActivity {
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(LoggedInActivity.this, gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent,RC_SIGN_IN);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN)
-        {
+        if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
@@ -477,6 +255,7 @@ public class LoggedInActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount account) {
+        progressDialog.setTitle("Logging you in");
         progressDialog.show();
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
@@ -484,8 +263,7 @@ public class LoggedInActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            progressDialog.show();
+                        if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             String current_user_id = Objects.requireNonNull(user).getUid();
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
@@ -501,8 +279,31 @@ public class LoggedInActivity extends AppCompatActivity {
                             db_ref.child("profile_status").setValue("Available");
                             progressDialog.dismiss();
                             startActivity(new Intent(LoggedInActivity.this, DashBoardActivity.class));
+                        } else {
+                            Toast.makeText(LoggedInActivity.this, "Unable to Login please try to login normally", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });
+    }
+
+    public void getOtp(View view) {
+        String phoneNo = Objects.requireNonNull(mobile_no.getText()).toString();
+        if (!phoneNo.isEmpty()) {
+            progressDialog.setTitle("Please Wait");
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Please wait while we are sending OTP to your mobile");
+            progressDialog.show();
+            PhoneAuthOptions options =
+                    PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
+                            .setPhoneNumber("+"+countryCodePicker.getFullNumber() + phoneNo)
+                            .setTimeout(120L, TimeUnit.SECONDS)
+                            .setActivity(LoggedInActivity.this)
+                            .setCallbacks(mCallbacks)
+                            .build();
+            PhoneAuthProvider.verifyPhoneNumber(options);
+        } else {
+            Toast.makeText(LoggedInActivity.this, "Please enter mobile number", Toast.LENGTH_SHORT).show();
+        }
     }
 }

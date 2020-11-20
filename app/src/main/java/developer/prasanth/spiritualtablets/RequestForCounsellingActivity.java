@@ -9,14 +9,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,13 +36,15 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_for_counselling);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         firstName = findViewById(R.id.request_for_counselling_first_name);
         lastName = findViewById(R.id.request_for_counselling_last_name);
         age = findViewById(R.id.request_for_counselling_age);
         mobile = findViewById(R.id.request_for_counselling_mobile);
         email = findViewById(R.id.request_for_counselling_email);
+        email.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
         disease = findViewById(R.id.request_for_counselling_disease);
-
         gender = findViewById(R.id.request_for_counselling_gender);
         mode = findViewById(R.id.request_for_counselling_mode);
     }
@@ -80,7 +86,7 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         String patient_age = age.getText().toString();
         String patient_mobile = mobile.getText().toString();
         String patient_disease = disease.getText().toString();
-        String patient_email = email.getText().toString();
+        final String patient_email = email.getText().toString();
 
         int patient_gender = gender.getCheckedRadioButtonId();
         int patient_mode = mode.getCheckedRadioButtonId();
@@ -120,7 +126,7 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         DatabaseReference unchecked_request_for_counselling_ref = FirebaseDatabase.getInstance().getReference("unchecked_request_for_counselling").child(Objects.requireNonNull(request_for_counselling_ref.getKey()));
         unchecked_request_for_counselling_ref.setValue(true);
 
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("first_name",patient_first_name);
         map.put("last_name", patient_last_name);
         map.put("age",patient_age);
@@ -129,7 +135,7 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         map.put("email",patient_email);
         map.put("mode",getMode(patient_mode));
         map.put("gender",getGender(patient_gender));
-
+        map.put("id", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         request_for_counselling_ref.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

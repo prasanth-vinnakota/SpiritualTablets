@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import developer.prasanth.spiritualtablets.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -61,7 +60,7 @@ public class AddEventActivity extends AppCompatActivity {
         languageSpinner = findViewById(R.id.add_events_spinner);
 
         final String[] languages = {"Select Language", "English", "Telugu", "Hindi", "Others"};
-        ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, languages);
+        ArrayAdapter<String> languageAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, languages);
         languageSpinner.setAdapter(languageAdapter);
 
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

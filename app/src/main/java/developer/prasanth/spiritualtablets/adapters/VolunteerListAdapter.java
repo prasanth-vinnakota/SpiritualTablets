@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -132,7 +130,7 @@ public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdap
                                             db_ref.child("unchecked_volunteer").child(volunteerList.get(position)).removeValue();
                                             db_ref.child("volunteer_registration").child(volunteerList.get(position)).child("work").setValue(editText.getText().toString());
                                             if (snapshot.child("id").getValue() != null){
-                                                DatabaseReference work_ref =FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(snapshot.child("id").getValue()).toString()).child("work");
+                                                DatabaseReference work_ref = FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(snapshot.child("id").getValue()).toString()).child("work");
                                                 work_ref.setValue(editText.getText().toString());
                                             }
                                             Toast.makeText(context, "Checked Successfully", Toast.LENGTH_SHORT).show();
@@ -154,7 +152,7 @@ public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdap
                                     db_ref.child("volunteer_registration").child(volunteerList.get(position)).child("work").setValue(false);
                                     if (snapshot.child("id").getValue() != null){
                                         DatabaseReference work_ref =FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(snapshot.child("id").getValue()).toString()).child("work");
-                                        work_ref.setValue(false);
+                                        work_ref.removeValue();
                                     }
                                     Toast.makeText(context, "Unchecked Successfully", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();

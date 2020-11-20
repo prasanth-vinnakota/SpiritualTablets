@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +50,9 @@ public class RequestForCounsellingListActivity extends AppCompatActivity {
                             requestForCounsellingAdapter = new RequestForCounsellingAdapter(arrayList,RequestForCounsellingListActivity.this);
                             recyclerView.setAdapter(requestForCounsellingAdapter);
                         }
+                        else {
+                            Toast.makeText(RequestForCounsellingListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -70,6 +74,9 @@ public class RequestForCounsellingListActivity extends AppCompatActivity {
                             requestForCounsellingAdapter = new RequestForCounsellingAdapter(arrayList,RequestForCounsellingListActivity.this);
                             recyclerView.setAdapter(requestForCounsellingAdapter);
                         }
+                        else {
+                            Toast.makeText(RequestForCounsellingListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -90,6 +97,9 @@ public class RequestForCounsellingListActivity extends AppCompatActivity {
                                 arrayList.add(dataSnapshot.getKey());
                             requestForCounsellingAdapter = new RequestForCounsellingAdapter(arrayList,RequestForCounsellingListActivity.this);
                             recyclerView.setAdapter(requestForCounsellingAdapter);
+                        }
+                        else {
+                            Toast.makeText(RequestForCounsellingListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
                         }
                     }
 

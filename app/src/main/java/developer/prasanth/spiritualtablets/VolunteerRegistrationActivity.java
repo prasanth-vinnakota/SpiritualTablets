@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,9 +21,12 @@ import developer.prasanth.spiritualtablets.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +43,8 @@ public class VolunteerRegistrationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_volunteer_registration);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         //edit text
         mailId = findViewById(R.id.volunteer_email);
         name = findViewById(R.id.volunteer_name);
@@ -48,8 +54,7 @@ public class VolunteerRegistrationActivity extends Activity {
         comment = findViewById(R.id.volunteer_comments);
         otherContribute = findViewById(R.id.others_contribute_edit_text);
         otherTiming = findViewById(R.id.others_timing_edit_text);
-        if (FirebaseAuth.getInstance().getCurrentUser().getEmail() != null)
-            mailId.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
+        mailId.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
         if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null)
             name.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
@@ -101,28 +106,22 @@ public class VolunteerRegistrationActivity extends Activity {
         int radio_id_contribution = wayOfContribution.getCheckedRadioButtonId();
         int radio_id_time = timeToContribute.getCheckedRadioButtonId();
 
-        if (TextUtils.isEmpty(volunteer_mail)) {
-            mailId.setError("required field");
-            return;
-        }
-
-        if (TextUtils.isEmpty(volunteer_name)) {
-            name.setError("required field");
-            return;
-        }
 
         if (TextUtils.isEmpty(volunteer_address)) {
             address.setError("required field");
+            Toast.makeText(this, "Address must not be empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(volunteer_phone)) {
             phone.setError("required field");
+            Toast.makeText(this, "Mobile No must not be empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(volunteer_communicate_time)) {
             communicateTime.setError("required field");
+            Toast.makeText(this, "Communication Time No must not be empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -140,6 +139,7 @@ public class VolunteerRegistrationActivity extends Activity {
         if (radio_id_contribution == R.id.others_contribute) {
             if (TextUtils.isEmpty(otherContribute.getText().toString())) {
                 otherContribute.setError("required field");
+                Toast.makeText(this, "You need to fill way to contribute", Toast.LENGTH_LONG).show();
                 return;
             }
         }
@@ -147,6 +147,7 @@ public class VolunteerRegistrationActivity extends Activity {
         if (radio_id_time == R.id.others_timing) {
             if (TextUtils.isEmpty(otherTiming.getText().toString())) {
                 otherTiming.setError("required field");
+                Toast.makeText(this, "You need to fill how much time you can contribute", Toast.LENGTH_LONG).show();
                 return;
             }
         }

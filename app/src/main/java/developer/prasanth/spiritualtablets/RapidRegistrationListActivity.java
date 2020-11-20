@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +50,9 @@ public class RapidRegistrationListActivity extends AppCompatActivity {
                             rapidRegistrationAdapter = new RapidRegistrationAdapter(arrayList,RapidRegistrationListActivity.this);
                             recyclerView.setAdapter(rapidRegistrationAdapter);
                         }
+                        else {
+                            Toast.makeText(RapidRegistrationListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -71,6 +75,9 @@ public class RapidRegistrationListActivity extends AppCompatActivity {
                             rapidRegistrationAdapter = new RapidRegistrationAdapter(arrayList,RapidRegistrationListActivity.this);
                             recyclerView.setAdapter(rapidRegistrationAdapter);
                         }
+                        else {
+                            Toast.makeText(RapidRegistrationListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -92,6 +99,9 @@ public class RapidRegistrationListActivity extends AppCompatActivity {
                                 arrayList.add(dataSnapshot.getKey());
                             rapidRegistrationAdapter = new RapidRegistrationAdapter(arrayList,RapidRegistrationListActivity.this);
                             recyclerView.setAdapter(rapidRegistrationAdapter);
+                        }
+                        else {
+                            Toast.makeText(RapidRegistrationListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
                         }
                     }
 

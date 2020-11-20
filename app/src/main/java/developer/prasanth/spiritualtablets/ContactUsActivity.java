@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import developer.prasanth.spiritualtablets.R;
 import developer.prasanth.spiritualtablets.contact_us.PrimaryCentersActivity;
 
 public class ContactUsActivity extends AppCompatActivity {
@@ -35,10 +34,12 @@ public class ContactUsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Registered Office");
-        builder.setMessage("SPIRITUAL TABLET ADMISSION CENTER\n" +
-                "D NO 27-13-354 DIBBAPALEM COLONY\n" +
-                "SRINAGAR, GAJUWAKA\n" +
-                "VISAKHAPATNAM-530026");
+        builder.setMessage("SPIRITUAL TABLETS RESEARCH FOUNDATION" +
+                "LIG. -6" +
+                "VUDA COLONY LAST BUT STOP" +
+                "MADHAVADHARA" +
+                "VISAKHAPATNAM" +
+                "PH NO : 9246648401/402");
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -53,12 +54,13 @@ public class ContactUsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Admission Centers");
-        builder.setMessage("MODUGULA VISHWA KANTHI PYRAMID SAKTHI KSHETRAM\n" +
-                "B .KIRANMAI(INCHARGE)\n" +
-                "contact number : 9704452754\n" +
-                "Address: (VISHWA KANTHI PYRAMIDSPIRITUAL TRUST(VIZAG)\n" +
-                "REG NO:58/2011 VADDADHI, MADUGULA ,VISAKHAPATNAM.\n" +
-                "(VISHWA KANTHI PYRAMID SAKTHI KSHETRAM)");
+        builder.setMessage("1.REVALLAPALAM" +
+                "2.JAGANNATH PYRAMID" +
+                "3.MAADUGULA" +
+                "4.GUDIWADA" +
+                "5.MUMMIDIVARAM" +
+                "6.PEDAGADI PYRAMID" +
+                "7.KOTALA PYRAMID");
 
         AlertDialog dialog = builder.create();
         dialog.show();

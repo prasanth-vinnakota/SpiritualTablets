@@ -37,9 +37,10 @@ public class VideoPlayerActivity extends YouTubeBaseActivity {
             public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean b) {
 
                 String videoName = getIntent().getStringExtra("name");
+                String language = getIntent().getStringExtra("language");
 
                 assert videoName != null;
-                youtube_ref = FirebaseDatabase.getInstance().getReference("youtube").child(videoName);
+                youtube_ref = FirebaseDatabase.getInstance().getReference("youtube").child(language).child(videoName);
                 youtube_ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

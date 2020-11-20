@@ -17,28 +17,22 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="20sp"
-            android:src="@drawable/full_logo" />
-
         <TextView
-            android:layout_marginTop="20sp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/bungee"
             android:text="@string/founder"
-            android:fontFamily="@font/lemonada"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"/>
-
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
 
 
         <ImageView
             android:layout_width="300dp"
             android:layout_height="200dp"
-            android:src="@drawable/gkfounder"/>
+            android:src="@drawable/gkfounder"
+            android:contentDescription="@string/founder" />
 
         <TextView
             android:layout_marginTop="20sp"
@@ -57,7 +51,7 @@
             android:text="@string/founder_desc"
             android:textSize="15sp"
             android:fontFamily="@font/lemonada"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="#FFF"/>
 
 
 

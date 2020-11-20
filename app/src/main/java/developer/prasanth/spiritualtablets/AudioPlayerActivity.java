@@ -14,7 +14,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import developer.prasanth.spiritualtablets.R;
 
 import java.io.IOException;
 
@@ -107,7 +106,7 @@ public class AudioPlayerActivity extends AppCompatActivity {
     private String milliSecondsToTimer(long milliSeconds) {
 
         String timerString = "";
-        String secondString = "";
+        String secondString;
 
         int hours = (int) (milliSeconds / (1000 * 60 * 60));
         int minutes = (int) (milliSeconds % (1000 * 60 * 60)) / (1000 * 60);

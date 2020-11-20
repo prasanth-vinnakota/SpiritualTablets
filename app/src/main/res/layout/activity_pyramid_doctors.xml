@@ -18,21 +18,15 @@
         android:paddingEnd="10dp"
         android:paddingBottom="20dp">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="20sp"
-            android:src="@drawable/full_logo" />
-
         <TextView
-            android:fontFamily="@font/lemonada"
-            android:layout_marginTop="20sp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/bungee"
             android:text="@string/pyramid_doctors"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
 
         <TextView
             android:fontFamily="@font/lemonada"
@@ -41,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="@string/pyramid_doctors_desc"
             android:textSize="15sp"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="#FFF"/>
 
     </LinearLayout>
 

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import developer.prasanth.spiritualtablets.R;
+import developer.prasanth.spiritualtablets.adapters.BooksRecyclerViewAdapter;
 import developer.prasanth.spiritualtablets.models.DataItem;
 
 import java.util.ArrayList;

@@ -1,446 +1,373 @@
 package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SwitchCompat;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import developer.prasanth.spiritualtablets.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private DatabaseReference receiverUserRef, chatRequestRef, contactsRef, notificationReference;
-    private String currentState, receiverUserID, senderUserID;
-    private TextView userProfileName, userProfileStatus, userEmail, userMobileNo, userDob, userLocation;
+    private TextInputEditText userName;
+    private TextInputEditText userStatus;
+    private TextInputEditText userDob;
+    private TextInputEditText userCountry;
+    private TextInputEditText userState;
+    private TextInputEditText userCity;
     private CircleImageView userProfileImage;
-    Button sendMessageRequestButton, acceptOrDeclineRequestButton;
-    boolean mobile_number = false, dob = false, profile_status = false;
-
+    FirebaseAuth mAuth;
+    String currentUserId;
+    DatabaseReference userRef;
+    private static final int REQUEST_CODE = 1;
+    private StorageReference mStorage;
+    ProgressDialog progressDialog;
+    SwitchCompat dobSwitch, mobileNumberSwitch, profileStatusSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        Toolbar toolbar = findViewById(R.id.visit_tool_bar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        ProgressDialog progressDialog = new ProgressDialog(ProfileActivity.this);
-        progressDialog.setTitle("Retrieving user data");
-        progressDialog.setMessage("please wait white we are retrieving user information");
-        progressDialog.show();
+        dobSwitch = findViewById(R.id.show_dob_switch);
+        mobileNumberSwitch = findViewById(R.id.show_mobile_number_switch);
+        profileStatusSwitch = findViewById(R.id.show_profile_status_switch);
 
-        receiverUserID = getIntent().getStringExtra("user_id");
-        senderUserID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        progressDialog = new ProgressDialog(ProfileActivity.this);
+        progressDialog.setTitle("Profile is updating");
+        progressDialog.setMessage("Please wait while we are updating your profile");
+        userName = findViewById(R.id.set_user_name);
+        userStatus = findViewById(R.id.set_user_profile_status);
+        TextInputEditText userMobileNumber = findViewById(R.id.set_user_mobile_number);
+        TextInputLayout user_mobile_no_parent = findViewById(R.id.profile_mobile_number_parent);
+        if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getPhoneNumber() != null){
+            userMobileNumber.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getPhoneNumber());
+            user_mobile_no_parent.setVisibility(View.VISIBLE);
+        }
+        userDob = findViewById(R.id.set_user_dob);
+        TextInputEditText userEmail = findViewById(R.id.profile_email);
+        TextInputLayout user_email_parent = findViewById(R.id.profile_email_parent);
+        if (!Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail().isEmpty()) {
+            userEmail.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
+            user_email_parent.setVisibility(View.VISIBLE);
+        }
+        userCountry = findViewById(R.id.set_user_country);
+        userState = findViewById(R.id.set_user_state);
+        userCity = findViewById(R.id.set_user_city);
 
-        receiverUserRef = FirebaseDatabase.getInstance().getReference("users").child(receiverUserID);
-        chatRequestRef = FirebaseDatabase.getInstance().getReference("chat_requests");
-        contactsRef = FirebaseDatabase.getInstance().getReference("contacts");
-        notificationReference = FirebaseDatabase.getInstance().getReference("request_notification");
+        mStorage = FirebaseStorage.getInstance().getReference().child("user_photos");
+        userProfileImage = findViewById(R.id.set_profile_image);
 
-        userProfileStatus = findViewById(R.id.visit_profile_status);
-        userProfileName = findViewById(R.id.visit_user_name);
-        userEmail = findViewById(R.id.visit_email);
-        userDob = findViewById(R.id.visit_dob);
-        userMobileNo = findViewById(R.id.visit_mobile_number);
-        userLocation = findViewById(R.id.visit_location);
+        mAuth = FirebaseAuth.getInstance();
+        currentUserId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
 
-        userProfileImage = findViewById(R.id.visit_profile_image);
-
-        sendMessageRequestButton = findViewById(R.id.send_message_request_button);
-        acceptOrDeclineRequestButton = findViewById(R.id.accept_or_decline_message_request_button);
-
-        currentState = "new";
-
-        retrieveUserInfo();
-        progressDialog.dismiss();
-    }
-
-    private void retrieveUserInfo() {
-
-        receiverUserRef.child("settings").addValueEventListener(new ValueEventListener() {
+        userProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.exists()){
-
-                    if (Objects.requireNonNull(snapshot.child("dob").getValue()).toString().equals("true"))
-                        dob = true;
-
-                    if (Objects.requireNonNull(snapshot.child("profile_status").getValue()).toString().equals("true"))
-                        profile_status = true;
-
-                    if (Objects.requireNonNull(snapshot.child("mobile_number").getValue()).toString().equals("true"))
-                        mobile_number = true;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, REQUEST_CODE);
             }
         });
 
-
-        receiverUserRef.addValueEventListener(new ValueEventListener() {
+        dobSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
 
-                if (snapshot.exists()) {
+                    userRef.child("settings").child("dob").setValue("true");
+                } else {
 
-                    Objects.requireNonNull(getSupportActionBar()).setTitle(Objects.requireNonNull(snapshot.child("full_name").getValue()).toString());
-
-                    userProfileName.setText(Objects.requireNonNull(Objects.requireNonNull(snapshot.child("full_name").getValue()).toString()));
-                    String email = "@" + Objects.requireNonNull(Objects.requireNonNull(snapshot.child("email").getValue()).toString());
-                    userEmail.setText(email);
-
-                    String location = Objects.requireNonNull(snapshot.child("city").getValue()).toString() + "," + Objects.requireNonNull(snapshot.child("state").getValue()).toString() + "," + Objects.requireNonNull(snapshot.child("country").getValue()).toString();
-                    userLocation.setText(location);
-
-                    if (snapshot.child("image").getValue() != null)
-                        Picasso.get().load(snapshot.child("image").getValue().toString()).into(userProfileImage);
-
-                    if (dob){
-
-                        userDob.setVisibility(View.VISIBLE);
-                        userDob.setText(Objects.requireNonNull(Objects.requireNonNull(snapshot.child("date_of_birth").getValue()).toString()));
-                    }
-
-                    if (profile_status){
-
-                        userProfileStatus.setVisibility(View.VISIBLE);
-                        userProfileStatus.setText(Objects.requireNonNull(Objects.requireNonNull(snapshot.child("profile_status").getValue()).toString()));
-                    }
-
-                    if (mobile_number){
-
-                        userMobileNo.setVisibility(View.VISIBLE);
-                        userMobileNo.setText(Objects.requireNonNull(Objects.requireNonNull(snapshot.child("mobile_no").getValue()).toString()));
-                    }
-
-                    manageChatRequest();
+                    userRef.child("settings").child("dob").setValue("false");
                 }
             }
+        });
 
+        mobileNumberSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
 
+                    userRef.child("settings").child("mobile_number").setValue("true");
+                } else {
+
+                    userRef.child("settings").child("mobile_number").setValue("false");
+                }
             }
         });
+
+        profileStatusSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+
+                    userRef.child("settings").child("profile_status").setValue("true");
+                } else {
+
+                    userRef.child("settings").child("profile_status").setValue("false");
+                }
+            }
+        });
+
+        initFields();
     }
 
-    private void manageChatRequest() {
 
-        if (!senderUserID.equals(receiverUserID)) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-            chatRequestRef.child(senderUserID)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
 
-                            if (snapshot.hasChild(receiverUserID)) {
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(ProfileActivity.this);
 
-                                String request_type = Objects.requireNonNull(snapshot.child(receiverUserID).child("request_type").getValue()).toString();
-                                if (request_type.equals("received")) {
+        }
 
-                                    currentState = "request_received";
-                                    sendMessageRequestButton.setText(R.string.accept_request);
-                                    acceptOrDeclineRequestButton.setVisibility(View.VISIBLE);
-                                    acceptOrDeclineRequestButton.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            cancelRequest();
-                                        }
-                                    });
-                                } else if (request_type.equals("sent")) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
-                                    sendMessageRequestButton.setEnabled(true);
-                                    currentState = "request_sent";
-                                    sendMessageRequestButton.setText(R.string.cancel_request);
-                                }
+            final CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                assert result != null;
+                final Uri resultUri = result.getUri();
+                progressDialog.show();
+                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                        .setPhotoUri(resultUri)
+                        .build();
 
-                            } else {
+                Objects.requireNonNull(mAuth.getCurrentUser()).updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                                contactsRef.child(senderUserID)
-                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        final StorageReference filePath = mStorage.child(currentUserId + ".jpg");
 
-                                                if (snapshot.hasChild(receiverUserID)){
+                        filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
-                                                    currentState = "friends";
-                                                    sendMessageRequestButton.setText(R.string.unfriend);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-
-                                            }});
-
-                                contactsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    public void onSuccess(Uri uri) {
 
-                                        if (!snapshot.hasChild(senderUserID)){
-                                            sendMessageRequestButton.setEnabled(true);
-                                            currentState = "new";
-                                            sendMessageRequestButton.setText(R.string.send_request);
-                                        }
-                                    }
+                                        userRef.child("image").setValue(uri.toString());
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
+                                        progressDialog.dismiss();
+                                        initFields();
+                                        Toast.makeText(ProfileActivity.this, "Profile Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-
-            sendMessageRequestButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    sendMessageRequestButton.setEnabled(false);
-
-
-                    if (currentState.equals("new")) {
-
-                        sendRequest();
+                        });
                     }
-                    if (currentState.equals("request_sent")) {
+                });
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                assert result != null;
+                progressDialog.dismiss();
+                Exception exception = result.getError();
+                Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
-                        cancelRequest();
-                    }
-                    if (currentState.equals("request_received")){
-                        acceptRequest();
-                    }
-                    if (currentState.equals("friends")){
+    private void initFields() {
+        userRef.addValueEventListener(new ValueEventListener() {
 
-                        removeContact();
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+
+                    if (snapshot.child("full_name").getValue() != null)
+                        userName.setText(Objects.requireNonNull(snapshot.child("full_name").getValue()).toString());
+
+                    if (snapshot.child("profile_status").getValue() != null)
+                        userStatus.setText(Objects.requireNonNull(snapshot.child("profile_status").getValue()).toString());
+
+                    if (snapshot.child("date_of_birth").getValue() != null)
+                        userDob.setText(Objects.requireNonNull(snapshot.child("date_of_birth").getValue()).toString());
+
+                    if (snapshot.child("country").getValue() != null)
+                        userCountry.setText(Objects.requireNonNull(snapshot.child("country").getValue()).toString());
+
+                    if (snapshot.child("state").getValue() != null)
+                        userState.setText(Objects.requireNonNull(snapshot.child("state").getValue()).toString());
+
+                    if (snapshot.child("city").getValue() != null)
+                        userCity.setText(Objects.requireNonNull(snapshot.child("city").getValue()).toString());
+
+                    if (snapshot.child("image").getValue() != null)
+                        Picasso.get().load(Objects.requireNonNull(snapshot.child("image").getValue()).toString()).placeholder(R.drawable.user_photo).into(userProfileImage);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        userRef.child("settings").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+
+                    if (Objects.requireNonNull(snapshot.child("dob").getValue()).toString().equals("true")) {
+
+                        dobSwitch.setChecked(true);
+                    } else {
+                        dobSwitch.setChecked(false);
+                    }
+
+                    if (Objects.requireNonNull(snapshot.child("mobile_number").getValue()).toString().equals("true")) {
+
+                        mobileNumberSwitch.setChecked(true);
+                    } else {
+                        mobileNumberSwitch.setChecked(false);
+                    }
+
+                    if (Objects.requireNonNull(snapshot.child("profile_status").getValue()).toString().equals("true")) {
+
+                        profileStatusSwitch.setChecked(true);
+                    } else {
+                        profileStatusSwitch.setChecked(false);
                     }
                 }
-            });
-        } else {
-            sendMessageRequestButton.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void updateSettings(View view) {
+
+        String user_name = userName.getText().toString();
+        String user_status = userStatus.getText().toString();
+        String user_dob = userDob.getText().toString();
+        String user_country = userCountry.getText().toString();
+        String user_state = userState.getText().toString();
+        String user_city = userCity.getText().toString();
+
+        if (TextUtils.isEmpty(user_name)) {
+            userName.setError("must not be empty");
+            return;
         }
 
-    }
+        if (TextUtils.isEmpty(user_status)) {
+            userState.setError("must not be empty");
+            return;
+        }
 
-    private void removeContact() {
 
-        contactsRef.child(senderUserID)
-                .child(receiverUserID)
-                .removeValue()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+        if (TextUtils.isEmpty(user_dob)) {
+            userDob.setError("must not be empty");
+            return;
+        }
 
-                        if (task.isComplete()){
+        if (TextUtils.isEmpty(user_country)) {
+            userCountry.setError("must not be empty");
+            return;
+        }
 
-                            contactsRef.child(receiverUserID)
-                                    .child(senderUserID)
-                                    .removeValue()
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
+        if (TextUtils.isEmpty(user_state)) {
+            userState.setError("must not be empty");
+            return;
+        }
 
-                                            if (task.isComplete()){
+        if (TextUtils.isEmpty(user_city)) {
+            userCity.setError("must not be empty");
+            return;
+        }
+        progressDialog.show();
+        userRef.child("updated").setValue("true");
 
-                                                currentState = "new";
-                                                sendMessageRequestButton.setText(R.string.send_request);
-                                                sendMessageRequestButton.setEnabled(true);
+        final Map<String, Object> profileMap = new HashMap<>();
 
-                                                acceptOrDeclineRequestButton.setVisibility(View.GONE);
-                                            }
-                                        }
-                                    });
+        profileMap.put("full_name", user_name);
+        profileMap.put("profile_status", user_status);
+        profileMap.put("date_of_birth", user_dob);
+        profileMap.put("country", user_country);
+        profileMap.put("state", user_state);
+        profileMap.put("city", user_city);
+
+        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                .setDisplayName(user_name)
+                .build();
+
+        Objects.requireNonNull(mAuth.getCurrentUser()).updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()) {
+
+                    userRef.updateChildren(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(ProfileActivity.this, "Profile updates successfully..", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                                initFields();
+                            } else {
+                                Toast.makeText(ProfileActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
+            }
+        });
     }
 
-    private void acceptRequest() {
-
-        contactsRef.child(senderUserID)
-                .child(receiverUserID)
-                .child("contact")
-                .setValue("saved")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        if (task.isComplete()){
-
-                            contactsRef.child(receiverUserID)
-                                    .child(senderUserID)
-                                    .child("contact")
-                                    .setValue("saved")
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                            if (task.isComplete()){
-
-                                                chatRequestRef.child(senderUserID)
-                                                        .child(receiverUserID)
-                                                        .removeValue()
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                                                chatRequestRef.child(receiverUserID)
-                                                                        .child(senderUserID)
-                                                                        .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                                                        if (task.isComplete()){
-
-                                                                            sendMessageRequestButton.setEnabled(true);
-                                                                            currentState = "friends";
-                                                                            sendMessageRequestButton.setText(R.string.unfriend);
-                                                                            acceptOrDeclineRequestButton.setVisibility(View.GONE);
-                                                                        }
-                                                                    }
-                                                                });
-                                                            }
-                                                        });
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                });
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(ProfileActivity.this, DashBoardActivity.class));
+        finish();
     }
 
-    private void cancelRequest() {
-
-        chatRequestRef.child(senderUserID).child(receiverUserID)
-                .removeValue()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        chatRequestRef.child(receiverUserID).child(senderUserID)
-                                .removeValue()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                        if (task.isSuccessful()) {
-
-                                            sendMessageRequestButton.setEnabled(true);
-                                            currentState = "new";
-                                            sendMessageRequestButton.setText(R.string.send_request);
-
-                                            acceptOrDeclineRequestButton.setVisibility(View.GONE);
-
-                                            Toast.makeText(ProfileActivity.this, "Request canceled successfully", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                    }
-                });
-    }
-
-    private void sendRequest() {
-
-        chatRequestRef.child(senderUserID).child(receiverUserID)
-                .child("request_type").setValue("sent")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        if (task.isSuccessful()) {
-
-                            chatRequestRef.child(receiverUserID).child(senderUserID)
-                                    .child("request_type").setValue("received")
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                            if (task.isSuccessful()) {
-
-                                                HashMap<String,String> requestNotification = new HashMap<>();
-
-                                                requestNotification.put("from",senderUserID);
-                                                requestNotification.put("type","request");
-
-                                                notificationReference.child(receiverUserID).push()
-                                                        .setValue(requestNotification)
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful()){
-                                                                    sendMessageRequestButton.setEnabled(true);
-                                                                    currentState = "request_sent";
-                                                                    sendMessageRequestButton.setText(R.string.cancel_request);
-
-                                                                    Toast.makeText(ProfileActivity.this, "Request sent successfully", Toast.LENGTH_SHORT).show();
-                                                                }
-                                                            }
-                                                        });
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                });
-
-    }
-
-    private void updateUserStatus(String state){
-
-        String saveCurrentTime, saveCurrentDate;
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        saveCurrentDate = currentDate.format(calendar.getTime());
-        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
-        saveCurrentTime = currentTime.format(calendar.getTime());
-
-        HashMap<String, Object> onlineState = new HashMap<>();
-        onlineState.put("time", saveCurrentTime);
-        onlineState.put("date", saveCurrentDate);
-        onlineState.put("state", state);
-
-
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        rootRef.child("users").child(senderUserID).child("user_state")
-                .updateChildren(onlineState);
-
-
-    }
 }

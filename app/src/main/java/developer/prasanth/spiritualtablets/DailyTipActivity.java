@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import developer.prasanth.spiritualtablets.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+@SuppressWarnings("ALL")
 public class DailyTipActivity extends AppCompatActivity {
 
     TextView title, description;
@@ -58,7 +58,7 @@ public class DailyTipActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        if (snapshot.getKey().equals(timestampToString(date.getTime()))) {
+                        if (Objects.equals(snapshot.getKey(), timestampToString(date.getTime()))) {
 
 
                             //get data from firebase

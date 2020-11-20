@@ -1,144 +1,256 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context="developer.prasanth.spiritualtablets.ProfileActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    <include
-        android:id="@+id/visit_tool_bar"
-        layout="@layout/app_bar_layout"/>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_below="@+id/visit_tool_bar"
-        android:id="@+id/visit_profile_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/user_photo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
-
-    <TextView
-        android:id="@+id/visit_user_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/username"
-        android:gravity="center"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:textColor="@android:color/background_dark"
-        android:layout_below="@+id/visit_profile_image"/>
-
-    <TextView
-        android:id="@+id/visit_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/email"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/visit_user_name"/>
-
-
-    <TextView
-        android:id="@+id/visit_profile_status"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/user_status"
-        android:gravity="center"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:textColor="@android:color/background_dark"
-        android:layout_below="@+id/visit_email"/>
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/visit_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/arbutus"
+            android:text="@string/profile"
+            android:textAllCaps="true"
+            android:textColor="#000"
+            android:textSize="40sp" />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/set_profile_image"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:src="@drawable/user_photo"
+            app:civ_border_width="5dp" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_email_parent"
             android:visibility="gone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="@string/date_of_birth"
-            android:gravity="center"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:textColor="@android:color/background_dark"
-            android:layout_below="@+id/visit_profile_status"/>
+            android:layout_margin="10dp">
 
 
-        <TextView
-            android:id="@+id/visit_mobile_number"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profile_email"
+                android:layout_width="match_parent"
+                android:focusable="false"
+                android:layout_height="wrap_content"
+                android:hint="@string/email">
+
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_mobile_number_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="gone"
+            android:layout_margin="10dp">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/set_user_mobile_number"
+                android:layout_width="match_parent"
+                android:focusable="false"
+                android:layout_height="wrap_content"
+                android:hint="@string/mobile_number_with_country_code"
+                android:inputType="number">
+
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="@string/mobile_no"
-            android:gravity="center"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:textColor="@android:color/background_dark"
-            android:layout_below="@+id/visit_dob"/>
+            android:layout_margin="10dp">
 
-        <TextView
-            android:id="@+id/visit_location"
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/set_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/full_name"
+                android:inputType="textCapWords">
+
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="@string/location"
-            android:gravity="center"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:textColor="@android:color/background_dark"
-            android:layout_below="@+id/visit_mobile_number"/>
+            android:layout_margin="10dp">
 
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/set_user_profile_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/user_status"
+                android:inputType="textCapWords">
 
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/set_user_dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/date_of_birth_full"
+                android:inputType="date">
+
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/set_user_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/country"
+                android:inputType="textCapWords">
+
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/set_user_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/state"
+                android:inputType="textCapWords">
+
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/set_user_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/city"
+                android:inputType="textCapWords">
+
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-        android:id="@+id/send_message_request_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/visit_location"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:textColor="@android:color/background_light"
-        android:background="@color/colorPrimary"
-        android:textStyle="bold"
-        android:text="@string/send_request"
-        android:textAllCaps="false"
-        android:textSize="25sp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#00504B"
+            android:onClick="updateSettings"
+            android:text="@string/update"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/accept_or_decline_message_request_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/send_message_request_button"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:textColor="@android:color/background_light"
-        android:background="@color/colorPrimary"
-        android:text="@string/decline_request"
-        android:visibility="gone"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:textSize="25sp" />
 
-</RelativeLayout>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/show_dob_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/show_dob_to_others"
+            android:textOff="@string/no"
+            android:textOn="@string/yes"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:thumb="@drawable/sw_thumb"
+            app:showText="true"
+            app:track="@drawable/sw_track" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/show_profile_status_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/show_profile_status_to_others"
+            android:textOff="@string/no"
+            android:textOn="@string/yes"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:thumb="@drawable/sw_thumb"
+            app:showText="true"
+            app:track="@drawable/sw_track" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/show_mobile_number_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:text="@string/show_mobile_number_to_others"
+            android:textOff="@string/no"
+            android:textOn="@string/yes"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:thumb="@drawable/sw_thumb"
+            app:showText="true"
+            app:track="@drawable/sw_track" />
+
+    </LinearLayout>
 
 </ScrollView>

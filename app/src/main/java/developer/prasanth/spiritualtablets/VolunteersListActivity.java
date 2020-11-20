@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,6 +49,9 @@ public class VolunteersListActivity extends AppCompatActivity {
                             volunteerListAdapter = new VolunteerListAdapter(volunteerList,VolunteersListActivity.this);
                             volunteerRV.setAdapter(volunteerListAdapter);
                         }
+                        else {
+                            Toast.makeText(VolunteersListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -71,6 +75,9 @@ public class VolunteersListActivity extends AppCompatActivity {
                             volunteerListAdapter = new VolunteerListAdapter(volunteerList,VolunteersListActivity.this);
                             volunteerRV.setAdapter(volunteerListAdapter);
                         }
+                        else {
+                            Toast.makeText(VolunteersListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -92,6 +99,9 @@ public class VolunteersListActivity extends AppCompatActivity {
                             }
                             volunteerListAdapter = new VolunteerListAdapter(volunteerList,VolunteersListActivity.this);
                             volunteerRV.setAdapter(volunteerListAdapter);
+                        }
+                        else {
+                            Toast.makeText(VolunteersListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
                         }
                     }
 

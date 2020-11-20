@@ -1,10 +1,11 @@
 package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -12,17 +13,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import developer.prasanth.spiritualtablets.chat_bot.ChatBotActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,22 +37,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
 
 public class DashBoardActivity extends AppCompatActivity implements LatestEventsDialog.LatestEventListener {
 
     private TextView marquee,counselor,volunteer;
-    private DatabaseReference user_admin_ref, latest_events_ref, updated_ref, uid_ref, user_ref, counselors_ref, work_ref;
+    private DatabaseReference user_admin_ref;
+    private DatabaseReference latest_events_ref;
+    private DatabaseReference updated_ref;
+    private DatabaseReference user_ref;
     private String current_user_id = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     private int REQUEST_CODE = 1;
-    private boolean counselor_boolean;
-    private MaterialCardView add_spiritual_children;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +65,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
         volunteer = findViewById(R.id.dashboard_volunteer);
         volunteer.setSelected(true);
-
-        add_spiritual_children = findViewById(R.id.add_spiritual_children_parent);
 
         final AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(DashBoardActivity.this);
 
@@ -93,51 +84,15 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
             }
         });
 
-        counselors_ref = FirebaseDatabase.getInstance().getReference("counselors");
-        counselors_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    counselor_boolean = false;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        if (Objects.equals(dataSnapshot.getKey(), current_user_id)){
-                            counselor_boolean = true;
-                            break;
-                        }
-                    }
 
-                    if (counselor_boolean)
-                        add_spiritual_children.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        work_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id).child("work");
+        DatabaseReference work_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id).child("work");
         work_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
-                   DatabaseReference number_ref = FirebaseDatabase.getInstance().getReference("work").child(Objects.requireNonNull(snapshot.getValue()).toString());
-                   number_ref.addValueEventListener(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                           if (snapshot.exists()){
-                               String s = "Your Coordinator Number Is " + Objects.requireNonNull(snapshot.getValue()).toString();
-                               volunteer.setText(s);
-                               volunteer.setVisibility(View.VISIBLE);
-                           }
-                       }
-
-                       @Override
-                       public void onCancelled(@NonNull DatabaseError error) {
-
-                       }
-                   });
+                    String work = "Your work is to " + Objects.requireNonNull(snapshot.getValue()).toString();
+                  volunteer.setVisibility(View.VISIBLE);
+                  volunteer.setText(work);
                 }
             }
 
@@ -163,35 +118,8 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
             }
         });
+
         user_ref = FirebaseDatabase.getInstance().getReference("users");
-        user_ref.child(current_user_id).child("mobile_no").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    uid_ref = FirebaseDatabase.getInstance().getReference().child("uid").child(Objects.requireNonNull(snapshot.getValue()).toString());
-
-                    uid_ref.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (!snapshot.exists()){
-                                uid_ref.setValue(current_user_id);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
         user_ref.child(current_user_id).child("counselor").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -228,7 +156,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
                 if (snapshot.exists()) {
 
-                    String one = "", two = "";
+                    String one;
                     if (snapshot.exists()){
                         one = Objects.requireNonNull(snapshot.child("value").getValue()).toString();
                         marquee.setVisibility(View.VISIBLE);
@@ -320,7 +248,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     }
 
     public void onBackPressed() {
-        updateUserStatus("offline");
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -349,40 +276,32 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         telugu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoadingDialog loadingDialog = new LoadingDialog(DashBoardActivity.this);
-                loadingDialog.startLoading();
                 startActivity(new Intent(DashBoardActivity.this, TeluguBookListActivity.class));
-                loadingDialog.dismiss();
+                dialog.dismiss();
             }
         });
 
         english.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoadingDialog loadingDialog = new LoadingDialog(DashBoardActivity.this);
-                loadingDialog.startLoading();
                 startActivity(new Intent(DashBoardActivity.this, EnglishBookListActivity.class));
-                loadingDialog.dismiss();
+                dialog.dismiss();
             }
         });
 
         hindi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoadingDialog loadingDialog = new LoadingDialog(DashBoardActivity.this);
-                loadingDialog.startLoading();
                 startActivity(new Intent(DashBoardActivity.this,HindiBookListActivity.class));
-                loadingDialog.dismiss();
+                dialog.dismiss();
             }
         });
 
         kannada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoadingDialog loadingDialog = new LoadingDialog(DashBoardActivity.this);
-                loadingDialog.startLoading();
                 startActivity(new Intent(DashBoardActivity.this,KannadaBookListActivity.class));
-                loadingDialog.dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -401,13 +320,61 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
     public void loadVideo(View view) {
 
-       /* AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(DashBoardActivity.this);
 
-        builder.setTitle("No Videos Available");
-        AlertDialog dialog = builder.create();
-        dialog.show();*/
+        View view1 = inflater.inflate(R.layout.language_dialog, null);
 
-        startActivity(new Intent(this, VideoListActivity.class));
+        Button telugu = view1.findViewById(R.id.telugu_books);
+        Button english = view1.findViewById(R.id.english_books);
+        Button hindi = view1.findViewById(R.id.hindi_books);
+        Button kannada = view1.findViewById(R.id.kannada_books);
+        kannada.setVisibility(View.GONE);
+        Button cancel = view1.findViewById(R.id.alert_language_cancel);
+
+        final AlertDialog dialog = new AlertDialog.Builder(DashBoardActivity.this)
+                .setCancelable(false)
+                .setView(view1)
+                .create();
+
+        dialog.show();
+
+        telugu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DashBoardActivity.this,VideoListActivity.class);
+                intent.putExtra("language","telugu");
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        english.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DashBoardActivity.this,VideoListActivity.class);
+                intent.putExtra("language","english");
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        hindi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DashBoardActivity.this,VideoListActivity.class);
+                intent.putExtra("language","hindi");
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
     public boolean checkInternetConnection() {
@@ -438,10 +405,10 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     protected void onStart() {
         super.onStart();
 
-        if (!checkInternetConnection())
+        if (!checkInternetConnection()){
             startActivity(new Intent(this, NoInternetActivity.class));
-
-        updateUserStatus("online");
+            return;
+        }
 
         updated_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id);
 
@@ -450,15 +417,14 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.child("updated").exists()){
+                    updated_ref.child("updated").setValue(true);
                     updated_ref.child("account_created_time").setValue(ServerValue.TIMESTAMP);
-                    updated_ref.child("email").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     updated_ref.child("books").setValue("no");
                     updated_ref.child("settings").child("mobile_number").setValue("false");
                     updated_ref.child("settings").child("dob").setValue("false");
                     updated_ref.child("settings").child("profile_status").setValue("true");
+                    Toast.makeText(DashBoardActivity.this, "Please update your profile in profile section", Toast.LENGTH_SHORT).show();
 
-                    startActivity(new Intent(DashBoardActivity.this, SettingsActivity.class));
-                    finish();
                 }
             }
 
@@ -468,19 +434,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
             }
         });
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUserStatus("online");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        updateUserStatus("offline");
-    }
-
     public void gallery(View view) {
 
         startActivity(new Intent(this, GalleryActivity.class));
@@ -523,11 +476,10 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     }
 
 
-    public void registerPatient(View view) {
+    public void registerParticipate(View view) {
 
         View dialog_view = getLayoutInflater().inflate(R.layout.patient_registration_dialog, null);
 
-        Button detail_registration = dialog_view.findViewById(R.id.detail_registration);
         Button rapid_registration = dialog_view.findViewById(R.id.rapid_registration);
         Button request_for_counselling = dialog_view.findViewById(R.id.request_for_counselling);
         Button cancel = dialog_view.findViewById(R.id.alert_patient_registration_cancel);
@@ -542,14 +494,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DashBoardActivity.this, RapidRegistrationActivity.class));
-                alertDialog.dismiss();
-            }
-        });
-
-        detail_registration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://spiritualtablet.org/PatientRegistration.html")));
                 alertDialog.dismiss();
             }
         });
@@ -582,9 +526,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     }
 
     public void logout(View view) {
-
-        updateUserStatus("offline");
-
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(this, LoggedInActivity.class));
         finish();
@@ -592,50 +533,34 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
     public void settings(View view) {
 
-        startActivity(new Intent(DashBoardActivity.this, SettingsActivity.class));
-    }
-
-    public void fab(View view) {
-        startActivity(new Intent(DashBoardActivity.this, ChatBotActivity.class));
-    }
-
-    public void findFriends(View view) {
-        startActivity(new Intent(DashBoardActivity.this, FindFriendActivity.class));
+        Intent intent = new Intent(DashBoardActivity.this,ProfileActivity.class);
+        startActivity(intent);
     }
 
 
-
-    private void updateUserStatus(String state){
-
-        String saveCurrentTime, saveCurrentDate;
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        saveCurrentDate = currentDate.format(calendar.getTime());
-        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
-        saveCurrentTime = currentTime.format(calendar.getTime());
-
-        HashMap<String, Object> onlineState = new HashMap<>();
-        onlineState.put("time", saveCurrentTime);
-        onlineState.put("date", saveCurrentDate);
-        onlineState.put("state", state);
-
-
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
-        rootRef.child(current_user_id).child("user_state")
-                .updateChildren(onlineState);
-
-
+    public void facebook(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://www.facebook.com/spiritualhealth.care"));
+        startActivity(intent);
     }
 
-    public void requests(View view) {
-        startActivity(new Intent(this, RequestsActivity.class));
+    public void youtubeTelugu(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://www.youtube.com/channel/UCvdbtwFCC-4OYU7zy_bM9aw"));
+        startActivity(intent);
     }
 
-    public void contacts(View view) {
-        startActivity(new Intent(this, ContactsActivity.class));
+    public void youtubeEnglish(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://www.youtube.com/channel/UCRIdLxE7-YefPnNJOraYThQ"));
+        startActivity(intent);
     }
 
-
+    public void youtubeHindi(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://www.youtube.com/channel/UCa7wUGcDCsX0KfNQnX-WNeg/videos"));
+        startActivity(intent);
+    }
 
     public void openAdminPanel(View view) {
         startActivity(new Intent(DashBoardActivity.this, AdminPanelActivity.class));
@@ -679,54 +604,42 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         }
     }
 
-    public void addSpiritualChildren() {
-        final EditText editText = new EditText(DashBoardActivity.this);
-        editText.setHint("+919100362607");
-        AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
-        builder.setTitle("Enter Registered Mobile Number With Country Code");
-        builder.setView(editText);
-        builder.setPositiveButton("add", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(final DialogInterface dialogInterface, int i) {
-                if (editText.getText().toString().isEmpty()){
-                    Toast.makeText(DashBoardActivity.this, "Mobile Number must not be empty", Toast.LENGTH_SHORT).show();
-                }
-                uid_ref = FirebaseDatabase.getInstance().getReference().child("uid").child(editText.getText().toString());
-                uid_ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            counselors_ref = FirebaseDatabase.getInstance().getReference("counselors").child(current_user_id).child(Objects.requireNonNull(snapshot.getValue()).toString());
-                            counselors_ref.setValue(true);
-                            user_ref = FirebaseDatabase.getInstance().getReference("users").child(snapshot.getValue().toString()).child("counselor");
-                            user_ref.setValue(current_user_id);
-                            dialogInterface.dismiss();
-                            Toast.makeText(DashBoardActivity.this, "Child Added Successfully", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(DashBoardActivity.this);
-                            builder1.setTitle("Failed To Add Child");
-                            builder1.setMessage("reasons may be:\n" +
-                                    "1.please check the number is in format of +919100362607\n" +
-                                    "2.please check the user registered with the mobile number you entered\n" +
-                                    "3.user may not updated the app");
-
-                            builder1.create().show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-        });
-
-        builder.create().show();
-    }
-
     public void viewSpiritualChildren(View view) {
     }
 
+    public void admissionCentersNumber(View view) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("admission center", "+917013559118");
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(clipData);
+            Toast.makeText(this, "Number copied to clipboard", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void AbroadNumber(View view) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("abroad", "+917899801922");
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(clipData);
+            Toast.makeText(this, "Number copied to clipboard", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void mail(View view) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("email", "ramyagunisetty@gmail.com");
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(clipData);
+            Toast.makeText(this, "Mail id copied to clipboard", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void AppNumber(View view) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("appp", "+919100362607");
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(clipData);
+            Toast.makeText(this, "Number copied to clipboard", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

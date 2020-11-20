@@ -1,13 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_gradient"
-    android:orientation="vertical"
     android:weightSum="10"
     tools:context="developer.prasanth.spiritualtablets.AboutUsActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -29,46 +32,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:layout_weight="1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/facebook"
-            android:onClick="facebook"/>
-
-        <ImageButton
-            android:layout_weight="1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/youtube"
-            android:onClick="youtube"/>
-    </LinearLayout>
-
-
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:alignmentMode="alignMargins"
-        android:columnCount="2"
-        android:columnOrderPreserved="false"
-        android:padding="10dp"
-        android:rowCount="4">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -86,12 +59,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
             <Button
@@ -106,14 +76,22 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
             <Button
@@ -130,12 +108,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
             <Button
@@ -150,36 +125,22 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
-            <Button
-                android:background="@android:color/transparent"
-                android:id="@+id/counsellors"
-                android:layout_gravity="center"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:fontFamily="@font/lemonada"
-                android:onClick="counsellors"
-                android:text="@string/counsellors" />
+    </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
             <Button
@@ -196,13 +157,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="100dp"
             android:fontFamily="@font/lemonada"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
             <Button
@@ -216,7 +174,7 @@
         </com.google.android.material.card.MaterialCardView>
 
 
-    </GridLayout>
-
-</LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+</ScrollView>
 

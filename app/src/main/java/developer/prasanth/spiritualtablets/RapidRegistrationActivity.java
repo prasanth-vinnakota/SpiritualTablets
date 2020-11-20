@@ -11,8 +11,11 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -38,6 +42,8 @@ public class RapidRegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rapid_registration);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         firstName = findViewById(R.id.rapid_registration_first_name);
         lastName = findViewById(R.id.rapid_registration_last_name);
@@ -78,7 +84,7 @@ public class RapidRegistrationActivity extends AppCompatActivity {
         String patient_education = education.getText().toString();
         String patient_disease = disease.getText().toString();
         String patient_mother_tongue = motherTongue.getText().toString();
-        String patient_email = email.getText().toString();
+        final String patient_email = email.getText().toString();
         String patient_referred_by_name = referredByName.getText().toString();
         String patient_referred_by_mobile = referredByMobile.getText().toString();
 
@@ -143,7 +149,7 @@ public class RapidRegistrationActivity extends AppCompatActivity {
         DatabaseReference unchecked_rapid_registration_ref = FirebaseDatabase.getInstance().getReference("unchecked_rapid_registration").child(Objects.requireNonNull(rapid_registration_ref.getKey()));
         unchecked_rapid_registration_ref.setValue(true);
 
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("first_name", patient_first_name);
         map.put("last_name", patient_last_name);
         map.put("age", patient_age);
@@ -157,7 +163,6 @@ public class RapidRegistrationActivity extends AppCompatActivity {
         map.put("referred_by_mobile", patient_referred_by_mobile);
         map.put("gender", getGender(patient_gender));
         map.put("id", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-
         rapid_registration_ref.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

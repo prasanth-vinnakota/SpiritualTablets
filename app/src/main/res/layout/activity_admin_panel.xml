@@ -1,4 +1,4 @@
-<androidx.core.widget.NestedScrollView
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,19 +10,14 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_gradient"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:fontFamily="@font/bungee"
             android:text="@string/admin_panel"
             android:textAllCaps="true"
@@ -30,19 +25,11 @@
             android:textSize="34sp" />
 
 
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="20dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -60,9 +47,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="20dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
             <Button
@@ -79,28 +64,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
-            <Button
-                android:background="@android:color/transparent"
-                android:layout_gravity="center"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:onClick="adminPanelAddYoutubeVideo"
-                android:fontFamily="@font/lemonada"
-                android:text="@string/add_video" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="20dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
             <Button
@@ -117,9 +81,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="20dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
             <Button
@@ -136,9 +98,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="20dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
             <Button
@@ -154,6 +114,5 @@
 
     </LinearLayout>
 
-</LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+</ScrollView>

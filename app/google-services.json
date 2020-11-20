@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "187478475878-i3o0tmo4vkhtgsqtnhlhc5egehole4j7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "developer.prasanth.spiritualtablets",
+            "certificate_hash": "b3e715bbe309c21db1fbb0a4d8afc819ed5b1394"
+          }
+        },
+        {
+          "client_id": "187478475878-fi0imo5vivcpe1k4k15ufq9hbvpinutp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "developer.prasanth.spiritualtablets",
+            "certificate_hash": "2cfa390701c63ec47541c40efdecf63e91e6f7d6"
+          }
+        },
+        {
           "client_id": "187478475878-rjmvqo3rhj7ncfh5ji1d37hqjaeh3d8c.apps.googleusercontent.com",
           "client_type": 3
         }

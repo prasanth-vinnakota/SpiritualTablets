@@ -19,8 +19,10 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.MyViewHo
 
     ArrayList<String> youtube_list;
     Context context;
+    String language;
 
-    public YoutubeAdapter(ArrayList<String> youtube_list, Context context) {
+    public YoutubeAdapter(String language, ArrayList<String> youtube_list, Context context) {
+        this.language = language;
         this.youtube_list = youtube_list;
         this.context = context;
     }
@@ -40,6 +42,7 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.MyViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, VideoPlayerActivity.class);
+                intent.putExtra("language", language);
                 intent.putExtra("name",youtube_list.get(position));
                 context.startActivity(intent);
             }

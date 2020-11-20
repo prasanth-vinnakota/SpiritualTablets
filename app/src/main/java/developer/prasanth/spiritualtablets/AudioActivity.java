@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import developer.prasanth.spiritualtablets.R;
+import developer.prasanth.spiritualtablets.adapters.AudioRecyclerViewAdapter;
 import developer.prasanth.spiritualtablets.models.DataItem;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class AudioActivity extends AppCompatActivity {
         lstDataItem.add(new DataItem("Arishadvargalu", "audios", R.drawable.arishadvargaalu));
         lstDataItem.add(new DataItem("Aadhyathmika Putrulu", "audios", R.drawable.adyatmika_putrulu));
         lstDataItem.add(new DataItem("Aacharya Saangatyam", "audios", R.drawable.acharya_sangatyam));
-        lstDataItem.add(new DataItem("Nalugu Setruvulu", "audios", R.drawable.nalugu_setruvulu));
+        lstDataItem.add(new DataItem("Naluguru Setruvulu", "audios", R.drawable.nalugu_setruvulu));
         lstDataItem.add(new DataItem("Manchi Kashtalu", "", R.drawable.audio_cover_page));
         lstDataItem.add(new DataItem("Jeevitha Dhyeyam", "audios", R.drawable.audio_cover_page));
         lstDataItem.add(new DataItem("Garbaasayam 1", "audios", R.drawable.audio_cover_page));

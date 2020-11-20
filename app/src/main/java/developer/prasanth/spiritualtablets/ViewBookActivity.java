@@ -98,7 +98,7 @@ public class ViewBookActivity extends AppCompatActivity {
 
         if (check) {
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("books").child(getIntent().getStringExtra("language")).child(getIntent().getStringExtra("book_name"));
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("books").child(Objects.requireNonNull(getIntent().getStringExtra("language"))).child(getIntent().getStringExtra("book_name"));
 
             loadingDialog = new LoadingDialog(this);
             loadingDialog.startLoading();
@@ -108,8 +108,8 @@ public class ViewBookActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     final String url = dataSnapshot.getValue(String.class);
 
-                    loadingDialog.dismiss();
                     new RetrievePdfStream().execute(url);
+                    Toast.makeText(ViewBookActivity.this, "Please Wait It May Take More Than A Minute", Toast.LENGTH_LONG).show();
 
                     /*AlertDialog.Builder builder = new AlertDialog.Builder(ViewBookActivity.this);
                     builder.setTitle("Select One");
@@ -184,8 +184,8 @@ public class ViewBookActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(InputStream inputStream) {
-            loadingDialog.dismiss();
             pdfView.fromStream(inputStream).load();
+            loadingDialog.dismiss();
         }
     }
 }

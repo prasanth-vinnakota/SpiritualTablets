@@ -3,12 +3,9 @@ package developer.prasanth.spiritualtablets;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-
-import java.util.Objects;
 
 import developer.prasanth.spiritualtablets.about_us.FounderActivity;
 import developer.prasanth.spiritualtablets.about_us.HistoryActivity;
@@ -55,10 +52,5 @@ public class AboutUsActivity extends AppCompatActivity {
         startActivity(new Intent(this, FounderActivity.class));
     }
 
-    public void counsellors(View view) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://spiritualtablet.org/testmonials.html"));
-        startActivity(intent);
-    }
 
 }

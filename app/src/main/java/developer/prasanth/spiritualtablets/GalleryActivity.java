@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,6 +52,10 @@ public class GalleryActivity extends AppCompatActivity {
                      recyclerView.setLayoutManager(new LinearLayoutManager(GalleryActivity.this));
                      recyclerView.setAdapter(galleryAdapter);
                      progressDialog.dismiss();
+                 }
+                 else {
+                     progressDialog.dismiss();
+                     Toast.makeText(GalleryActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
                  }
             }
 

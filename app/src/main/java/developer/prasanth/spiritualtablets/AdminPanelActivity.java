@@ -21,9 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
 
-public class AdminPanelActivity extends AppCompatActivity implements AddVideoDialog.AddVideoListener, LatestEventsDialog.LatestEventListener {
+public class AdminPanelActivity extends AppCompatActivity implements LatestEventsDialog.LatestEventListener {
 
     DatabaseReference latest_events_ref, youtube_ref;
 
@@ -53,12 +52,6 @@ public class AdminPanelActivity extends AppCompatActivity implements AddVideoDia
         latestEventsDialog.show(getSupportFragmentManager(),"Add event");
     }
 
-
-    public void adminPanelAddYoutubeVideo(View view) {
-
-        AddVideoDialog addVideoDialog = new AddVideoDialog();
-        addVideoDialog.show(getSupportFragmentManager(),"Add Video");
-    }
 
     @Override
     public void applyEventsTexts(final String event_name, final String event_link) {
@@ -93,30 +86,6 @@ public class AdminPanelActivity extends AppCompatActivity implements AddVideoDia
 
         } else {
             Toast.makeText(AdminPanelActivity.this, "Event name must not be empty", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void applyVideoTexts(String video_name, String video_link) {
-        if (!TextUtils.isEmpty(video_name) && !TextUtils.isEmpty(video_link)) {
-
-            HashMap<String,Object> map = new HashMap<>();
-            map.put(video_name, video_link);
-
-            youtube_ref.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(AdminPanelActivity.this, "Video Added Successfully", Toast.LENGTH_SHORT).show();
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(AdminPanelActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-        } else {
-            Toast.makeText(AdminPanelActivity.this, "Video name and Video link must not be empty", Toast.LENGTH_SHORT).show();
         }
     }
 

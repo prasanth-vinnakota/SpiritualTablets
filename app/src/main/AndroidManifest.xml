@@ -20,7 +20,7 @@
         android:roundIcon="@drawable/full_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RequestForCounsellingListActivity"></activity>
+        <activity android:name=".RequestForCounsellingListActivity" />
         <activity android:name=".RequestForCounsellingActivity" />
         <activity android:name=".RapidRegistrationListActivity" />
         <activity
@@ -29,24 +29,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".VolunteersListActivity" />
         <activity android:name=".AdminPanelActivity" />
-        <activity android:name=".ContactsActivity" />
-        <activity android:name=".RequestsActivity" />
-        <activity
-            android:name=".FindFriendActivity"
-            android:parentActivityName=".DashBoardActivity" />
         <activity android:name=".KannadaBookListActivity" />
         <activity android:name=".HindiBookListActivity" />
         <activity android:name=".AddEventActivity" />
-        <activity android:name=".chat_bot.ChatBotActivity" />
         <activity android:name=".VideoPlayerActivity" />
         <activity android:name=".VideoListActivity" />
         <activity android:name=".EventsByLanguageActivity" />
-        <activity
-            android:name=".ProfileActivity"
-            android:parentActivityName=".FindFriendsActivity" />
-        <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".ChatMainActivity" />
+        <activity android:name=".ProfileActivity"/>
         <activity android:name=".VolunteerRegistrationActivity" />
         <activity android:name=".DailyTipActivity" />
         <activity android:name=".EventsActivity" />

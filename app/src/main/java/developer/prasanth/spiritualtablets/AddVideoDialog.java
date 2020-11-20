@@ -7,7 +7,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,14 +20,29 @@ public class AddVideoDialog extends AppCompatDialogFragment {
 
     private EditText video_name, video_link;
     private AddVideoListener addVideoListener;
+    Spinner languageSpinner;
+    String selectedLanguage="english";
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.add_video_dialog, null);
+
+        languageSpinner = view.findViewById(R.id.video_language_spinner);
+
+        final String[] languages = {"english", "telugu", "hindi"};
+        ArrayAdapter<String> languageAdapter = new ArrayAdapter<>(requireContext(), R.layout.support_simple_spinner_dropdown_item, languages);
+        languageSpinner.setAdapter(languageAdapter);
+
+        languageSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedLanguage = languages[i];
+            }
+        });
 
         builder.setView(view)
                 .setTitle("Enter video details")
