@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -25,49 +26,41 @@ import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings("ALL")
-public class DailyTipActivity extends AppCompatActivity {
+public class DailyQuoteActivity extends AppCompatActivity {
 
-    TextView title, description;
+    TextView title;
+    TextView description;
     ImageView image;
-    ProgressBar mProgressBar;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_daily_tip);
+        setContentView(R.layout.activity_daily_quote);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        //initializing Progress bar
-        mProgressBar = findViewById(R.id.daily_tip_progressbar);
-        //initializing text view
-        title = findViewById(R.id.daily_tip_title);
-        description = findViewById(R.id.daily_tip_description);
-
-        //initializing image view
-        image = findViewById(R.id.daily_tip_image);
 
         final Date date = new Date();
 
+        DatabaseReference dailyTipReference = FirebaseDatabase.getInstance().getReference("daily_tip");
 
-        //getting database reference
-        DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference("daily_tip");
-
-        db_ref.addValueEventListener(new ValueEventListener() {
+        dailyTipReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 if (dataSnapshot.exists()) {
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
                         if (Objects.equals(snapshot.getKey(), timestampToString(date.getTime()))) {
 
-
-                            //get data from firebase
                             Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
 
                             if (map == null)
                                 return;
 
                             if (map.get("Title") != null) {
+
                                 title.setText(Objects.requireNonNull(map.get("Title")).toString());
                                 title.setVisibility(View.VISIBLE);
                             }
@@ -86,15 +79,26 @@ public class DailyTipActivity extends AppCompatActivity {
 
                         }
                     }
-                    mProgressBar.setVisibility(View.GONE);
+
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                showMessage(databaseError.getMessage());
             }
         });
+    }
+
+    private void init(){
+
+        progressBar = findViewById(R.id.daily_tip_progressbar);
+        title = findViewById(R.id.daily_tip_title);
+        description = findViewById(R.id.daily_tip_description);
+
+        image = findViewById(R.id.daily_tip_image);
     }
 
     private String timestampToString(long time) {
@@ -102,8 +106,10 @@ public class DailyTipActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(time);
         return DateFormat.format("dd-MM-yyyy", calendar).toString();
+    }
 
-
+    private void showMessage(String message){
+        Toast.makeText(DailyQuoteActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
 }

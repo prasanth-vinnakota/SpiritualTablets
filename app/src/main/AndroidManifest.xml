@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="developer.prasanth.spiritualtablets">
 
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -19,7 +20,10 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/full_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="true"
+        tools:ignore="AllowBackup">
+        <activity android:name=".ViewEventActivity"/>
         <activity android:name=".RequestForCounsellingListActivity" />
         <activity android:name=".RequestForCounsellingActivity" />
         <activity android:name=".RapidRegistrationListActivity" />
@@ -35,10 +39,9 @@
         <activity android:name=".VideoPlayerActivity" />
         <activity android:name=".VideoListActivity" />
         <activity android:name=".EventsByLanguageActivity" />
-        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".VolunteerRegistrationActivity" />
-        <activity android:name=".DailyTipActivity" />
-        <activity android:name=".EventsActivity" />
+        <activity android:name=".DailyQuoteActivity" />
         <activity android:name=".contact_us.PrimaryCentersActivity" />
         <activity android:name=".ContactUsActivity" />
         <activity android:name=".about_us.FounderActivity" />
@@ -55,7 +58,6 @@
         <activity android:name=".EnglishBookListActivity" />
         <activity android:name=".TeluguBookListActivity" />
         <activity android:name=".GalleryActivity" />
-        <activity android:name=".SignUpActivity" />
         <activity android:name=".NoInternetActivity" />
         <activity android:name=".DashBoardActivity" />
         <activity android:name=".LoggedInActivity" />

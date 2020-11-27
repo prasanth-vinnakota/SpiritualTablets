@@ -19,39 +19,41 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import developer.prasanth.spiritualtablets.R;
 
 public class RapidRegistrationAdapter extends RecyclerView.Adapter<RapidRegistrationAdapter.RapidRegistrationViewHolder> {
 
-    private ArrayList<String> arrayList;
+    private List<String> stringList;
     private Context context;
-    private View dialog_view;
+    private View dialogView;
 
-    public RapidRegistrationAdapter(ArrayList<String> arrayList, Context context) {
-        this.arrayList = arrayList;
+    public RapidRegistrationAdapter(List<String> stringList, Context context) {
+
+        this.stringList = stringList;
         this.context = context;
     }
 
     @NonNull
     @Override
     public RapidRegistrationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.single_rapid_registration_view_dialog,parent,false);
-        dialog_view = LayoutInflater.from(context).inflate(R.layout.check_uncheck_volunteer,parent,false);
 
+        View view = LayoutInflater.from(context).inflate(R.layout.single_rapid_registration_view_dialog, parent, false);
+        dialogView = LayoutInflater.from(context).inflate(R.layout.check_uncheck, parent, false);
         return new RapidRegistrationViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final RapidRegistrationViewHolder holder, final int position) {
 
-        DatabaseReference rapid_registered_ref = FirebaseDatabase.getInstance().getReference("rapid_registration").child(arrayList.get(position));
+        DatabaseReference rapid_registered_ref = FirebaseDatabase.getInstance().getReference("rapid_registration").child(stringList.get(position));
         rapid_registered_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+
+                if (snapshot.exists()) {
 
                     if (snapshot.child("first_name").getValue() != null)
                         holder.firstName.setText(Objects.requireNonNull(snapshot.child("first_name").getValue()).toString());
@@ -93,12 +95,12 @@ public class RapidRegistrationAdapter extends RecyclerView.Adapter<RapidRegistra
                         @Override
                         public boolean onLongClick(View view) {
 
-                            Button check = dialog_view.findViewById(R.id.check_volunteer);
-                            Button uncheck = dialog_view.findViewById(R.id.uncheck_volunteer);
-                            Button cancel = dialog_view.findViewById(R.id.check_uncheck_cancel);
+                            Button check = dialogView.findViewById(R.id.check_volunteer);
+                            Button uncheck = dialogView.findViewById(R.id.uncheck_volunteer);
+                            Button cancel = dialogView.findViewById(R.id.check_uncheck_cancel);
 
                             final AlertDialog dialog = new AlertDialog.Builder(context)
-                                    .setView(dialog_view)
+                                    .setView(dialogView)
                                     .setCancelable(false)
                                     .create();
 
@@ -108,9 +110,9 @@ public class RapidRegistrationAdapter extends RecyclerView.Adapter<RapidRegistra
                                 @Override
                                 public void onClick(View view) {
                                     DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference();
-                                    db_ref.child("checked_rapid_registration").child(arrayList.get(position)).setValue(true);
-                                    db_ref.child("unchecked_rapid_registration").child(arrayList.get(position)).removeValue();
-                                    Toast.makeText(context, "Checked Successfully", Toast.LENGTH_SHORT).show();
+                                    db_ref.child("checked_rapid_registration").child(stringList.get(position)).setValue(true);
+                                    db_ref.child("unchecked_rapid_registration").child(stringList.get(position)).removeValue();
+                                    showMessage("Checked Successfully");
                                     dialog.dismiss();
                                 }
                             });
@@ -119,9 +121,9 @@ public class RapidRegistrationAdapter extends RecyclerView.Adapter<RapidRegistra
                                 @Override
                                 public void onClick(View view) {
                                     DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference();
-                                    db_ref.child("unchecked_rapid_registration").child(arrayList.get(position)).setValue(true);
-                                    db_ref.child("checked_rapid_registration").child(arrayList.get(position)).removeValue();
-                                    Toast.makeText(context, "Unchecked Successfully", Toast.LENGTH_SHORT).show();
+                                    db_ref.child("unchecked_rapid_registration").child(stringList.get(position)).setValue(true);
+                                    db_ref.child("checked_rapid_registration").child(stringList.get(position)).removeValue();
+                                    showMessage("Unchecked Successfully");
                                     dialog.dismiss();
                                 }
                             });
@@ -132,8 +134,6 @@ public class RapidRegistrationAdapter extends RecyclerView.Adapter<RapidRegistra
                                     dialog.dismiss();
                                 }
                             });
-
-
                             return false;
                         }
                     });
@@ -143,6 +143,7 @@ public class RapidRegistrationAdapter extends RecyclerView.Adapter<RapidRegistra
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                showMessage(error.getMessage());
             }
         });
 
@@ -150,11 +151,22 @@ public class RapidRegistrationAdapter extends RecyclerView.Adapter<RapidRegistra
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return stringList.size();
     }
 
-    public static class RapidRegistrationViewHolder extends RecyclerView.ViewHolder{
-        TextView firstName, lastName, age, mobile, email, address, education, disease, motherTongue, referredByName, referredByMobile, gender;
+    public static class RapidRegistrationViewHolder extends RecyclerView.ViewHolder {
+        TextView firstName;
+        TextView lastName;
+        TextView age;
+        TextView mobile;
+        TextView email;
+        TextView address;
+        TextView education;
+        TextView disease;
+        TextView motherTongue;
+        TextView referredByName;
+        TextView referredByMobile;
+        TextView gender;
         CardView cardView;
 
         public RapidRegistrationViewHolder(@NonNull View itemView) {
@@ -175,6 +187,10 @@ public class RapidRegistrationAdapter extends RecyclerView.Adapter<RapidRegistra
 
             cardView = itemView.findViewById(R.id.rapid_registration_view_card_view);
         }
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
 }

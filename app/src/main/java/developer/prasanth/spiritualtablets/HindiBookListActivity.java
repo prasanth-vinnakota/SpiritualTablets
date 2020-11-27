@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HindiBookListActivity extends AppCompatActivity {
-    List<DataItem> lstDataItem;
+    List<DataItem> dataItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +24,12 @@ public class HindiBookListActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        lstDataItem =new ArrayList<>();
-        lstDataItem.add(new DataItem("12 Tablets", "Hindi", R.drawable.book_cover_page));
+        dataItems =new ArrayList<>();
+        dataItems.add(new DataItem("12 Tablets", "Hindi", R.drawable.book_cover_page));
 
-        RecyclerView myrv = findViewById(R.id.recycler_view_id);
-        BooksRecyclerViewAdapter myAdapter = new BooksRecyclerViewAdapter(getApplicationContext(), lstDataItem);
-        myrv.setLayoutManager(new GridLayoutManager(HindiBookListActivity.this,1));
-        myrv.setAdapter(myAdapter);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_id);
+        BooksRecyclerViewAdapter myAdapter = new BooksRecyclerViewAdapter(getApplicationContext(), dataItems);
+        recyclerView.setLayoutManager(new GridLayoutManager(HindiBookListActivity.this,1));
+        recyclerView.setAdapter(myAdapter);
     }
 }

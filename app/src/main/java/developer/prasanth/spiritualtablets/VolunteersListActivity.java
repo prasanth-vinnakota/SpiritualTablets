@@ -15,48 +15,51 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import developer.prasanth.spiritualtablets.adapters.VolunteerListAdapter;
+import developer.prasanth.spiritualtablets.adapters.VolunteerAdapter;
 
 public class VolunteersListActivity extends AppCompatActivity {
 
-    RecyclerView volunteerRV;
-    VolunteerListAdapter volunteerListAdapter;
-    ArrayList<String> volunteerList;
+    RecyclerView recyclerView;
+    VolunteerAdapter volunteerAdapter;
+    List<String> stringList;
     LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_volunteers_list);
-        volunteerRV = findViewById(R.id.volunteersRV);
-        volunteerRV.setLayoutManager(new LinearLayoutManager(VolunteersListActivity.this));
-        volunteerList = new ArrayList<>();
-        loadingDialog = new LoadingDialog(VolunteersListActivity.this);
+
+        init();
 
         switch (Objects.requireNonNull(getIntent().getStringExtra("type"))){
+
             case "checked":
+
                 loadingDialog.startLoading();
-                DatabaseReference checked_ref = FirebaseDatabase.getInstance().getReference("checked_volunteer");
-                checked_ref.addValueEventListener(new ValueEventListener() {
+                DatabaseReference checkedReference = FirebaseDatabase.getInstance().getReference("checked_volunteer");
+                checkedReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                                volunteerList.add(dataSnapshot.getKey());
+                                stringList.add(dataSnapshot.getKey());
                             }
-                            volunteerListAdapter = new VolunteerListAdapter(volunteerList,VolunteersListActivity.this);
-                            volunteerRV.setAdapter(volunteerListAdapter);
+                            volunteerAdapter = new VolunteerAdapter(stringList,VolunteersListActivity.this);
+                            recyclerView.setAdapter(volunteerAdapter);
                         }
                         else {
-                            Toast.makeText(VolunteersListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                            showMessage("No Data Available");
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
+                        showMessage(error.getMessage());
                     }
                 });
                 loadingDialog.dismiss();
@@ -64,54 +67,70 @@ public class VolunteersListActivity extends AppCompatActivity {
 
             case "unchecked":
                 loadingDialog.startLoading();
-                DatabaseReference unchecked_ref = FirebaseDatabase.getInstance().getReference("unchecked_volunteer");
-                unchecked_ref.addValueEventListener(new ValueEventListener() {
+                DatabaseReference uncheckedReference = FirebaseDatabase.getInstance().getReference("unchecked_volunteer");
+                uncheckedReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                                volunteerList.add(dataSnapshot.getKey());
+                                stringList.add(dataSnapshot.getKey());
                             }
-                            volunteerListAdapter = new VolunteerListAdapter(volunteerList,VolunteersListActivity.this);
-                            volunteerRV.setAdapter(volunteerListAdapter);
+                            volunteerAdapter = new VolunteerAdapter(stringList,VolunteersListActivity.this);
+                            recyclerView.setAdapter(volunteerAdapter);
                         }
                         else {
-                            Toast.makeText(VolunteersListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                            showMessage("No Data Available");
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
+                        showMessage(error.getMessage());
                     }
                 });
                 loadingDialog.dismiss();
                 break;
             case "all":
                 loadingDialog.startLoading();
-                DatabaseReference volunteers_ref = FirebaseDatabase.getInstance().getReference("volunteer_registration");
-                volunteers_ref.addValueEventListener(new ValueEventListener() {
+                DatabaseReference volunteersReference = FirebaseDatabase.getInstance().getReference("volunteer_registration");
+                volunteersReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                                volunteerList.add(dataSnapshot.getKey());
+                                stringList.add(dataSnapshot.getKey());
                             }
-                            volunteerListAdapter = new VolunteerListAdapter(volunteerList,VolunteersListActivity.this);
-                            volunteerRV.setAdapter(volunteerListAdapter);
+                            volunteerAdapter = new VolunteerAdapter(stringList,VolunteersListActivity.this);
+                            recyclerView.setAdapter(volunteerAdapter);
                         }
                         else {
-                            Toast.makeText(VolunteersListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+
+                            showMessage("No Data Available");
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
+                        showMessage(error.getMessage());
                     }
                 });
                 loadingDialog.dismiss();
                 break;
         }
+    }
+
+    private void init(){
+
+        recyclerView = findViewById(R.id.volunteersRV);
+        recyclerView.setLayoutManager(new LinearLayoutManager(VolunteersListActivity.this));
+        stringList = new ArrayList<>();
+        loadingDialog = new LoadingDialog(VolunteersListActivity.this);
+    }
+
+    private void showMessage(String message){
+
+        Toast.makeText(VolunteersListActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }

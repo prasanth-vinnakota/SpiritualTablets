@@ -16,17 +16,13 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import developer.prasanth.spiritualtablets.R;
-
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,42 +30,33 @@ import java.util.Objects;
 
 public class VolunteerRegistrationActivity extends Activity {
 
-    EditText mailId, name, address, phone, communicateTime, comment, otherTiming, otherContribute;
-    RadioGroup wayOfContribution, timeToContribute;
-    CheckBox monday, tuesday, wednesday, thursday, friday, saturday, sunday;
+    EditText mailId;
+    EditText name;
+    EditText address;
+    EditText phone;
+    EditText communicateTime;
+    EditText comment;
+    EditText otherTiming;
+    EditText otherContribute;
+    RadioGroup wayOfContribution;
+    RadioGroup timeToContribute;
+    CheckBox monday;
+    CheckBox tuesday;
+    CheckBox wednesday;
+    CheckBox thursday;
+    CheckBox friday;
+    CheckBox saturday;
+    CheckBox sunday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_volunteer_registration);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        //edit text
-        mailId = findViewById(R.id.volunteer_email);
-        name = findViewById(R.id.volunteer_name);
-        address = findViewById(R.id.volunteer_address);
-        phone = findViewById(R.id.volunteer_mobile);
-        communicateTime = findViewById(R.id.volunteer_best_time_to_contact);
-        comment = findViewById(R.id.volunteer_comments);
-        otherContribute = findViewById(R.id.others_contribute_edit_text);
-        otherTiming = findViewById(R.id.others_timing_edit_text);
-        mailId.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
-        if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null)
-            name.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-
-        //radio group
-        wayOfContribution = findViewById(R.id.volunteer_way_of_contribution);
-        timeToContribute = findViewById(R.id.volunteer_time_to_contribute);
-
-        //checkbox
-        monday = findViewById(R.id.monday);
-        tuesday = findViewById(R.id.tuesday);
-        wednesday = findViewById(R.id.wednesday);
-        thursday = findViewById(R.id.thursday);
-        friday = findViewById(R.id.friday);
-        saturday = findViewById(R.id.saturday);
-        sunday = findViewById(R.id.sunday);
+        init();
 
         wayOfContribution.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -94,6 +81,33 @@ public class VolunteerRegistrationActivity extends Activity {
         });
     }
 
+    private void init(){
+
+        mailId = findViewById(R.id.volunteer_email);
+        name = findViewById(R.id.volunteer_name);
+        address = findViewById(R.id.volunteer_address);
+        phone = findViewById(R.id.volunteer_mobile);
+        communicateTime = findViewById(R.id.volunteer_best_time_to_contact);
+        comment = findViewById(R.id.volunteer_comments);
+        otherContribute = findViewById(R.id.others_contribute_edit_text);
+        otherTiming = findViewById(R.id.others_timing_edit_text);
+        mailId.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
+        if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null)
+            name.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+
+        wayOfContribution = findViewById(R.id.volunteer_way_of_contribution);
+        timeToContribute = findViewById(R.id.volunteer_time_to_contribute);
+
+        monday = findViewById(R.id.monday);
+        tuesday = findViewById(R.id.tuesday);
+        wednesday = findViewById(R.id.wednesday);
+        thursday = findViewById(R.id.thursday);
+        friday = findViewById(R.id.friday);
+        saturday = findViewById(R.id.saturday);
+        sunday = findViewById(R.id.sunday);
+
+    }
+
     public void submit(View view) {
 
         final String volunteer_mail = mailId.getText().toString();
@@ -108,52 +122,62 @@ public class VolunteerRegistrationActivity extends Activity {
 
 
         if (TextUtils.isEmpty(volunteer_address)) {
+
             address.setError("required field");
-            Toast.makeText(this, "Address must not be empty", Toast.LENGTH_SHORT).show();
+            showMessage("Address Must Not Be Empty");
             return;
         }
 
         if (TextUtils.isEmpty(volunteer_phone)) {
+
             phone.setError("required field");
-            Toast.makeText(this, "Mobile No must not be empty", Toast.LENGTH_SHORT).show();
+            showMessage("Mobile Number Must Not Be Empty");
             return;
         }
 
         if (TextUtils.isEmpty(volunteer_communicate_time)) {
+
             communicateTime.setError("required field");
-            Toast.makeText(this, "Communication Time No must not be empty", Toast.LENGTH_SHORT).show();
+            showMessage("Communication Time Must Not Be Empty");
             return;
         }
 
         if (radio_id_contribution == -1) {
-            Toast.makeText(this, "You need to select a way to contribute", Toast.LENGTH_LONG).show();
+
+            showMessage("You Need To Select A Way To Contribute");
             return;
         }
 
 
         if (radio_id_time == -1) {
-            Toast.makeText(this, "You need to select how much time you can contribute", Toast.LENGTH_LONG).show();
+
+            showMessage("You Need To Select How Much Time You Can Contribute");
             return;
         }
 
         if (radio_id_contribution == R.id.others_contribute) {
+
             if (TextUtils.isEmpty(otherContribute.getText().toString())) {
+
                 otherContribute.setError("required field");
-                Toast.makeText(this, "You need to fill way to contribute", Toast.LENGTH_LONG).show();
+                showMessage("You Need To Fill Way Of Contribute");
                 return;
             }
         }
 
         if (radio_id_time == R.id.others_timing) {
+
             if (TextUtils.isEmpty(otherTiming.getText().toString())) {
+
                 otherTiming.setError("required field");
-                Toast.makeText(this, "You need to fill how much time you can contribute", Toast.LENGTH_LONG).show();
+                showMessage("You Need To Fill How Much Time You Can Contribute");
                 return;
             }
         }
 
         if (!monday.isChecked() && !tuesday.isChecked() && !wednesday.isChecked() && !thursday.isChecked() && !friday.isChecked() && !saturday.isChecked() && !sunday.isChecked()) {
-            Toast.makeText(this, "Please check what days are good for you", Toast.LENGTH_LONG).show();
+
+            showMessage("Please Check What Days Are Good For You");
             return;
         }
 
@@ -185,7 +209,8 @@ public class VolunteerRegistrationActivity extends Activity {
 
         map.put("submitted_time", ServerValue.TIMESTAMP);
 
-        volunteer_registration.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        volunteer_registration.updateChildren(map)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isComplete()) {
@@ -224,7 +249,8 @@ public class VolunteerRegistrationActivity extends Activity {
                     else
                         day_map.put("sunday", false);
 
-                    days.updateChildren(day_map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    days.updateChildren(day_map)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
@@ -296,6 +322,14 @@ public class VolunteerRegistrationActivity extends Activity {
                     });
 
                 }
+                else
+                    showMessage(Objects.requireNonNull(task.getException()).getMessage());
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showMessage(e.getMessage());
             }
         });
     }
@@ -346,6 +380,11 @@ public class VolunteerRegistrationActivity extends Activity {
                 return otherTiming.getText().toString();
         }
         return "nothing selected";
+    }
+
+    private void showMessage(String message){
+
+        Toast.makeText(VolunteerRegistrationActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
 }

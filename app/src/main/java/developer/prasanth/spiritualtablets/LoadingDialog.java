@@ -1,11 +1,9 @@
 package developer.prasanth.spiritualtablets;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.view.LayoutInflater;
-
-import developer.prasanth.spiritualtablets.R;
 
 public class LoadingDialog {
 
@@ -16,10 +14,7 @@ public class LoadingDialog {
         this.activity = activity;
     }
 
-    LoadingDialog(Context context){
-
-    }
-
+    @SuppressLint("InflateParams")
     public void startLoading(){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 

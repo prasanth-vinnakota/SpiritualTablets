@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import developer.prasanth.spiritualtablets.R;
@@ -27,31 +27,34 @@ import developer.prasanth.spiritualtablets.R;
 
 public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestForCounsellingAdapter.RequestForCounsellingViewHolder> {
 
-    private ArrayList<String> arrayList;
+    private List<String> stringList;
     private Context context;
-    private View dialog_view;
+    private View dialogView;
 
-    public RequestForCounsellingAdapter(ArrayList<String> arrayList, Context context) {
-        this.arrayList = arrayList;
+    public RequestForCounsellingAdapter(List<String> stringList, Context context) {
+        this.stringList = stringList;
         this.context = context;
     }
 
     @NonNull
     @Override
     public RequestForCounsellingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(context).inflate(R.layout.single_request_for_counselling_view_dialog,parent,false);
-        dialog_view = LayoutInflater.from(context).inflate(R.layout.check_uncheck_volunteer,parent,false);
+        dialogView = LayoutInflater.from(context).inflate(R.layout.check_uncheck,parent,false);
         return new RequestForCounsellingViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final RequestForCounsellingViewHolder holder, final int position) {
 
-        DatabaseReference request_for_counselling_ref = FirebaseDatabase.getInstance().getReference("request_for_counselling").child(arrayList.get(position));
+        DatabaseReference request_for_counselling_ref = FirebaseDatabase.getInstance().getReference("request_for_counselling").child(stringList.get(position));
         request_for_counselling_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 if (snapshot.exists()){
+
                     if (snapshot.child("first_name").getValue() != null)
                         holder.firstName.setText(Objects.requireNonNull(snapshot.child("first_name").getValue()).toString());
 
@@ -79,12 +82,12 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
                     holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View view) {
-                            Button check = dialog_view.findViewById(R.id.check_volunteer);
-                            Button uncheck = dialog_view.findViewById(R.id.uncheck_volunteer);
-                            Button cancel = dialog_view.findViewById(R.id.check_uncheck_cancel);
+                            Button check = dialogView.findViewById(R.id.check_volunteer);
+                            Button uncheck = dialogView.findViewById(R.id.uncheck_volunteer);
+                            Button cancel = dialogView.findViewById(R.id.check_uncheck_cancel);
 
                             final AlertDialog dialog = new AlertDialog.Builder(context)
-                                    .setView(dialog_view)
+                                    .setView(dialogView)
                                     .setCancelable(false)
                                     .create();
 
@@ -94,9 +97,9 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
                                 @Override
                                 public void onClick(View view) {
                                     DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference();
-                                    db_ref.child("checked_request_for_counselling").child(arrayList.get(position)).setValue(true);
-                                    db_ref.child("unchecked_request_for_counselling").child(arrayList.get(position)).removeValue();
-                                    Toast.makeText(context, "Checked Successfully", Toast.LENGTH_SHORT).show();
+                                    db_ref.child("checked_request_for_counselling").child(stringList.get(position)).setValue(true);
+                                    db_ref.child("unchecked_request_for_counselling").child(stringList.get(position)).removeValue();
+                                    showMessage("Checked Successfully");
                                     dialog.dismiss();
                                 }
                             });
@@ -105,9 +108,9 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
                                 @Override
                                 public void onClick(View view) {
                                     DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference();
-                                    db_ref.child("unchecked_request_for_counselling").child(arrayList.get(position)).setValue(true);
-                                    db_ref.child("checked_request_for_counselling").child(arrayList.get(position)).removeValue();
-                                    Toast.makeText(context, "Unchecked Successfully", Toast.LENGTH_SHORT).show();
+                                    db_ref.child("unchecked_request_for_counselling").child(stringList.get(position)).setValue(true);
+                                    db_ref.child("checked_request_for_counselling").child(stringList.get(position)).removeValue();
+                                    showMessage("Unchecked Successfully");
                                     dialog.dismiss();
                                 }
                             });
@@ -128,6 +131,7 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                showMessage(error.getMessage());
             }
         });
 
@@ -135,11 +139,19 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return stringList.size();
     }
 
     public static class RequestForCounsellingViewHolder extends RecyclerView.ViewHolder{
-        TextView firstName, lastName, age, mobile, email, disease, gender, mode;
+
+        TextView firstName;
+        TextView lastName;
+        TextView age;
+        TextView mobile;
+        TextView email;
+        TextView disease;
+        TextView gender;
+        TextView mode;
         CardView cardView;
 
         public RequestForCounsellingViewHolder(@NonNull View itemView) {
@@ -155,5 +167,10 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
 
             cardView = itemView.findViewById(R.id.request_for_counselling_view_card_view);
         }
+    }
+
+    private void showMessage(String message){
+
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

@@ -18,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import developer.prasanth.spiritualtablets.R;
 import developer.prasanth.spiritualtablets.adapters.GalleryAdapter;
 
 public class GalleryActivity extends AppCompatActivity {
@@ -27,22 +26,23 @@ public class GalleryActivity extends AppCompatActivity {
     GalleryAdapter galleryAdapter;
     DatabaseReference databaseReference;
     ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        recyclerView = findViewById(R.id.galleryRV);
-        progressDialog = new ProgressDialog(GalleryActivity.this);
-        progressDialog.setTitle("Loading");
-        progressDialog.setMessage("please wait while gallery is loading");
-        progressDialog.show();
+        init();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("gallery");
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                  if (snapshot.exists()){
+
                      List<String> list = new ArrayList<>();
                      for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                          list.add(dataSnapshot.getValue(String.class));
@@ -55,14 +55,29 @@ public class GalleryActivity extends AppCompatActivity {
                  }
                  else {
                      progressDialog.dismiss();
-                     Toast.makeText(GalleryActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                     showMessage("No Data Available");
                  }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                showMessage(error.getMessage());
             }
         });
+    }
+
+    private void init(){
+
+        recyclerView = findViewById(R.id.galleryRV);
+        progressDialog = new ProgressDialog(GalleryActivity.this);
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("please wait while gallery is loading");
+        progressDialog.show();
+    }
+
+    private void showMessage(String message){
+
+        Toast.makeText(GalleryActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }

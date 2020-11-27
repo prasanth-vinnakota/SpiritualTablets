@@ -20,7 +20,8 @@
             android:layout_margin="20dp"
             android:autofillHints="@string/logo"
             android:src="@drawable/full_logo"
-            android:transitionName="home_image" />
+            android:transitionName="home_image"
+            android:contentDescription="@string/app_name" />
 
         <ProgressBar
             android:id="@+id/log_in_progress_bar"
@@ -95,8 +96,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:transitionName="login_password"
-                app:passwordToggleEnabled="true">
+                android:transitionName="login_password">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/otp"
@@ -140,7 +140,8 @@
                 android:clickable="true"
                 android:onClick="googleSignIn"
                 android:src="@drawable/google"
-                android:focusable="true" />
+                android:focusable="true"
+                android:contentDescription="@string/google_sign_in" />
 
         </LinearLayout>
 

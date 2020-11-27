@@ -12,11 +12,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,10 +35,7 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -53,53 +50,23 @@ public class ProfileActivity extends AppCompatActivity {
     private TextInputEditText userState;
     private TextInputEditText userCity;
     private CircleImageView userProfileImage;
-    FirebaseAuth mAuth;
+    FirebaseAuth firebaseAuth;
     String currentUserId;
-    DatabaseReference userRef;
+    DatabaseReference userReference;
     private static final int REQUEST_CODE = 1;
-    private StorageReference mStorage;
+    private StorageReference storageReference;
     ProgressDialog progressDialog;
     SwitchCompat dobSwitch, mobileNumberSwitch, profileStatusSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        dobSwitch = findViewById(R.id.show_dob_switch);
-        mobileNumberSwitch = findViewById(R.id.show_mobile_number_switch);
-        profileStatusSwitch = findViewById(R.id.show_profile_status_switch);
-
-        progressDialog = new ProgressDialog(ProfileActivity.this);
-        progressDialog.setTitle("Profile is updating");
-        progressDialog.setMessage("Please wait while we are updating your profile");
-        userName = findViewById(R.id.set_user_name);
-        userStatus = findViewById(R.id.set_user_profile_status);
-        TextInputEditText userMobileNumber = findViewById(R.id.set_user_mobile_number);
-        TextInputLayout user_mobile_no_parent = findViewById(R.id.profile_mobile_number_parent);
-        if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getPhoneNumber() != null){
-            userMobileNumber.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getPhoneNumber());
-            user_mobile_no_parent.setVisibility(View.VISIBLE);
-        }
-        userDob = findViewById(R.id.set_user_dob);
-        TextInputEditText userEmail = findViewById(R.id.profile_email);
-        TextInputLayout user_email_parent = findViewById(R.id.profile_email_parent);
-        if (!Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail().isEmpty()) {
-            userEmail.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
-            user_email_parent.setVisibility(View.VISIBLE);
-        }
-        userCountry = findViewById(R.id.set_user_country);
-        userState = findViewById(R.id.set_user_state);
-        userCity = findViewById(R.id.set_user_city);
-
-        mStorage = FirebaseStorage.getInstance().getReference().child("user_photos");
-        userProfileImage = findViewById(R.id.set_profile_image);
-
-        mAuth = FirebaseAuth.getInstance();
-        currentUserId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-        userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
+        init();
 
         userProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,10 +83,10 @@ public class ProfileActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
 
-                    userRef.child("settings").child("dob").setValue("true");
+                    userReference.child("settings").child("dob").setValue("true");
                 } else {
 
-                    userRef.child("settings").child("dob").setValue("false");
+                    userReference.child("settings").child("dob").setValue("false");
                 }
             }
         });
@@ -129,10 +96,10 @@ public class ProfileActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
 
-                    userRef.child("settings").child("mobile_number").setValue("true");
+                    userReference.child("settings").child("mobile_number").setValue("true");
                 } else {
 
-                    userRef.child("settings").child("mobile_number").setValue("false");
+                    userReference.child("settings").child("mobile_number").setValue("false");
                 }
             }
         });
@@ -142,22 +109,66 @@ public class ProfileActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
 
-                    userRef.child("settings").child("profile_status").setValue("true");
+                    userReference.child("settings").child("profile_status").setValue("true");
                 } else {
 
-                    userRef.child("settings").child("profile_status").setValue("false");
+                    userReference.child("settings").child("profile_status").setValue("false");
                 }
             }
         });
 
-        initFields();
+        retrieveUserDataFromDatabase();
     }
 
+    private void init() {
+
+        dobSwitch = findViewById(R.id.show_dob_switch);
+        mobileNumberSwitch = findViewById(R.id.show_mobile_number_switch);
+        profileStatusSwitch = findViewById(R.id.show_profile_status_switch);
+
+        userName = findViewById(R.id.set_user_name);
+        userStatus = findViewById(R.id.set_user_profile_status);
+        userDob = findViewById(R.id.set_user_dob);
+        userCountry = findViewById(R.id.set_user_country);
+        userState = findViewById(R.id.set_user_state);
+        userCity = findViewById(R.id.set_user_city);
+        userProfileImage = findViewById(R.id.set_profile_image);
+
+        progressDialog = new ProgressDialog(ProfileActivity.this);
+        progressDialog.setTitle("Profile is updating");
+        progressDialog.setMessage("Please wait while we are updating your profile");
+        progressDialog.setCancelable(false);
+
+
+        TextInputEditText userMobileNumber = findViewById(R.id.set_user_mobile_number);
+        TextInputLayout user_mobile_no_parent = findViewById(R.id.profile_mobile_number_parent);
+
+        if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getPhoneNumber() != null) {
+
+            userMobileNumber.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getPhoneNumber());
+            user_mobile_no_parent.setVisibility(View.VISIBLE);
+        }
+
+        TextInputEditText userEmail = findViewById(R.id.profile_email);
+        TextInputLayout user_email_parent = findViewById(R.id.profile_email_parent);
+
+        if (!Objects.requireNonNull(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail()).isEmpty()) {
+
+            userEmail.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
+            user_email_parent.setVisibility(View.VISIBLE);
+        }
+
+        storageReference = FirebaseStorage.getInstance().getReference().child("user_photos");
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        currentUserId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+        userReference = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
 
             CropImage.activity()
@@ -166,11 +177,11 @@ public class ProfileActivity extends AppCompatActivity {
                     .start(ProfileActivity.this);
 
         }
-
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
             final CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
+
                 assert result != null;
                 final Uri resultUri = result.getUri();
                 progressDialog.show();
@@ -178,42 +189,58 @@ public class ProfileActivity extends AppCompatActivity {
                         .setPhotoUri(resultUri)
                         .build();
 
-                Objects.requireNonNull(mAuth.getCurrentUser()).updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        final StorageReference filePath = mStorage.child(currentUserId + ".jpg");
-
-                        filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                Objects.requireNonNull(firebaseAuth.getCurrentUser()).updateProfile(profileUpdate)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            public void onComplete(@NonNull Task<Void> task) {
 
-                                filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
+                                final StorageReference filePath = storageReference.child(currentUserId + ".jpg");
 
-                                        userRef.child("image").setValue(uri.toString());
+                                filePath.putFile(resultUri)
+                                        .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
-                                        progressDialog.dismiss();
-                                        initFields();
-                                        Toast.makeText(ProfileActivity.this, "Profile Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                                                filePath.getDownloadUrl()
+                                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                            @Override
+                                                            public void onSuccess(Uri uri) {
+
+                                                                userReference.child("image").setValue(uri.toString());
+
+                                                                progressDialog.dismiss();
+                                                                retrieveUserDataFromDatabase();
+                                                                showMessage("Profile Image Uploaded Successfully");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                showMessage(e.getMessage());
+                                                            }
+                                                        });
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                showMessage(e.getMessage());
+                                            }
+                                        });
                             }
                         });
-                    }
-                });
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+
                 assert result != null;
                 progressDialog.dismiss();
                 Exception exception = result.getError();
-                Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                showMessage(exception.getMessage());
             }
         }
     }
 
-    private void initFields() {
-        userRef.addValueEventListener(new ValueEventListener() {
+    private void retrieveUserDataFromDatabase() {
+        userReference.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -245,10 +272,11 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                showMessage(error.getMessage());
             }
         });
 
-        userRef.child("settings").addValueEventListener(new ValueEventListener() {
+        userReference.child("settings").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -285,45 +313,52 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void updateSettings(View view) {
 
-        String user_name = userName.getText().toString();
-        String user_status = userStatus.getText().toString();
-        String user_dob = userDob.getText().toString();
-        String user_country = userCountry.getText().toString();
-        String user_state = userState.getText().toString();
-        String user_city = userCity.getText().toString();
+        String user_name = Objects.requireNonNull(userName.getText()).toString();
+        String user_status = Objects.requireNonNull(userStatus.getText()).toString();
+        String user_dob = Objects.requireNonNull(userDob.getText()).toString();
+        String user_country = Objects.requireNonNull(userCountry.getText()).toString();
+        String user_state = Objects.requireNonNull(userState.getText()).toString();
+        String user_city = Objects.requireNonNull(userCity.getText()).toString();
 
         if (TextUtils.isEmpty(user_name)) {
+
             userName.setError("must not be empty");
             return;
         }
 
         if (TextUtils.isEmpty(user_status)) {
+
             userState.setError("must not be empty");
             return;
         }
 
 
         if (TextUtils.isEmpty(user_dob)) {
+
             userDob.setError("must not be empty");
             return;
         }
 
         if (TextUtils.isEmpty(user_country)) {
+
             userCountry.setError("must not be empty");
             return;
         }
 
         if (TextUtils.isEmpty(user_state)) {
+
             userState.setError("must not be empty");
             return;
         }
 
         if (TextUtils.isEmpty(user_city)) {
+
             userCity.setError("must not be empty");
             return;
         }
+
         progressDialog.show();
-        userRef.child("updated").setValue("true");
+        userReference.child("updated").setValue("true");
 
         final Map<String, Object> profileMap = new HashMap<>();
 
@@ -334,40 +369,61 @@ public class ProfileActivity extends AppCompatActivity {
         profileMap.put("state", user_state);
         profileMap.put("city", user_city);
 
-        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+        final UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                 .setDisplayName(user_name)
                 .build();
 
-        Objects.requireNonNull(mAuth.getCurrentUser()).updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
+        Objects.requireNonNull(firebaseAuth.getCurrentUser()).updateProfile(profileChangeRequest)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                if (task.isSuccessful()) {
+                        if (task.isSuccessful()) {
 
-                    userRef.updateChildren(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(ProfileActivity.this, "Profile updates successfully..", Toast.LENGTH_SHORT).show();
-                                progressDialog.dismiss();
-                                initFields();
-                            } else {
-                                Toast.makeText(ProfileActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                                progressDialog.dismiss();
-                            }
+                            userReference.updateChildren(profileMap)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+
+                                                showMessage("Profile Updates Successfully");
+                                                progressDialog.dismiss();
+                                                retrieveUserDataFromDatabase();
+                                            } else {
+
+                                                showMessage(Objects.requireNonNull(task.getException()).getMessage());
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            showMessage(e.getMessage());
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                        } else {
+
+                            showMessage(Objects.requireNonNull(task.getException()).getMessage());
+                            progressDialog.dismiss();
                         }
-                    });
-                }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 
-            }
-        });
+                        showMessage(e.getMessage());
+                        progressDialog.dismiss();
+                    }
+                });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(ProfileActivity.this, DashBoardActivity.class));
-        finish();
+    private void showMessage(String message) {
+
+        Toast.makeText(ProfileActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
 }

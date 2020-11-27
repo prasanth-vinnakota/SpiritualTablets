@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -33,8 +34,11 @@ import java.util.Objects;
 public class AddEventActivity extends AppCompatActivity {
 
     ImageView eventImage;
-    TextInputEditText name, description, timing, link;
-    DatabaseReference events_ref;
+    TextInputEditText name;
+    TextInputEditText description;
+    TextInputEditText timing;
+    TextInputEditText link;
+    DatabaseReference eventsReference;
     Spinner languageSpinner;
     String selectedLanguage = "Select Language";
     Uri filePath;
@@ -43,8 +47,14 @@ public class AddEventActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+
+        init();
+    }
+
+    private void init(){
 
         eventImage = findViewById(R.id.add_events_image);
 
@@ -56,7 +66,6 @@ public class AddEventActivity extends AppCompatActivity {
         link = findViewById(R.id.add_events_link);
         timing = findViewById(R.id.add_events_timing);
 
-
         languageSpinner = findViewById(R.id.add_events_spinner);
 
         final String[] languages = {"Select Language", "English", "Telugu", "Hindi", "Others"};
@@ -66,12 +75,12 @@ public class AddEventActivity extends AppCompatActivity {
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 selectedLanguage = languages[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -88,35 +97,45 @@ public class AddEventActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
 
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1, 1)
-                    .start(this);
-
+                    .start(AddEventActivity.this);
         }
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
             final CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                assert result != null;
-                filePath = result.getUri();
+
+                if (result != null) {
+                    filePath = result.getUri();
+                }
                 eventImage.setImageURI(filePath);
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                assert result != null;
-                Exception exception = result.getError();
-                Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+
+                Exception exception = null;
+                if (result != null) {
+                    exception = result.getError();
+                }
+                if (exception != null) {
+                    showMessage(exception.getMessage());
+                }
             }
         }
     }
 
     public void addEvent(View view) {
 
-        final String event_name, event_desc, event_timing, event_link;
+        final String event_name;
+        final String event_desc;
+        final String event_timing;
+        final String event_link;
 
         event_desc = Objects.requireNonNull(description.getText()).toString();
         event_name = Objects.requireNonNull(name.getText()).toString();
@@ -125,46 +144,62 @@ public class AddEventActivity extends AppCompatActivity {
 
 
         if (TextUtils.isEmpty(event_name)) {
-            Toast.makeText(this, "event name must not be empty", Toast.LENGTH_SHORT).show();
+
+            showMessage("Event Name Must Not Be Empty");
             return;
         }
 
         if (!selectedLanguage.equals("Select Language")) {
 
-            events_ref = FirebaseDatabase.getInstance().getReference("events").child(selectedLanguage).child(event_name);
+            eventsReference = FirebaseDatabase.getInstance().getReference("events").child(selectedLanguage).child(event_name);
 
-            events_ref.child("language").setValue(selectedLanguage);
-            events_ref.child("name").setValue(event_name);
+            eventsReference.child("language").setValue(selectedLanguage);
+            eventsReference.child("name").setValue(event_name);
 
             if (filePath != null) {
 
                 StorageReference event_image_reference = FirebaseStorage.getInstance().getReference().child("Event Pictures");
                 final StorageReference eventImageFilePath = event_image_reference.child(event_name + ".jpg");
+
                 eventImageFilePath.putFile(filePath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        eventImageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                        eventImageFilePath.getDownloadUrl()
+                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                events_ref.child("image").setValue(uri.toString());
+                                eventsReference.child("image").setValue(uri.toString());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                showMessage(e.getMessage());
                             }
                         });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showMessage(e.getMessage());
                     }
                 });
             }
 
             if (!TextUtils.isEmpty(event_desc)) {
 
-                events_ref.child("description").setValue(event_desc);
+                eventsReference.child("description").setValue(event_desc);
             }
 
             if (!TextUtils.isEmpty(event_timing)) {
 
-                events_ref.child("timing").setValue(event_timing);
+                eventsReference.child("timing").setValue(event_timing);
             }
             if (!TextUtils.isEmpty(event_link)) {
 
-                events_ref.child("link").setValue(event_link);
+                eventsReference.child("link").setValue(event_link);
             }
 
             eventImage.setImageURI(null);
@@ -173,13 +208,17 @@ public class AddEventActivity extends AppCompatActivity {
             timing.setText("");
             link.setText("");
 
-            Toast.makeText(getApplicationContext(), "Event Added Successfully", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(AddEventActivity.this, EventsByLanguageActivity.class));
+            showMessage("Event Added Successfully");
+            startActivity(new Intent(AddEventActivity.this, DashBoardActivity.class));
             finish();
 
         } else {
-            Toast.makeText(this, "Select language", Toast.LENGTH_SHORT).show();
-        }
 
+            showMessage("Please Select Language");
+        }
+    }
+
+    private void showMessage(String message){
+        Toast.makeText(AddEventActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }

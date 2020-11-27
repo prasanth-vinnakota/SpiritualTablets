@@ -27,53 +27,53 @@ import java.util.List;
 public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecyclerViewAdapter.MyViewHolder>{
 
 
-    private Context mContext;
-    private List<DataItem> mData;
+    private Context context;
+    private List<DataItem> dataItems;
 
-
-    public AudioRecyclerViewAdapter(Context mContext, List<DataItem> mData) {
-        this.mContext = mContext;
-        this.mData = mData;
+    public AudioRecyclerViewAdapter(Context context, List<DataItem> dataItems) {
+        this.context = context;
+        this.dataItems = dataItems;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.cardview_item_book,parent, false);
-
+        View view = LayoutInflater.from(context).inflate(R.layout.cardview_item_book,parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-        holder.tv_book_title.setText(mData.get(position).getTitle());
-        holder.img_book_thumbnail.setImageResource(mData.get(position).getThumbnail());
+        holder.tv_book_title.setText(dataItems.get(position).getTitle());
+        holder.img_book_thumbnail.setImageResource(dataItems.get(position).getThumbnail());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(mContext,"Loading "+mData.get(position).getTitle(),Toast.LENGTH_LONG).show();
-
-                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("audios").child(mData.get(position).getTitle());
+                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("audios").child(dataItems.get(position).getTitle());
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String url = dataSnapshot.getValue(String.class);
-                        Intent i = new Intent(mContext, AudioPlayerActivity.class);
-                        i.putExtra("url",url);
-                        i.putExtra("song_name", mData.get(position).getTitle());
-                        i.putExtra("image",mData.get(position).getThumbnail());
-                        mContext.startActivity(i);
-
+                        if (dataSnapshot.exists()) {
+                            showMessage("Loading "+dataItems.get(position).getTitle());
+                            String url = dataSnapshot.getValue(String.class);
+                            Intent intent = new Intent(context, AudioPlayerActivity.class);
+                            intent.putExtra("url", url);
+                            intent.putExtra("song_name", dataItems.get(position).getTitle());
+                            intent.putExtra("image", dataItems.get(position).getThumbnail());
+                            context.startActivity(intent);
+                        }
+                        else
+                            showMessage("Audio Book Not Found");
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        Toast.makeText(mContext, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                        showMessage(databaseError.getMessage());
                     }
                 });
             }
@@ -82,7 +82,7 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return dataItems.size();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -98,5 +98,9 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
             cardView = itemView.findViewById(R.id.cardview_id);
 
         }
+    }
+
+    private void showMessage(String message){
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

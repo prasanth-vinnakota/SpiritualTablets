@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
     android:orientation="vertical"
-    tools:context="developer.prasanth.spiritualtablets.DailyTipActivity">
+    tools:context="developer.prasanth.spiritualtablets.DailyQuoteActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="@string/daily_tip" />
 
         <TextView
             android:id="@+id/daily_tip_description"

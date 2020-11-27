@@ -10,7 +10,9 @@
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:src="@drawable/full_logo"/>
+        android:src="@drawable/full_logo"
+        android:contentDescription="@string/app_name" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +22,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="190dp"
-            android:id="@+id/audio_image_view"/>
+            android:id="@+id/audio_image_view"
+            android:contentDescription="@string/book_title" />
+
         <TextView
             android:id="@+id/song_name"
             android:layout_width="match_parent"

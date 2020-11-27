@@ -23,7 +23,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="9"
                 android:scaleType="centerCrop"
-                android:background="#2d2d2d"/>
+                android:background="#2d2d2d"
+                android:contentDescription="@string/name" />
 
             <TextView
                 android:fontFamily="@font/lemonada"

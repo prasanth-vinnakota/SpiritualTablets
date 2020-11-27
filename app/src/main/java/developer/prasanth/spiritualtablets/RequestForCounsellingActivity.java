@@ -12,15 +12,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +27,12 @@ import java.util.Objects;
 
 public class RequestForCounsellingActivity extends AppCompatActivity {
 
-    EditText firstName, lastName, age, mobile, email, disease;
+    EditText firstName;
+    EditText lastName;
+    EditText age;
+    EditText mobile;
+    EditText email;
+    EditText disease;
     RadioGroup gender, mode;
 
     @Override
@@ -37,6 +41,11 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request_for_counselling);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        inti();
+    }
+
+    private void inti() {
 
         firstName = findViewById(R.id.request_for_counselling_first_name);
         lastName = findViewById(R.id.request_for_counselling_last_name);
@@ -49,9 +58,8 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         mode = findViewById(R.id.request_for_counselling_mode);
     }
 
-
-    private String getGender (int checkedRadioButtonId){
-        switch (checkedRadioButtonId){
+    private String getGender(int checkedRadioButtonId) {
+        switch (checkedRadioButtonId) {
             case R.id.request_for_counselling_male:
                 return "Male";
             case R.id.request_for_counselling_female:
@@ -63,8 +71,8 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         return "Male";
     }
 
-    private String getMode (int checkedRadioButtonId){
-        switch (checkedRadioButtonId){
+    private String getMode(int checkedRadioButtonId) {
+        switch (checkedRadioButtonId) {
             case R.id.request_for_counselling_phone_mode:
                 return "Phone";
             case R.id.request_for_counselling_email_mode:
@@ -92,76 +100,113 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         int patient_mode = mode.getCheckedRadioButtonId();
 
 
-        if (TextUtils.isEmpty(patient_first_name)){
+        if (TextUtils.isEmpty(patient_first_name)) {
+
             firstName.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
-        if (TextUtils.isEmpty(patient_last_name)){
+        if (TextUtils.isEmpty(patient_last_name)) {
+
             lastName.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
-        if (TextUtils.isEmpty(patient_age)){
+        if (TextUtils.isEmpty(patient_age)) {
+
             age.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
-        if (TextUtils.isEmpty(patient_mobile)){
+        if (TextUtils.isEmpty(patient_mobile)) {
+
             mobile.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
-        if (TextUtils.isEmpty(patient_email)){
+        if (TextUtils.isEmpty(patient_email)) {
+
             email.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
-        if (TextUtils.isEmpty(patient_disease)){
+        if (TextUtils.isEmpty(patient_disease)) {
+
             disease.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
-        DatabaseReference request_for_counselling_ref = FirebaseDatabase.getInstance().getReference("request_for_counselling").push();
-        DatabaseReference unchecked_request_for_counselling_ref = FirebaseDatabase.getInstance().getReference("unchecked_request_for_counselling").child(Objects.requireNonNull(request_for_counselling_ref.getKey()));
-        unchecked_request_for_counselling_ref.setValue(true);
+        DatabaseReference requestFoCounsellingReference = FirebaseDatabase.getInstance().getReference("request_for_counselling").push();
+        DatabaseReference uncheckedRequestForCounsellingReference = FirebaseDatabase.getInstance().getReference("unchecked_request_for_counselling").child(Objects.requireNonNull(requestFoCounsellingReference.getKey()));
+        uncheckedRequestForCounsellingReference.setValue(true);
 
         final Map<String, Object> map = new HashMap<>();
-        map.put("first_name",patient_first_name);
+        map.put("first_name", patient_first_name);
         map.put("last_name", patient_last_name);
-        map.put("age",patient_age);
+        map.put("age", patient_age);
         map.put("mobile", patient_mobile);
-        map.put("disease",patient_disease);
-        map.put("email",patient_email);
-        map.put("mode",getMode(patient_mode));
-        map.put("gender",getGender(patient_gender));
+        map.put("disease", patient_disease);
+        map.put("email", patient_email);
+        map.put("mode", getMode(patient_mode));
+        map.put("gender", getGender(patient_gender));
         map.put("id", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-        request_for_counselling_ref.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isComplete()){
-                    DatabaseReference books_ref = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("books");
-                    books_ref.setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestForCounsellingActivity.this);
-                            builder.setTitle("Patient Registered Successfully");
-                            builder.setMessage("We will contact you soon");
-                            builder.setCancelable(false);
-                            builder.setPositiveButton("dismiss", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    startActivity(new Intent(RequestForCounsellingActivity.this,DashBoardActivity.class));
-                                    finish();
-                                }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
-                    });
-                }
-            }
-        });
+        requestFoCounsellingReference.updateChildren(map)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isComplete()) {
+
+                            DatabaseReference books_ref = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("books");
+                            books_ref.setValue("yes")
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestForCounsellingActivity.this);
+                                            builder.setTitle("Patient Registered Successfully");
+                                            builder.setMessage("We will contact you soon");
+                                            builder.setCancelable(false);
+                                            builder.setPositiveButton("dismiss", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    startActivity(new Intent(RequestForCounsellingActivity.this, DashBoardActivity.class));
+                                                    finish();
+                                                }
+                                            });
+                                            AlertDialog dialog = builder.create();
+                                            dialog.show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            showMessage(e.getMessage());
+                                        }
+                                    });
+                        } else
+                            showMessage(Objects.requireNonNull(task.getException()).getMessage());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        showMessage(e.getMessage());
+                    }
+                });
+    }
+
+    private void showMessage(String message) {
+
+        Toast.makeText(RequestForCounsellingActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }

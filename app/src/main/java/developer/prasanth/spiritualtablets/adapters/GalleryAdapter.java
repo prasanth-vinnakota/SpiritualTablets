@@ -18,16 +18,18 @@ import developer.prasanth.spiritualtablets.R;
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {
 
     private Context context;
-    private List<String> list;
+    private List<String> stringList;
 
-    public GalleryAdapter(Context context, List<String> list) {
+    public GalleryAdapter(Context context, List<String> stringList) {
+
         this.context = context;
-        this.list = list;
+        this.stringList = stringList;
     }
 
     @NonNull
     @Override
     public GalleryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(context).inflate(R.layout.image_view,parent,false);
         return new GalleryViewHolder(view);
     }
@@ -35,19 +37,19 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
 
-        Glide.with(context).load(list.get(position)).into(holder.imageView);
+        Glide.with(context).load(stringList.get(position)).into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return stringList.size();
     }
 
     public static class GalleryViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageView;
-
         public GalleryViewHolder(@NonNull View itemView) {
+
             super(itemView);
             imageView = itemView.findViewById(R.id.gallery_image);
         }

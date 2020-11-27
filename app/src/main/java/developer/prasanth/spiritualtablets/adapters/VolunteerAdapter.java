@@ -21,33 +21,35 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import developer.prasanth.spiritualtablets.R;
 
-public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdapter.VolunteerListViewHolder> {
-    private ArrayList<String> volunteerList;
+public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.VolunteerListViewHolder> {
+    private List<String> stringList;
     private Context context;
-    private View dialog_view;
+    private View dialogView;
 
-    public VolunteerListAdapter(ArrayList<String> volunteerList, Context context) {
-        this.volunteerList = volunteerList;
+    public VolunteerAdapter(List<String> stringList, Context context) {
+
+        this.stringList = stringList;
         this.context = context;
     }
 
     @NonNull
     @Override
     public VolunteerListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(context).inflate(R.layout.single_volunteer_view_layout, parent, false);
-        dialog_view = LayoutInflater.from(context).inflate(R.layout.check_uncheck_volunteer, parent, false);
+        dialogView = LayoutInflater.from(context).inflate(R.layout.check_uncheck, parent, false);
         return new VolunteerListViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final VolunteerListViewHolder holder, final int position) {
 
-        final DatabaseReference volunteer_ref = FirebaseDatabase.getInstance().getReference("volunteer_registration").child(volunteerList.get(position));
+        final DatabaseReference volunteer_ref = FirebaseDatabase.getInstance().getReference("volunteer_registration").child(stringList.get(position));
         volunteer_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot snapshot) {
@@ -102,12 +104,12 @@ public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdap
                         @Override
                         public boolean onLongClick(View view) {
 
-                            Button check = dialog_view.findViewById(R.id.check_volunteer);
-                            Button uncheck = dialog_view.findViewById(R.id.uncheck_volunteer);
-                            Button cancel = dialog_view.findViewById(R.id.check_uncheck_cancel);
+                            Button check = dialogView.findViewById(R.id.check_volunteer);
+                            Button uncheck = dialogView.findViewById(R.id.uncheck_volunteer);
+                            Button cancel = dialogView.findViewById(R.id.check_uncheck_cancel);
 
                             final AlertDialog dialog = new AlertDialog.Builder(context)
-                                    .setView(dialog_view)
+                                    .setView(dialogView)
                                     .setCancelable(false)
                                     .create();
 
@@ -126,14 +128,14 @@ public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdap
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference();
-                                            db_ref.child("checked_volunteer").child(volunteerList.get(position)).setValue(true);
-                                            db_ref.child("unchecked_volunteer").child(volunteerList.get(position)).removeValue();
-                                            db_ref.child("volunteer_registration").child(volunteerList.get(position)).child("work").setValue(editText.getText().toString());
+                                            db_ref.child("checked_volunteer").child(stringList.get(position)).setValue(true);
+                                            db_ref.child("unchecked_volunteer").child(stringList.get(position)).removeValue();
+                                            db_ref.child("volunteer_registration").child(stringList.get(position)).child("work").setValue(editText.getText().toString());
                                             if (snapshot.child("id").getValue() != null){
                                                 DatabaseReference work_ref = FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(snapshot.child("id").getValue()).toString()).child("work");
                                                 work_ref.setValue(editText.getText().toString());
                                             }
-                                            Toast.makeText(context, "Checked Successfully", Toast.LENGTH_SHORT).show();
+                                            showMessage("Checked Successfully");
                                             dialog.dismiss();
                                         }
                                     });
@@ -147,14 +149,14 @@ public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdap
                                 @Override
                                 public void onClick(View view) {
                                     DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference();
-                                    db_ref.child("unchecked_volunteer").child(volunteerList.get(position)).setValue(true);
-                                    db_ref.child("checked_volunteer").child(volunteerList.get(position)).removeValue();
-                                    db_ref.child("volunteer_registration").child(volunteerList.get(position)).child("work").setValue(false);
+                                    db_ref.child("unchecked_volunteer").child(stringList.get(position)).setValue(true);
+                                    db_ref.child("checked_volunteer").child(stringList.get(position)).removeValue();
+                                    db_ref.child("volunteer_registration").child(stringList.get(position)).child("work").setValue(false);
                                     if (snapshot.child("id").getValue() != null){
                                         DatabaseReference work_ref =FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(snapshot.child("id").getValue()).toString()).child("work");
                                         work_ref.removeValue();
                                     }
-                                    Toast.makeText(context, "Unchecked Successfully", Toast.LENGTH_SHORT).show();
+                                    showMessage("Unchecked Successfully");
                                     dialog.dismiss();
                                 }
                             });
@@ -165,6 +167,7 @@ public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdap
                                     dialog.dismiss();
                                 }
                             });
+
                             return false;
                         }
                     });
@@ -174,6 +177,7 @@ public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdap
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                showMessage(error.getMessage());
             }
         });
 
@@ -181,12 +185,21 @@ public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdap
 
     @Override
     public int getItemCount() {
-        return volunteerList.size();
+        return stringList.size();
     }
 
     public static class VolunteerListViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, email, mobile, address, way_of_contribution, time_to_contribute, time_to_communicate, days, comments, work_assigned;
+        TextView name;
+        TextView email;
+        TextView mobile;
+        TextView address;
+        TextView way_of_contribution;
+        TextView time_to_contribute;
+        TextView time_to_communicate;
+        TextView days;
+        TextView comments;
+        TextView work_assigned;
         CardView cardView;
 
         public VolunteerListViewHolder(@NonNull View itemView) {
@@ -203,5 +216,10 @@ public class VolunteerListAdapter extends RecyclerView.Adapter<VolunteerListAdap
             comments = itemView.findViewById(R.id.single_volunteer_comments);
             work_assigned = itemView.findViewById(R.id.single_volunteer_work_assigned);
         }
+    }
+
+    private void showMessage(String message){
+
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

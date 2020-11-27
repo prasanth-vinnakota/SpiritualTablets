@@ -20,8 +20,11 @@ import java.io.IOException;
 public class AudioPlayerActivity extends AppCompatActivity {
 
 
-    TextView songName, totalDuration, currentPosition;
-    ImageView playOrPause, bookImage;
+    TextView songName;
+    TextView totalDuration;
+    TextView currentPosition;
+    ImageView playOrPause;
+    ImageView bookImage;
     SeekBar seekBar;
     MediaPlayer mediaPlayer;
     Handler handler = new Handler();
@@ -34,6 +37,50 @@ public class AudioPlayerActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        init();
+
+        playOrPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer.isPlaying()) {
+
+                    handler.removeCallbacks(updater);
+                    mediaPlayer.pause();
+                    playOrPause.setImageResource(R.drawable.play);
+                } else {
+
+                    mediaPlayer.start();
+                    playOrPause.setImageResource(R.drawable.pause);
+                    updateSeekBar();
+                }
+            }
+        });
+
+        try {
+
+            mediaPlayer.setDataSource(getIntent().getStringExtra("url"));
+            mediaPlayer.prepare();
+            totalDuration.setText(milliSecondsToTimer(mediaPlayer.getDuration()));
+        } catch (IOException e) {
+
+            showMessage(e.getMessage());
+        }
+
+        seekBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                SeekBar seek_bar = (SeekBar) v;
+                int play_position = (mediaPlayer.getDuration() / 100) * seek_bar.getProgress();
+                mediaPlayer.seekTo(play_position);
+                return false;
+            }
+        });
+
+    }
+
+    private void init() {
+
         songName = findViewById(R.id.song_name);
         totalDuration = findViewById(R.id.total_duration);
         currentPosition = findViewById(R.id.timer);
@@ -45,42 +92,7 @@ public class AudioPlayerActivity extends AppCompatActivity {
 
         mediaPlayer = new MediaPlayer();
         songName.setText(getIntent().getStringExtra("song_name"));
-        bookImage.setImageResource(getIntent().getIntExtra("image",0));
-
-        playOrPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mediaPlayer.isPlaying()) {
-                    handler.removeCallbacks(updater);
-                    mediaPlayer.pause();
-                    playOrPause.setImageResource(R.drawable.play);
-                } else {
-                    mediaPlayer.start();
-                    playOrPause.setImageResource(R.drawable.pause);
-                    updateSeekBar();
-                }
-            }
-        });
-
-        try {
-            mediaPlayer.setDataSource(getIntent().getStringExtra("url"));
-            mediaPlayer.prepare();
-            totalDuration.setText(milliSecondsToTimer(mediaPlayer.getDuration()));
-        } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-
-        seekBar.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                SeekBar seek_bar = (SeekBar)v;
-                int play_position = (mediaPlayer.getDuration() / 100 ) * seek_bar.getProgress();
-                mediaPlayer.seekTo(play_position);
-                return false;
-            }
-        });
-
+        bookImage.setImageResource(getIntent().getIntExtra("image", 0));
     }
 
     private Runnable updater = new Runnable() {
@@ -90,7 +102,6 @@ public class AudioPlayerActivity extends AppCompatActivity {
             updateSeekBar();
             long current = mediaPlayer.getCurrentPosition();
             currentPosition.setText(milliSecondsToTimer(current));
-
         }
     };
 
@@ -112,22 +123,28 @@ public class AudioPlayerActivity extends AppCompatActivity {
         int minutes = (int) (milliSeconds % (1000 * 60 * 60)) / (1000 * 60);
         int seconds = (int) ((milliSeconds % (1000 * 60 * 60)) % (1000 * 60) / 1000);
 
-        if (hours > 0) {
+        if (hours > 0)
             timerString = hours + ":";
-        }
-        if (seconds < 10) {
+
+        if (seconds < 10)
             secondString = "0" + seconds;
-        } else {
+        else
             secondString = "" + seconds;
-        }
+
 
         timerString = timerString + minutes + ":" + secondString;
 
         return timerString;
     }
 
+    private void showMessage(String message) {
+
+        Toast.makeText(AudioPlayerActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onBackPressed() {
+
         super.onBackPressed();
         mediaPlayer.stop();
     }

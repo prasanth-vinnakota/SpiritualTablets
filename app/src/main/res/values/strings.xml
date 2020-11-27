@@ -144,7 +144,6 @@
     <string name="andaman">Andaman</string>
     <string name="suresh">Suresh</string>
     <string name="_9933267030">9933267030</string>
-    <string name="admission_centers">Admission Centers</string>
     <string name="holistic_centers">Holistic Centers</string>
     <string name="research_foundation">Research Foundation</string>
     <string name="gallery">Gallery</string>
@@ -256,7 +255,6 @@
     <string name="request_for_counselling">Request for counselling</string>
     <string name="select_country">Select Country</string>
     <string name="select_state">Select State</string>
-    <string name="ok">OK</string>
     <string name="please_send_required_mails_after_clicking_on_ok_it_will_redirect_you_to_mails">please send required mails. After clicking on ok it will redirect you to mails</string>
     <string name="send_required_mails">Send required mails</string>
     <string name="event_name">Event Name:</string>
@@ -455,15 +453,7 @@
     <string name="youtube_telugu">YOUTUBE TELUGU</string>
     <string name="youtube_english">YOUTUBE ENGLISH</string>
     <string name="youtube_hindi">YOUTUBE HINDI</string>
-    <string name="contact_details">Contact Details :</string>
-    <string name="ramyagunisetty_gmail_com">ramyagunisetty@gmail.com</string>
     <string name="social_media_links">Social Media Links :</string>
-    <string name="asha_917013559118">Asha : +917013559118</string>
-    <string name="mails">Mails</string>
-    <string name="diksha_917899801922">Diksha : +917899801922</string>
-    <string name="uk_europe_usa"><![CDATA[UK, EUROPE & USA]]></string>
-    <string name="app">App</string>
-    <string name="prasanth_919100362607">Prasanth : +919100362607</string>
     <string name="videos">Videos</string>
     <string name="audios">Audios</string>
     <string name="my_profile">My Profile</string>
@@ -474,5 +464,26 @@
     <string name="enter_otp">Enter OTP</string>
     <string name="verify_otp">Verify OTP</string>
     <string name="get_otp">Get OTP</string>
+    <string name="if_you_are_contacting_for">If you are contacting for :</string>
+    <string name="_1_counselling">1.Counselling :</string>
+    <string name="_917899801922_english_and_hindi">+917899801922 (English and Hindi)</string>
+    <string name="_916303465603_telugu">+916303465603 (Telugu)</string>
+    <string name="_2_for_workshops">2.For Workshops :</string>
+    <string name="_918885352809">+918885352809</string>
+    <string name="_918333052547">+918333052547</string>
+    <string name="_3_for_anandobrahma_activity">3.For Anandobrahma activity :</string>
+    <string name="_919246648405">+919246648405</string>
+    <string name="_4_europe_sessions">4.Europe sessions :</string>
+    <string name="_919883583399">+919883583399</string>
+    <string name="_5_donation">5.Donation :</string>
+    <string name="_919553801801">+919553801801</string>
+    <string name="_6_spiritual_parenting">6.Spiritual parenting :</string>
+    <string name="_918008117037">+918008117037</string>
+    <string name="_7_personal_appointment">7.Personal appointment :</string>
+    <string name="_919550093952">+919550093952</string>
+    <string name="_8_pmc_uk_youtube_channel">8.PMC - UK Youtube channel :</string>
+    <string name="_447440604222">+447440604222</string>
+    <string name="admission_centers">Admission Centers</string>
+    <string name="google_sign_in">Google sign in</string>
 
 </resources>

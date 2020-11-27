@@ -13,9 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+
 public  class LatestEventsDialog extends AppCompatDialogFragment   {
 
-    private EditText event_name, event_link;
+    private EditText eventName;
+    private EditText eventLink;
     private LatestEventListener latestEventListener;
 
     @NonNull
@@ -23,7 +25,7 @@ public  class LatestEventsDialog extends AppCompatDialogFragment   {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.latest_events_dialog, null);
 
         builder.setView(view)
@@ -32,13 +34,15 @@ public  class LatestEventsDialog extends AppCompatDialogFragment   {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        String eventName = event_name.getText().toString();
-                        String eventLink = event_link.getText().toString();
-                        latestEventListener.applyEventsTexts(eventName,eventLink);
+                        String eventNameString = eventName.getText().toString();
+                        String eventLinkString = eventLink.getText().toString();
+                        latestEventListener.applyEventsTexts(eventNameString,eventLinkString);
                     }
                 });
-        event_name = view.findViewById(R.id.latest_event_name);
-        event_link = view.findViewById(R.id.latest_event_link);
+
+        eventName = view.findViewById(R.id.latest_event_name);
+        eventLink = view.findViewById(R.id.latest_event_link);
+
         return builder.create();
     }
 

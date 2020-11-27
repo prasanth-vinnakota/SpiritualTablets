@@ -6,20 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -35,15 +29,31 @@ import java.util.Objects;
 public class RapidRegistrationActivity extends AppCompatActivity {
 
 
-    EditText firstName, lastName, age, mobile, email, address, education, disease, motherTongue, referredByName, referredByMobile;
+    EditText firstName;
+    EditText lastName;
+    EditText age;
+    EditText mobile;
+    EditText email;
+    EditText address;
+    EditText education;
+    EditText disease;
+    EditText motherTongue;
+    EditText referredByName;
+    EditText referredByMobile;
     RadioGroup gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rapid_registration);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        init();
+    }
+
+    private void init(){
 
         firstName = findViewById(R.id.rapid_registration_first_name);
         lastName = findViewById(R.id.rapid_registration_last_name);
@@ -62,6 +72,7 @@ public class RapidRegistrationActivity extends AppCompatActivity {
     }
 
     private String getGender(int checkedRadioButtonId) {
+
         switch (checkedRadioButtonId) {
             case R.id.rapid_registration_male:
                 return "Male";
@@ -91,63 +102,85 @@ public class RapidRegistrationActivity extends AppCompatActivity {
         int patient_gender = gender.getCheckedRadioButtonId();
 
         if (TextUtils.isEmpty(patient_first_name)) {
+
             firstName.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_last_name)) {
+
             lastName.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_age)) {
+
             age.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_mobile)) {
+
             mobile.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_email)) {
+
             email.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_address)) {
+
             address.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_education)) {
+
             education.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_disease)) {
+
             disease.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_mother_tongue)) {
+
             motherTongue.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_referred_by_name)) {
+
             referredByName.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
         if (TextUtils.isEmpty(patient_referred_by_mobile)) {
+
             referredByMobile.setError("required field");
+            showMessage("Required Filed Is Missing");
             return;
         }
 
-        DatabaseReference rapid_registration_ref = FirebaseDatabase.getInstance().getReference("rapid_registration").push();
-        DatabaseReference unchecked_rapid_registration_ref = FirebaseDatabase.getInstance().getReference("unchecked_rapid_registration").child(Objects.requireNonNull(rapid_registration_ref.getKey()));
-        unchecked_rapid_registration_ref.setValue(true);
+        DatabaseReference rapidRegistrationReference = FirebaseDatabase.getInstance().getReference("rapid_registration").push();
+        DatabaseReference uncheckedRapidRegistrationReference = FirebaseDatabase.getInstance().getReference("unchecked_rapid_registration").child(Objects.requireNonNull(rapidRegistrationReference.getKey()));
+        uncheckedRapidRegistrationReference.setValue(true);
 
         final Map<String, Object> map = new HashMap<>();
         map.put("first_name", patient_first_name);
@@ -163,13 +196,17 @@ public class RapidRegistrationActivity extends AppCompatActivity {
         map.put("referred_by_mobile", patient_referred_by_mobile);
         map.put("gender", getGender(patient_gender));
         map.put("id", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-        rapid_registration_ref.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        rapidRegistrationReference.updateChildren(map)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+
                 if (task.isComplete()) {
 
                     DatabaseReference books_ref = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("books");
-                    books_ref.setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
+                    books_ref.setValue("yes")
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
@@ -187,9 +224,29 @@ public class RapidRegistrationActivity extends AppCompatActivity {
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            showMessage(e.getMessage());
+                        }
                     });
                 }
+                else
+                    showMessage(Objects.requireNonNull(task.getException()).getMessage());
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showMessage(e.getMessage());
             }
         });
+    }
+
+    private void showMessage(String message){
+
+        Toast.makeText(RapidRegistrationActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }

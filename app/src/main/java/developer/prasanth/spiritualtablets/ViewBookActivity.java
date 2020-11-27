@@ -4,16 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import developer.prasanth.spiritualtablets.R;
-import com.github.barteksc.pdfviewer.PDFView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,53 +21,65 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Objects;
 
 public class ViewBookActivity extends AppCompatActivity {
 
-    private static PDFView pdfView;
-    static LoadingDialog loadingDialog;
     boolean check = false;
+    WebView pdfView;
+    String language;
+    String bookName;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_book);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        pdfView = findViewById(R.id.pdf_view);
+
+        init();
 
         check();
 
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
+    private void init() {
+
+        pdfView = findViewById(R.id.web_view_for_view_book);
+        pdfView.getSettings().setJavaScriptEnabled(true);
+        pdfView.getSettings().setBuiltInZoomControls(true);
+        pdfView.getSettings().setDisplayZoomControls(false);
+
+        language = getIntent().getStringExtra("language");
+        bookName = getIntent().getStringExtra("book_name");
+    }
+
     private void check() {
 
-        if (getIntent().getStringExtra("language").equals("English")){
+        if (language.equals("English")) {
 
-            if (getIntent().getStringExtra("book_name").equals("Meditation") | getIntent().getStringExtra("book_name").equals("Lakshmi Paravathi Saraswathi")){
-
-                check = true;
-                openBook();
-                return;
-            }
-        }
-        if (getIntent().getStringExtra("language").equals("Telugu")){
-
-            if (getIntent().getStringExtra("book_name").equals("Dhyanam") | getIntent().getStringExtra("book_name").equals("Lakshmi Paravathi Saraswathi") | getIntent().getStringExtra("book_name").equals("12 Tablets") | getIntent().getStringExtra("book_name").equals("Aadhyathmika Putrulu") | getIntent().getStringExtra("book_name").equals("Aacharya Saangatyam") | getIntent().getStringExtra("book_name").equals("Yeadu Shakthi Kendralu")){
+            if (bookName.equals("Meditation") | bookName.equals("Lakshmi Paravathi Saraswathi")) {
 
                 check = true;
                 openBook();
                 return;
             }
         }
+        if (language.equals("Telugu")) {
 
-        if(getIntent().getStringExtra("language").equals("Hindi") | getIntent().getStringExtra("language").equals("Kannada") ){
+            if (bookName.equals("Dhyanam") | bookName.equals("Lakshmi Paravathi Saraswathi") | bookName.equals("12 Tablets") | bookName.equals("Aadhyathmika Putrulu") | bookName.equals("Aacharya Saangatyam") | bookName.equals("Yeadu Shakthi Kendralu")) {
+
+                check = true;
+                openBook();
+                return;
+            }
+        }
+
+        if (language.equals("Hindi") | language.equals("Kannada")) {
 
             check = true;
             openBook();
@@ -75,12 +87,13 @@ public class ViewBookActivity extends AppCompatActivity {
         }
 
 
-        DatabaseReference books_ref = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("books");
+        DatabaseReference booksReference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("books");
 
-        books_ref.addValueEventListener(new ValueEventListener() {
+        booksReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue().toString().equals("yes")){
+
+                if (Objects.requireNonNull(snapshot.getValue()).toString().equals("yes")) {
                     check = true;
                 }
                 openBook();
@@ -89,55 +102,54 @@ public class ViewBookActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                showMessage(error.getMessage());
             }
         });
     }
 
-    void openBook(){
-
+    void openBook() {
 
         if (check) {
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("books").child(Objects.requireNonNull(getIntent().getStringExtra("language"))).child(getIntent().getStringExtra("book_name"));
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("books").child(Objects.requireNonNull(getIntent().getStringExtra("language"))).child(Objects.requireNonNull(getIntent().getStringExtra("book_name")));
 
-            loadingDialog = new LoadingDialog(this);
-            loadingDialog.startLoading();
-
-            ref.addValueEventListener(new ValueEventListener() {
+            final ProgressDialog progressDialog = new ProgressDialog(ViewBookActivity.this);
+            progressDialog.setTitle("Loading " + getIntent().getStringExtra("book_name"));
+            progressDialog.setMessage("If books are not opening press back button and open the book again");
+            progressDialog.setCancelable(false);
+            databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    final String url = dataSnapshot.getValue(String.class);
 
-                    new RetrievePdfStream().execute(url);
-                    Toast.makeText(ViewBookActivity.this, "Please Wait It May Take More Than A Minute", Toast.LENGTH_LONG).show();
+                    pdfView.setWebViewClient(new WebViewClient() {
 
-                    /*AlertDialog.Builder builder = new AlertDialog.Builder(ViewBookActivity.this);
-                    builder.setTitle("Select One");
-                    builder.setPositiveButton("download", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(url));
-                            startActivity(intent);
-                            dialogInterface.dismiss();
-                            Toast.makeText(ViewBookActivity.this, "File Downloaded", Toast.LENGTH_SHORT).show();
+                        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                            super.onPageStarted(view, url, favicon);
+                            progressDialog.show();
+                        }
+
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            super.onPageFinished(view, url);
+                            pdfView.loadUrl("javascript:(function() { " +
+                                    "document.querySelector('[role=\"toolbar\"]').remove();})()");
+                            progressDialog.dismiss();
                         }
                     });
-                    builder.setNegativeButton("view", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                            new RetrievePdfStream().execute(url);
-                            dialogInterface.dismiss();
-                        }
-                    });
-
-                    builder.create().show();*/
+                    String url = "";
+                    try {
+                        url = URLEncoder.encode(Objects.requireNonNull(dataSnapshot.getValue()).toString(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        showMessage(e.getMessage());
+                    }
+                    pdfView.loadUrl("https://docs.google.com/gview?embedded=true&url=" + url);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                    showMessage(databaseError.getMessage());
                 }
             });
         } else {
@@ -163,29 +175,8 @@ public class ViewBookActivity extends AppCompatActivity {
         }
     }
 
-    static class RetrievePdfStream extends AsyncTask<String, Void, InputStream> {
+    private void showMessage(String message) {
 
-        @Override
-        protected InputStream doInBackground(String... strings) {
-            InputStream inputStream = null;
-            try {
-                URL url = new URL(strings[0]);
-
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                if (urlConnection.getResponseCode() == 200) {
-                    inputStream = new BufferedInputStream(urlConnection.getInputStream());
-                }
-            } catch (IOException e) {
-                return null;
-            }
-
-            return inputStream;
-        }
-
-        @Override
-        protected void onPostExecute(InputStream inputStream) {
-            pdfView.fromStream(inputStream).load();
-            loadingDialog.dismiss();
-        }
+        Toast.makeText(ViewBookActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }

@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import developer.prasanth.spiritualtablets.adapters.RequestForCounsellingAdapter;
@@ -23,7 +24,7 @@ import developer.prasanth.spiritualtablets.adapters.RequestForCounsellingAdapter
 public class RequestForCounsellingListActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    ArrayList<String> arrayList;
+    List<String> arrayList;
     LoadingDialog loadingDialog;
     RequestForCounsellingAdapter requestForCounsellingAdapter;
 

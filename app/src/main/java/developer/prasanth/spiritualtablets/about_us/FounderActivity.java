@@ -22,6 +22,7 @@ public class FounderActivity extends AppCompatActivity {
     public void loadGkSirSpeech(View view) {
         Intent intent = new Intent(FounderActivity.this, VideoPlayerActivity.class);
         intent.putExtra("name", "Dr GK Spiritual Tablets");
+        intent.putExtra("language","telugu");
         startActivity(intent);
 
     }

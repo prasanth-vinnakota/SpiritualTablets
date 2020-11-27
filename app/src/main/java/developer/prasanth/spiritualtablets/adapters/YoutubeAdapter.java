@@ -6,44 +6,48 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import developer.prasanth.spiritualtablets.R;
 import developer.prasanth.spiritualtablets.VideoPlayerActivity;
 
 public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.MyViewHolder> {
 
-    ArrayList<String> youtube_list;
+    List<String> stringList;
     Context context;
     String language;
 
-    public YoutubeAdapter(String language, ArrayList<String> youtube_list, Context context) {
+    public YoutubeAdapter(String language, List<String> stringList, Context context) {
         this.language = language;
-        this.youtube_list = youtube_list;
+        this.stringList = stringList;
         this.context = context;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.youtube_video_list_layout,parent,false);
+
+        View view = LayoutInflater.from(context).inflate(R.layout.single_item_view,parent,false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-        holder.name.setText(youtube_list.get(position));
+        holder.name.setText(stringList.get(position));
+
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, VideoPlayerActivity.class);
                 intent.putExtra("language", language);
-                intent.putExtra("name",youtube_list.get(position));
+                intent.putExtra("name",stringList.get(position));
+                showMessage("Loading " + stringList.get(position));
                 context.startActivity(intent);
             }
         });
@@ -51,15 +55,22 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return youtube_list.size();
+        return stringList.size();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
+
         TextView name;
 
         public MyViewHolder(@NonNull View itemView) {
+
             super(itemView);
             name = itemView.findViewById(R.id.youtube_list_text_view);
         }
+    }
+
+    private void showMessage(String message){
+
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

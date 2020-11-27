@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import developer.prasanth.spiritualtablets.adapters.RapidRegistrationAdapter;
@@ -22,7 +23,7 @@ import developer.prasanth.spiritualtablets.adapters.RapidRegistrationAdapter;
 public class RapidRegistrationListActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    ArrayList<String> arrayList;
+    List<String> arrayList;
     LoadingDialog loadingDialog;
     RapidRegistrationAdapter rapidRegistrationAdapter;
 

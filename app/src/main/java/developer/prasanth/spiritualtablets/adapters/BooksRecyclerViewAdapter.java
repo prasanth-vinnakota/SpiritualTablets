@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -21,44 +22,43 @@ import java.util.List;
 
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
 
-    private Context mContext;
-    private List<DataItem> mData;
+    private Context context;
+    private List<DataItem> dataItems;
 
-    public BooksRecyclerViewAdapter(Context mContext, List<DataItem> mData) {
-        this.mContext = mContext;
-        this.mData = mData;
+    public BooksRecyclerViewAdapter(Context context, List<DataItem> dataItems) {
+        this.context = context;
+        this.dataItems = dataItems;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.cardview_item_book,parent, false);
-
+        View view = LayoutInflater.from(context).inflate(R.layout.cardview_item_book,parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
-        holder.tv_book_title.setText(mData.get(position).getTitle());
-        holder.img_book_thumbnail.setImageResource(mData.get(position).getThumbnail());
+        holder.tv_book_title.setText(dataItems.get(position).getTitle());
+        holder.img_book_thumbnail.setImageResource(dataItems.get(position).getThumbnail());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(mContext, ViewBookActivity.class);
-                intent.putExtra("language",mData.get(position).getCategory());
-                intent.putExtra("book_name",mData.get(position).getTitle());
-                mContext.startActivity(intent);
+                Intent intent = new Intent(context, ViewBookActivity.class);
+                intent.putExtra("language",dataItems.get(position).getCategory());
+                intent.putExtra("book_name",dataItems.get(position).getTitle());
+                context.startActivity(intent);
+                showMessage("Loading " + dataItems.get(position).getTitle());
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return dataItems.size();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -75,5 +75,8 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
 
         }
+    }
+    private void showMessage(String message){
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

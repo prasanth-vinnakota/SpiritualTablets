@@ -24,56 +24,58 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AdminPanelActivity extends AppCompatActivity implements LatestEventsDialog.LatestEventListener {
 
-    DatabaseReference latest_events_ref, youtube_ref;
+    DatabaseReference latestEventsReference;
+    DatabaseReference youtubeReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
-
-        latest_events_ref = FirebaseDatabase.getInstance().getReference().child("latest_events");
-        youtube_ref = FirebaseDatabase.getInstance().getReference("youtube");
+        init();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(AdminPanelActivity.this, DashBoardActivity.class));
-        finish();
+    private void init() {
+        latestEventsReference = FirebaseDatabase.getInstance().getReference().child("latest_events");
+        youtubeReference = FirebaseDatabase.getInstance().getReference("youtube");
     }
 
     public void adminPanelAddEvent(View view) {
+
         startActivity(new Intent(AdminPanelActivity.this, AddEventActivity.class));
         finish();
     }
 
     public void adminPanelAddScrollingEvent(View view) {
-        LatestEventsDialog latestEventsDialog = new LatestEventsDialog();
-        latestEventsDialog.show(getSupportFragmentManager(),"Add event");
-    }
 
+        LatestEventsDialog latestEventsDialog = new LatestEventsDialog();
+        latestEventsDialog.show(getSupportFragmentManager(), "Add event");
+    }
 
     @Override
     public void applyEventsTexts(final String event_name, final String event_link) {
+
         if (!TextUtils.isEmpty(event_name)) {
 
-            latest_events_ref.addValueEventListener(new ValueEventListener() {
+            latestEventsReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    latest_events_ref.child("value").setValue(event_name).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (!TextUtils.isEmpty(event_link)) {
-                                latest_events_ref.child("link").setValue(event_link);
-                            }
-                            Toast.makeText(AdminPanelActivity.this, "event added successfully", Toast.LENGTH_SHORT).show();
-                        }
-                    })
+                    latestEventsReference.child("value").setValue(event_name)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (!TextUtils.isEmpty(event_link))
+                                        latestEventsReference.child("link").setValue(event_link);
+                                    showMessage("Event Added Successfully");
+                                }
+                            })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(AdminPanelActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                    showMessage(e.getMessage());
                                 }
                             });
                 }
@@ -81,18 +83,20 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
+                    showMessage(error.getMessage());
                 }
             });
 
         } else {
-            Toast.makeText(AdminPanelActivity.this, "Event name must not be empty", Toast.LENGTH_SHORT).show();
+
+            showMessage("Event Name Must Not Be Empty");
         }
     }
 
     public void adminPanelViewVolunteer(View view) {
 
         LayoutInflater inflater = LayoutInflater.from(AdminPanelActivity.this);
-        View view1 = inflater.inflate(R.layout.view_volunteer_dialog,null);
+        View view1 = inflater.inflate(R.layout.view_volunteer_dialog, null);
         Button checkedVolunteers = view1.findViewById(R.id.view_checked_volunteers);
         Button unCheckedVolunteers = view1.findViewById(R.id.view_unchecked_volunteers);
         Button allVolunteers = view1.findViewById(R.id.view_all_volunteers);
@@ -108,8 +112,9 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         checkedVolunteers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(AdminPanelActivity.this, VolunteersListActivity.class);
-                intent.putExtra("type","checked");
+                intent.putExtra("type", "checked");
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -118,8 +123,9 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         unCheckedVolunteers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(AdminPanelActivity.this, VolunteersListActivity.class);
-                intent.putExtra("type","unchecked");
+                intent.putExtra("type", "unchecked");
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -128,8 +134,9 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         allVolunteers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(AdminPanelActivity.this, VolunteersListActivity.class);
-                intent.putExtra("type","all");
+                intent.putExtra("type", "all");
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -144,8 +151,9 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
     }
 
     public void adminPanelViewRapidRegisteredPatients(View view) {
+
         LayoutInflater layoutInflater = LayoutInflater.from(AdminPanelActivity.this);
-        View view1 = layoutInflater.inflate(R.layout.patient_view_dialog,null);
+        View view1 = layoutInflater.inflate(R.layout.patient_view_dialog, null);
         Button checkedPatients = view1.findViewById(R.id.view_checked_patients);
         Button uncheckedPatients = view1.findViewById(R.id.view_unchecked_patients);
         Button allPatients = view1.findViewById(R.id.view_all_patients);
@@ -161,8 +169,8 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         checkedPatients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminPanelActivity.this,RapidRegistrationListActivity.class);
-                intent.putExtra("type","checked");
+                Intent intent = new Intent(AdminPanelActivity.this, RapidRegistrationListActivity.class);
+                intent.putExtra("type", "checked");
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -171,8 +179,8 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         uncheckedPatients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminPanelActivity.this,RapidRegistrationListActivity.class);
-                intent.putExtra("type","unchecked");
+                Intent intent = new Intent(AdminPanelActivity.this, RapidRegistrationListActivity.class);
+                intent.putExtra("type", "unchecked");
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -181,8 +189,8 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         allPatients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminPanelActivity.this,RapidRegistrationListActivity.class);
-                intent.putExtra("type","all");
+                Intent intent = new Intent(AdminPanelActivity.this, RapidRegistrationListActivity.class);
+                intent.putExtra("type", "all");
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -197,8 +205,9 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
     }
 
     public void adminPanelViewRequestForCounselling(View view) {
+
         LayoutInflater layoutInflater = LayoutInflater.from(AdminPanelActivity.this);
-        View view1 = layoutInflater.inflate(R.layout.patient_view_dialog,null);
+        View view1 = layoutInflater.inflate(R.layout.patient_view_dialog, null);
         Button checkedPatients = view1.findViewById(R.id.view_checked_patients);
         Button uncheckedPatients = view1.findViewById(R.id.view_unchecked_patients);
         Button allPatients = view1.findViewById(R.id.view_all_patients);
@@ -214,8 +223,8 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         checkedPatients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminPanelActivity.this,RequestForCounsellingListActivity.class);
-                intent.putExtra("type","checked");
+                Intent intent = new Intent(AdminPanelActivity.this, RequestForCounsellingListActivity.class);
+                intent.putExtra("type", "checked");
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -224,8 +233,8 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         uncheckedPatients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminPanelActivity.this,RequestForCounsellingListActivity.class);
-                intent.putExtra("type","unchecked");
+                Intent intent = new Intent(AdminPanelActivity.this, RequestForCounsellingListActivity.class);
+                intent.putExtra("type", "unchecked");
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -234,8 +243,8 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         allPatients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminPanelActivity.this,RequestForCounsellingListActivity.class);
-                intent.putExtra("type","all");
+                Intent intent = new Intent(AdminPanelActivity.this, RequestForCounsellingListActivity.class);
+                intent.putExtra("type", "all");
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -247,5 +256,9 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
                 dialog.dismiss();
             }
         });
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(AdminPanelActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }
