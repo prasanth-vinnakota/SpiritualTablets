@@ -32,16 +32,16 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.single_item_view,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_video_view_layout,parent,false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-        holder.name.setText(stringList.get(position));
+        holder.videoName.setText(stringList.get(position));
 
-        holder.name.setOnClickListener(new View.OnClickListener() {
+        holder.videoName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, VideoPlayerActivity.class);
@@ -60,12 +60,12 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.MyViewHo
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView name;
+        TextView videoName;
 
         public MyViewHolder(@NonNull View itemView) {
 
             super(itemView);
-            name = itemView.findViewById(R.id.youtube_list_text_view);
+            videoName = itemView.findViewById(R.id.single_video_view_layout_video_name);
         }
     }
 

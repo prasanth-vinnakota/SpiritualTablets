@@ -68,6 +68,8 @@ dependencies {
     implementation 'com.jcminarro:RoundKornerLayouts:0.2.0'
     implementation 'com.firebaseui:firebase-ui-database:6.2.1'
     implementation 'com.hbb20:ccp:2.3.1'
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
+    implementation 'com.zolad:zoominimageview:1.0.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }

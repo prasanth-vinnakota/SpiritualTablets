@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
@@ -14,8 +15,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import developer.prasanth.spiritualtablets.contact_us.PrimaryCentersActivity;
@@ -59,12 +62,12 @@ public class ContactUsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Admission Centers");
-        builder.setMessage("1.NITYANADHA PYRAMID" +
-                "2.JAGANNATH PYRAMID" +
-                "3.MAADUGULA PYRAMID" +
-                "4.GUDIWADA PYRAMID" +
-                "5.MUMMIDIVARAM PYRAMID" +
-                "6.PEDAGADI PYRAMID" +
+        builder.setMessage("1.NITYANADHA PYRAMID\n" +
+                "2.JAGANNATH PYRAMID\n" +
+                "3.MAADUGULA PYRAMID\n" +
+                "4.GUDIWADA PYRAMID\n" +
+                "5.MUMMIDIVARAM PYRAMID\n" +
+                "6.PEDAGADI PYRAMID\n" +
                 "7.KOTALA PYRAMID" );
 
         AlertDialog dialog = builder.create();
@@ -98,7 +101,7 @@ public class ContactUsActivity extends AppCompatActivity {
         builder.setPositiveButton("Call", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                call();
+                copyOrCallAlertDialog("+919100362607");
             }
         });
 
@@ -117,13 +120,56 @@ public class ContactUsActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void call(){
+    private void copyOrCallAlertDialog(final String message){
+
+        @SuppressLint("InflateParams")
+        View view = LayoutInflater.from(ContactUsActivity.this).inflate(R.layout.copy_or_call_dialog,null);
+
+        final Button call = view.findViewById(R.id.copy_or_call_dialog_call);
+        final Button copy = view.findViewById(R.id.copy_or_call_dialog_copy);
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(ContactUsActivity.this)
+                .setCancelable(true)
+                .setView(view)
+                .create();
+
+        alertDialog.show();
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                call(message);
+                alertDialog.dismiss();
+            }
+        });
+
+        copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copy(message);
+                alertDialog.dismiss();
+            }
+        });
+
+    }
+
+    private void call(String number){
 
         if (ContextCompat.checkSelfPermission(ContactUsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(ContactUsActivity.this, new String[]{Manifest.permission.CALL_PHONE},REQUEST_CODE);
         }else {
-            String dial = "tel:" +"+919100362607";
+            String dial = "tel:" +number;
             startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            finish();
+        }
+    }
+
+    private void copy(String message){
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("number", message);
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(clipData);
+            showMessage("Number copied to clipboard");
         }
     }
 
@@ -133,113 +179,63 @@ public class ContactUsActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE){
 
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                call();
+                showMessage("Permissions Granted Now You Can Make Calls");
         }
     }
 
-    public void copyCounsellingEnglishAndHindiNumber(View view) {
+    public void counsellingEnglishAndHindiNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("counselling for english and hindi", "+917899801922");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+917899801922");
     }
 
-    public void copyCounsellingTeluguNumber(View view) {
+    public void counsellingTeluguNumber(View view) {
 
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("counselling for telugu", "+916303465603");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+916303465603");
     }
 
-    public void copyWorkshopNumber(View view) {
+    public void workshopNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("workshop", "+918885352809");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+918885352809");
     }
 
-    public void copyWorkshopSecondNumber(View view) {
+    public void workshopSecondNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("workshop", "+918333052547");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+918333052547");
     }
 
-    public void copyAnandobrahmaNumber(View view) {
+    public void anandobrahmaNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("anandobrahma", "+919246648405");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+919246648405");
     }
 
-    public void copyEuropeSessionsNumber(View view) {
+    public void europeSessionsNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("europe sessions", "+919246648405");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+919246648405");
     }
 
-    public void copyDonationNumber(View view) {
+    public void donationNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("donation number", "+919553801801");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+919553801801");
     }
 
-    public void copySpiritualParentingNumber(View view) {
+    public void spiritualParentingNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("spiritual parenting", "+918008117037");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+918008117037");
     }
 
-    public void copyPersonalAppointmentNumber(View view) {
+    public void personalAppointmentNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("personal appointment", "+919550093952");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+919550093952");
     }
 
-    public void copyPmcUKYoutubeChannelNumber(View view) {
+    public void pmcUKYoutubeChannelNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("pmc youtube channel uk", "+447440604222");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage();
-        }
+        copyOrCallAlertDialog("+447440604222");
     }
 
-    private void showMessage(){
+    private void showMessage(String message){
 
-        Toast.makeText(ContactUsActivity.this, "Number copied to clipboard", Toast.LENGTH_LONG).show();
+        Toast.makeText(ContactUsActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }

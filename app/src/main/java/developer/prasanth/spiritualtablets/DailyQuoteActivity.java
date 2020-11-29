@@ -22,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings("ALL")
@@ -40,9 +39,11 @@ public class DailyQuoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_daily_quote);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        init();
+
         final Date date = new Date();
 
-        DatabaseReference dailyTipReference = FirebaseDatabase.getInstance().getReference("daily_tip");
+        DatabaseReference dailyTipReference = FirebaseDatabase.getInstance().getReference("daily_tip").child(timestampToString(date.getTime()));
 
         dailyTipReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -50,35 +51,23 @@ public class DailyQuoteActivity extends AppCompatActivity {
 
                 if (dataSnapshot.exists()) {
 
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            if (dataSnapshot.child("Title").getValue() != null) {
 
-                        if (Objects.equals(snapshot.getKey(), timestampToString(date.getTime()))) {
-
-                            Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-
-                            if (map == null)
-                                return;
-
-                            if (map.get("Title") != null) {
-
-                                title.setText(Objects.requireNonNull(map.get("Title")).toString());
+                                title.setText(Objects.requireNonNull(dataSnapshot.child("Title").getValue().toString()));
                                 title.setVisibility(View.VISIBLE);
                             }
 
-                            if (map.get("Image") != null) {
+                            if (dataSnapshot.child("Image").getValue() != null) {
 
-                                Glide.with(getApplicationContext()).load(map.get("Image")).into(image);
+                                Glide.with(DailyQuoteActivity.this).load(dataSnapshot.child("Image").getValue().toString()).into(image);
                                 image.setVisibility(View.VISIBLE);
                             }
 
-                            if (map.get("Description") != null) {
+                            if (dataSnapshot.child("Description").getValue() != null) {
 
-                                description.setText(Objects.requireNonNull(map.get("Description")).toString());
+                                description.setText(Objects.requireNonNull(dataSnapshot.child("Description").getValue().toString()));
                                 description.setVisibility(View.VISIBLE);
                             }
-
-                        }
-                    }
 
                     progressBar.setVisibility(View.GONE);
                 }

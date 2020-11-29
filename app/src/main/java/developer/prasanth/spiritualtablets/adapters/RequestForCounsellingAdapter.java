@@ -2,6 +2,7 @@ package developer.prasanth.spiritualtablets.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 import java.util.Objects;
 
+import developer.prasanth.spiritualtablets.AdminPanelActivity;
 import developer.prasanth.spiritualtablets.R;
 
 
@@ -40,8 +42,8 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
     @Override
     public RequestForCounsellingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.single_request_for_counselling_view_dialog,parent,false);
-        dialogView = LayoutInflater.from(context).inflate(R.layout.check_uncheck,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_request_for_counselling_view_layout,parent,false);
+        dialogView = LayoutInflater.from(context).inflate(R.layout.check_uncheck_dialog,parent,false);
         return new RequestForCounsellingViewHolder(view);
     }
 
@@ -71,7 +73,7 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
                         holder.mobile.setText(Objects.requireNonNull(snapshot.child("mobile").getValue()).toString());
 
                     if (snapshot.child("mode").getValue() != null)
-                        holder.mode.setText(Objects.requireNonNull(snapshot.child("mode").getValue()).toString());
+                        holder.counsellingMode.setText(Objects.requireNonNull(snapshot.child("mode").getValue()).toString());
 
                     if (snapshot.child("disease").getValue() != null)
                         holder.disease.setText(Objects.requireNonNull(snapshot.child("disease").getValue()).toString());
@@ -82,9 +84,13 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
                     holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View view) {
-                            Button check = dialogView.findViewById(R.id.check_volunteer);
-                            Button uncheck = dialogView.findViewById(R.id.uncheck_volunteer);
-                            Button cancel = dialogView.findViewById(R.id.check_uncheck_cancel);
+
+                            Button check = dialogView.findViewById(R.id.check_uncheck_dialog_check);
+                            Button uncheck = dialogView.findViewById(R.id.check_uncheck_dialog_uncheck);
+                            Button cancel = dialogView.findViewById(R.id.check_uncheck_dialog_cancel);
+
+                            if (dialogView.getParent() != null)
+                                ((ViewGroup)dialogView.getParent()).removeView(dialogView);
 
                             final AlertDialog dialog = new AlertDialog.Builder(context)
                                     .setView(dialogView)
@@ -99,6 +105,7 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
                                     DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference();
                                     db_ref.child("checked_request_for_counselling").child(stringList.get(position)).setValue(true);
                                     db_ref.child("unchecked_request_for_counselling").child(stringList.get(position)).removeValue();
+                                    context.startActivity(new Intent(context, AdminPanelActivity.class));
                                     showMessage("Checked Successfully");
                                     dialog.dismiss();
                                 }
@@ -110,6 +117,7 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
                                     DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference();
                                     db_ref.child("unchecked_request_for_counselling").child(stringList.get(position)).setValue(true);
                                     db_ref.child("checked_request_for_counselling").child(stringList.get(position)).removeValue();
+                                    context.startActivity(new Intent(context, AdminPanelActivity.class));
                                     showMessage("Unchecked Successfully");
                                     dialog.dismiss();
                                 }
@@ -151,21 +159,21 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
         TextView email;
         TextView disease;
         TextView gender;
-        TextView mode;
+        TextView counsellingMode;
         CardView cardView;
 
         public RequestForCounsellingViewHolder(@NonNull View itemView) {
             super(itemView);
-            firstName = itemView.findViewById(R.id.request_for_counselling_view_first_name);
-            lastName = itemView.findViewById(R.id.request_for_counselling_view_last_name);
-            age = itemView.findViewById(R.id.request_for_counselling_view_age);
-            mobile = itemView.findViewById(R.id.request_for_counselling_view_mobile_no);
-            email = itemView.findViewById(R.id.request_for_counselling_view_email);
-            disease = itemView.findViewById(R.id.request_for_counselling_view_disease);
-            gender = itemView.findViewById(R.id.request_for_counselling_view_gender);
-            mode = itemView.findViewById(R.id.request_for_counselling_view_counselling_mode);
+            firstName = itemView.findViewById(R.id.single_request_for_counselling_view_layout_first_name);
+            lastName = itemView.findViewById(R.id.single_request_for_counselling_view_layout_last_name);
+            age = itemView.findViewById(R.id.single_request_for_counselling_view_layout_age_in_years);
+            mobile = itemView.findViewById(R.id.single_request_for_counselling_view_layout_mobile_no);
+            email = itemView.findViewById(R.id.single_request_for_counselling_view_layout_email);
+            disease = itemView.findViewById(R.id.single_request_for_counselling_view_layout_disease);
+            gender = itemView.findViewById(R.id.single_request_for_counselling_view_layout_gender);
+            counsellingMode = itemView.findViewById(R.id.single_request_for_counselling_view_layout_counselling_mode);
 
-            cardView = itemView.findViewById(R.id.request_for_counselling_view_card_view);
+            cardView = itemView.findViewById(R.id.single_request_for_counselling_view_layout_card_view);
         }
     }
 

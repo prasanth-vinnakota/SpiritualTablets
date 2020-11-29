@@ -255,7 +255,7 @@
     <string name="request_for_counselling">Request for counselling</string>
     <string name="select_country">Select Country</string>
     <string name="select_state">Select State</string>
-    <string name="please_send_required_mails_after_clicking_on_ok_it_will_redirect_you_to_mails">please send required mails. After clicking on ok it will redirect you to mails</string>
+    <string name="please_send_required_mails_after_clicking_on_ok_it_will_redirect_you_to_mails">please send required mails. After clicking on OK it will redirect you to mails</string>
     <string name="send_required_mails">Send required mails</string>
     <string name="event_name">Event Name:</string>
     <string name="event_timing">Event Timing:</string>
@@ -299,7 +299,6 @@
     <string name="hindi">Hindi</string>
     <string name="english">English</string>
     <string name="telugu">Telugu</string>
-    <string name="delete_event">Delete Event?</string>
     <string name="this_can_t_be_undone">This can\'t be undone</string>
     <string name="developer">Developer</string>
     <string name="last_seen">Last Seen</string>
@@ -485,5 +484,10 @@
     <string name="_447440604222">+447440604222</string>
     <string name="admission_centers">Admission Centers</string>
     <string name="google_sign_in">Google sign in</string>
+    <string name="participate_list">Participate List</string>
+    <string name="share_app">Share App</string>
+    <string name="mark_as_complete">Mark As Complete</string>
+    <string name="call">Call</string>
+    <string name="copy">Copy</string>
 
 </resources>

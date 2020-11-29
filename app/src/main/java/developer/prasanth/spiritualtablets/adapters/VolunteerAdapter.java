@@ -3,6 +3,7 @@ package developer.prasanth.spiritualtablets.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 import java.util.Objects;
 
+import developer.prasanth.spiritualtablets.AdminPanelActivity;
 import developer.prasanth.spiritualtablets.R;
 
 public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.VolunteerListViewHolder> {
@@ -41,8 +43,8 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
     @Override
     public VolunteerListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.single_volunteer_view_layout, parent, false);
-        dialogView = LayoutInflater.from(context).inflate(R.layout.check_uncheck, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_volunteer_registrations_view_layout, parent, false);
+        dialogView = LayoutInflater.from(context).inflate(R.layout.check_uncheck_dialog, parent, false);
         return new VolunteerListViewHolder(view);
     }
 
@@ -104,9 +106,13 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
                         @Override
                         public boolean onLongClick(View view) {
 
-                            Button check = dialogView.findViewById(R.id.check_volunteer);
-                            Button uncheck = dialogView.findViewById(R.id.uncheck_volunteer);
-                            Button cancel = dialogView.findViewById(R.id.check_uncheck_cancel);
+
+                            Button check = dialogView.findViewById(R.id.check_uncheck_dialog_check);
+                            Button uncheck = dialogView.findViewById(R.id.check_uncheck_dialog_uncheck);
+                            Button cancel = dialogView.findViewById(R.id.check_uncheck_dialog_cancel);
+
+                            if (dialogView.getParent() != null)
+                                ((ViewGroup)dialogView.getParent()).removeView(dialogView);
 
                             final AlertDialog dialog = new AlertDialog.Builder(context)
                                     .setView(dialogView)
@@ -134,6 +140,7 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
                                             if (snapshot.child("id").getValue() != null){
                                                 DatabaseReference work_ref = FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(snapshot.child("id").getValue()).toString()).child("work");
                                                 work_ref.setValue(editText.getText().toString());
+                                                context.startActivity(new Intent(context, AdminPanelActivity.class));
                                             }
                                             showMessage("Checked Successfully");
                                             dialog.dismiss();
@@ -155,6 +162,7 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
                                     if (snapshot.child("id").getValue() != null){
                                         DatabaseReference work_ref =FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(snapshot.child("id").getValue()).toString()).child("work");
                                         work_ref.removeValue();
+                                        context.startActivity(new Intent(context, AdminPanelActivity.class));
                                     }
                                     showMessage("Unchecked Successfully");
                                     dialog.dismiss();
@@ -204,17 +212,17 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
 
         public VolunteerListViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardView = itemView.findViewById(R.id.single_volunteer_view_card_view);
-            name = itemView.findViewById(R.id.single_volunteer_name);
-            email = itemView.findViewById(R.id.single_volunteer_email);
-            mobile = itemView.findViewById(R.id.single_volunteer_mobile_no);
-            address = itemView.findViewById(R.id.single_volunteer_address);
-            way_of_contribution = itemView.findViewById(R.id.single_volunteer_way_of_contribution);
-            time_to_contribute = itemView.findViewById(R.id.single_volunteer_time_to_contribute);
-            time_to_communicate = itemView.findViewById(R.id.single_volunteer_time_to_communicate);
-            days = itemView.findViewById(R.id.single_volunteer_days);
-            comments = itemView.findViewById(R.id.single_volunteer_comments);
-            work_assigned = itemView.findViewById(R.id.single_volunteer_work_assigned);
+            cardView = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_card_view);
+            name = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_name);
+            email = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_email);
+            mobile = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_mobile_no);
+            address = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_address);
+            way_of_contribution = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_way_of_contribution);
+            time_to_contribute = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_time_to_contribute);
+            time_to_communicate = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_time_to_communicate);
+            days = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_days);
+            comments = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_comments);
+            work_assigned = itemView.findViewById(R.id.single_volunteer_registrations_view_layout_work_assigned);
         }
     }
 

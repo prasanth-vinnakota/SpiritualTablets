@@ -9,23 +9,20 @@
         android:orientation="vertical"
         android:background="@drawable/background_gradient">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/full_logo"
-            android:contentDescription="@string/app_name" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/lemonada"
-            android:gravity="center"
-            android:text="@string/volunteers_list"
-            android:textSize="30sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:fontFamily="@font/bungee"
+        android:text="@string/volunteers_list"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/volunteersRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

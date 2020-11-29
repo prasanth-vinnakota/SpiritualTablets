@@ -474,6 +474,27 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@android:color/holo_orange_light"
+            app:cardElevation="8dp">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/share"
+                android:fontFamily="@font/lemonada"
+                android:onClick="shareApp"
+                android:text="@string/share_app" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             app:cardCornerRadius="8dp"
@@ -584,7 +605,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:onClick="copyCounsellingEnglishAndHindiNumber"
+                    android:onClick="counsellingEnglishAndHindiNumber"
                     android:text="@string/_917899801922_english_and_hindi"
                     android:textAllCaps="true"
                     android:textColor="#000"
@@ -594,7 +615,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:onClick="copyCounsellingTeluguNumber"
+                    android:onClick="counsellingTeluguNumber"
                     android:text="@string/_916303465603_telugu"
                     android:textAllCaps="true"
                     android:textColor="#000"
@@ -613,7 +634,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:onClick="copyWorkshopNumber"
+                    android:onClick="workshopNumber"
                     android:text="@string/_918885352809"
                     android:textAllCaps="true"
                     android:textColor="#000"
@@ -623,7 +644,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:onClick="copyWorkshopSecondNumber"
+                    android:onClick="workshopSecondNumber"
                     android:text="@string/_918333052547"
                     android:textAllCaps="true"
                     android:textColor="#000"
@@ -643,7 +664,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:onClick="copyAnandobrahmaNumber"
+                    android:onClick="anandobrahmaNumber"
                     android:text="@string/_919246648405"
                     android:textAllCaps="true"
                     android:textColor="#000"
@@ -662,7 +683,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:onClick="copyEuropeSessionsNumber"
+                    android:onClick="europeSessionsNumber"
                     android:text="@string/_919883583399"
                     android:textAllCaps="true"
                     android:textColor="#000"
@@ -681,7 +702,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:onClick="copyDonationNumber"
+                    android:onClick="donationNumber"
                     android:text="@string/_919553801801"
                     android:textAllCaps="true"
                     android:textColor="#000"
@@ -700,7 +721,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:onClick="copySpiritualParentingNumber"
+                    android:onClick="spiritualParentingNumber"
                     android:text="@string/_918008117037"
                     android:textAllCaps="true"
                     android:textColor="#000"
@@ -719,7 +740,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:onClick="copyPersonalAppointmentNumber"
+                    android:onClick="personalAppointmentNumber"
                     android:text="@string/_919550093952"
                     android:textAllCaps="true"
                     android:textColor="#000"
@@ -735,7 +756,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:onClick="copyPmcUKYoutubeChannelNumber"
+                    android:onClick="pmcUKYoutubeChannelNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -744,10 +765,9 @@
                     android:textColor="#000"
                     android:textSize="18sp" />
 
-
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>
 

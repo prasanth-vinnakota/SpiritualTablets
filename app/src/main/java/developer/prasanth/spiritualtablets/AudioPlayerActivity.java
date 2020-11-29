@@ -112,6 +112,8 @@ public class AudioPlayerActivity extends AppCompatActivity {
             seekBar.setProgress((int) (((float) mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration()) * 100));
             handler.postDelayed(updater, 1000);
         }
+        else
+            playOrPause.setImageResource(R.drawable.play);
     }
 
     private String milliSecondsToTimer(long milliSeconds) {

@@ -151,10 +151,11 @@ public class AddEventActivity extends AppCompatActivity {
 
         if (!selectedLanguage.equals("Select Language")) {
 
-            eventsReference = FirebaseDatabase.getInstance().getReference("events").child(selectedLanguage).child(event_name);
+            eventsReference = FirebaseDatabase.getInstance().getReference("events").child(selectedLanguage).push();
 
             eventsReference.child("language").setValue(selectedLanguage);
             eventsReference.child("name").setValue(event_name);
+            eventsReference.child("completed").setValue(false);
 
             if (filePath != null) {
 

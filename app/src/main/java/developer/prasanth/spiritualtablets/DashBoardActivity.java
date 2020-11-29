@@ -3,11 +3,16 @@ package developer.prasanth.spiritualtablets;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -46,6 +51,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     private DatabaseReference userReference;
     private String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     private int VERSION_CODE = 15;
+    private static final int REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
                             final AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
 
                             builder.setTitle("App update required");
+                            builder.setCancelable(false);
                             builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -319,13 +326,28 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
                 if (!snapshot.child("updated").exists()) {
 
-                    updatedReference.child("updated").setValue(true);
-                    updatedReference.child("account_created_time").setValue(ServerValue.TIMESTAMP);
                     updatedReference.child("books").setValue("no");
                     updatedReference.child("settings").child("mobile_number").setValue("false");
                     updatedReference.child("settings").child("dob").setValue("false");
                     updatedReference.child("settings").child("profile_status").setValue("true");
-                    showMessage("Please Update Your Profile In Profile Section");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
+                    builder.setMessage("You Need To Update Your Profile");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Update Now", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(DashBoardActivity.this, ProfileActivity.class));
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    builder.create().show();
                 }
             }
 
@@ -718,106 +740,117 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
             showMessage("Event Name Must Not Be Empty");
         }
     }
+    private void copyOrCallAlertDialog(final String message){
 
-    public void copyCounsellingEnglishAndHindiNumber(View view) {
+        @SuppressLint("InflateParams")
+        View view = LayoutInflater.from(DashBoardActivity.this).inflate(R.layout.copy_or_call_dialog,null);
 
+        final Button call = view.findViewById(R.id.copy_or_call_dialog_call);
+        final Button copy = view.findViewById(R.id.copy_or_call_dialog_copy);
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(DashBoardActivity.this)
+                .setCancelable(true)
+                .setView(view)
+                .create();
+
+        alertDialog.show();
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                call(message);
+                alertDialog.dismiss();
+            }
+        });
+
+        copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copy(message);
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    private void call(String number){
+
+        if (ContextCompat.checkSelfPermission(DashBoardActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(DashBoardActivity.this, new String[]{Manifest.permission.CALL_PHONE},REQUEST_CODE);
+        }else {
+            String dial = "tel:" +number;
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            finish();
+        }
+    }
+
+    private void copy(String message){
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("counselling for english and hindi", "+917899801922");
+        ClipData clipData = ClipData.newPlainText("number", message);
         if (clipboardManager != null) {
             clipboardManager.setPrimaryClip(clipData);
             showMessage("Number copied to clipboard");
         }
     }
 
-    public void copyCounsellingTeluguNumber(View view) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
+        if (requestCode == REQUEST_CODE){
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("counselling for telugu", "+916303465603");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                showMessage("Permissions Granted Now You Can Make Calls");
         }
     }
 
-    public void copyWorkshopNumber(View view) {
+    public void counsellingEnglishAndHindiNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("workshop", "+918885352809");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
-        }
+        copyOrCallAlertDialog("+917899801922");
     }
 
-    public void copyWorkshopSecondNumber(View view) {
+    public void counsellingTeluguNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("workshop", "+918333052547");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
-        }
+
+        copyOrCallAlertDialog("+916303465603");
     }
 
-    public void copyAnandobrahmaNumber(View view) {
+    public void workshopNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("anandobrahma", "+919246648405");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
-        }
+        copyOrCallAlertDialog("+918885352809");
     }
 
-    public void copyEuropeSessionsNumber(View view) {
+    public void workshopSecondNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("europe sessions", "+919246648405");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
-        }
+        copyOrCallAlertDialog("+918333052547");
     }
 
-    public void copyDonationNumber(View view) {
+    public void anandobrahmaNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("donation number", "+919553801801");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
-        }
+        copyOrCallAlertDialog("+919246648405");
     }
 
-    public void copySpiritualParentingNumber(View view) {
+    public void europeSessionsNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("spiritual parenting", "+918008117037");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
-        }
+        copyOrCallAlertDialog("+919246648405");
     }
 
-    public void copyPersonalAppointmentNumber(View view) {
+    public void donationNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("personal appointment", "+919550093952");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
-        }
+        copyOrCallAlertDialog("+919553801801");
     }
 
-    public void copyPmcUKYoutubeChannelNumber(View view) {
+    public void spiritualParentingNumber(View view) {
 
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("pmc youtube channel uk", "+447440604222");
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
-        }
+        copyOrCallAlertDialog("+918008117037");
+    }
+
+    public void personalAppointmentNumber(View view) {
+
+        copyOrCallAlertDialog("+919550093952");
+    }
+
+    public void pmcUKYoutubeChannelNumber(View view) {
+
+        copyOrCallAlertDialog("+447440604222");
     }
 
     private void showMessage(String message){
@@ -833,5 +866,15 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    public void shareApp(View view) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String body = "Download this Application now:-https://play.google.com/store/apps/details?id=developer.prasanth.spiritualtablets&hl=en";
+        String subject = "Spiritual Tablets App";
+        intent.putExtra(Intent.EXTRA_SUBJECT,subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(intent,"Share Using"));
     }
 }

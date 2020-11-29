@@ -124,6 +124,7 @@ public class LoggedInActivity extends AppCompatActivity {
 
                 super.onCodeSent(s, forceResendingToken);
                 showMessage("OTP Sent to your mobile");
+                mobileNumber.setFocusable(false);
                 progressDialog.dismiss();
                 verifyOTP.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -149,7 +150,6 @@ public class LoggedInActivity extends AppCompatActivity {
             progressDialog.setCancelable(false);
             progressDialog.setMessage("Please wait while we are sending OTP to your mobile");
             progressDialog.show();
-            mobileNumber.setFocusable(false);
             PhoneAuthOptions options =
                     PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
                             .setPhoneNumber("+" + countryCodePicker.getFullNumber() + phoneNo)

@@ -34,15 +34,15 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.cardview_item_book,parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_book_view_layout,parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
-        holder.tv_book_title.setText(dataItems.get(position).getTitle());
-        holder.img_book_thumbnail.setImageResource(dataItems.get(position).getThumbnail());
+        holder.bookTitle.setText(dataItems.get(position).getTitle());
+        holder.bookImage.setImageResource(dataItems.get(position).getThumbnail());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,16 +62,16 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_book_title;
-        ImageView img_book_thumbnail;
+        TextView bookTitle;
+        ImageView bookImage;
         CardView cardView;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv_book_title = itemView.findViewById(R.id.book_title_id);
-            img_book_thumbnail = itemView.findViewById(R.id.book_image_id);
-            cardView = itemView.findViewById(R.id.cardview_id);
+            bookTitle = itemView.findViewById(R.id.single_book_view_layout_book_title);
+            bookImage = itemView.findViewById(R.id.single_book_view_layout_book_image);
+            cardView = itemView.findViewById(R.id.single_book_view_layout_card_view);
 
 
         }

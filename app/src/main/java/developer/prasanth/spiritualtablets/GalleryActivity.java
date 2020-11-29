@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +34,8 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         init();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("gallery");
@@ -45,7 +48,7 @@ public class GalleryActivity extends AppCompatActivity {
 
                      List<String> list = new ArrayList<>();
                      for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                         list.add(dataSnapshot.getValue(String.class));
+                         list.add(dataSnapshot.getKey());
                      }
 
                      galleryAdapter = new GalleryAdapter(GalleryActivity.this, list);

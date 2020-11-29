@@ -259,6 +259,10 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
     }
 
     private void showMessage(String message) {
-        Toast.makeText(AdminPanelActivity.this, message, Toast.LENGTH_LONG).show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminPanelActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(true);
+        builder.create().show();
     }
 }

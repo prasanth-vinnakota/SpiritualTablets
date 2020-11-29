@@ -152,7 +152,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextInputEditText userEmail = findViewById(R.id.profile_email);
         TextInputLayout user_email_parent = findViewById(R.id.profile_email_parent);
 
-        if (!Objects.requireNonNull(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail()).isEmpty()) {
+        if (FirebaseAuth.getInstance().getCurrentUser().getEmail() != null) {
 
             userEmail.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
             user_email_parent.setVisibility(View.VISIBLE);
