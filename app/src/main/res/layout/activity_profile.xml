@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
     tools:context="developer.prasanth.spiritualtablets.ProfileActivity">
 
 
@@ -14,14 +13,17 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:background="@drawable/title_background"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:fontFamily="@font/arbutus"
             android:text="@string/profile"
             android:textAllCaps="true"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:textSize="40sp" />
 
 
@@ -32,6 +34,7 @@
             android:layout_gravity="center"
             android:layout_margin="20dp"
             android:src="@drawable/user_photo"
+            app:civ_border_color="#FFF"
             app:civ_border_width="5dp" />
 
 
@@ -48,6 +51,7 @@
                 android:id="@+id/profile_email"
                 android:layout_width="match_parent"
                 android:focusable="false"
+                android:textColor="#FFF"
                 android:layout_height="wrap_content"
                 android:hint="@string/email">
 
@@ -69,6 +73,7 @@
                 android:id="@+id/set_user_mobile_number"
                 android:layout_width="match_parent"
                 android:focusable="false"
+                android:textColor="#FFF"
                 android:layout_height="wrap_content"
                 android:hint="@string/mobile_number_with_country_code"
                 android:inputType="number">
@@ -89,6 +94,7 @@
                 android:id="@+id/set_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#FFF"
                 android:hint="@string/full_name"
                 android:inputType="textCapWords">
 
@@ -108,6 +114,7 @@
                 android:id="@+id/set_user_profile_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#FFF"
                 android:hint="@string/user_status"
                 android:inputType="textCapWords">
 
@@ -128,6 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/date_of_birth_full"
+                android:textColor="#FFF"
                 android:inputType="date">
 
 
@@ -147,6 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/country"
+                android:textColor="#FFF"
                 android:inputType="textCapWords">
 
 
@@ -165,6 +174,7 @@
                 android:id="@+id/set_user_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#FFF"
                 android:hint="@string/state"
                 android:inputType="textCapWords">
 
@@ -185,6 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/city"
+                android:textColor="#FFF"
                 android:inputType="textCapWords">
 
 
@@ -203,53 +214,6 @@
             android:textAllCaps="false"
             android:textColor="@android:color/background_light"
             android:textSize="20sp" />
-
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/show_dob_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="@string/show_dob_to_others"
-            android:textOff="@string/no"
-            android:textOn="@string/yes"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:thumb="@drawable/sw_thumb"
-            app:showText="true"
-            app:track="@drawable/sw_track" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/show_profile_status_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="@string/show_profile_status_to_others"
-            android:textOff="@string/no"
-            android:textOn="@string/yes"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:thumb="@drawable/sw_thumb"
-            app:showText="true"
-            app:track="@drawable/sw_track" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/show_mobile_number_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="30dp"
-            android:gravity="center"
-            android:text="@string/show_mobile_number_to_others"
-            android:textOff="@string/no"
-            android:textOn="@string/yes"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:thumb="@drawable/sw_thumb"
-            app:showText="true"
-            app:track="@drawable/sw_track" />
 
     </LinearLayout>
 

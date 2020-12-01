@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
     tools:context="developer.prasanth.spiritualtablets.AddEventActivity">
 
     <LinearLayout
@@ -14,13 +13,15 @@
         android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/dashboard_heading"
-            android:layout_width="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/title_background"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/add_event"
@@ -44,9 +45,11 @@
         android:id="@+id/add_events_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:visibility="gone"
         android:layout_gravity="center"
         android:scaleType="fitCenter"
         android:contentDescription="@string/event_name" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -94,6 +97,7 @@
             android:id="@+id/add_events_timing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
             android:hint="@string/event_timing">
 
 
@@ -118,7 +122,21 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+
         <Button
+            android:id="@+id/activity_add_event_add_image_button"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#000"
+            android:onClick="addImage"
+            android:text="@string/add_image"
+            android:textColor="#FFF" />
+
+        <Button
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

@@ -8,7 +8,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_gradient"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -17,7 +16,6 @@
             android:layout_marginTop="20dp">
 
             <ImageView
-                android:id="@+id/dashboard_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -40,7 +38,7 @@
             android:layout_marginEnd="15dp"
             android:drawablePadding="10dp"
             android:ellipsize="marquee"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="anti"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:shadowColor="@android:color/white"
@@ -52,7 +50,7 @@
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:visibility="gone"
-            app:drawableStartCompat="@drawable/click" />
+            app:drawableEndCompat="@drawable/click" />
 
         <TextView
             android:id="@+id/dashboard_counselor"
@@ -63,7 +61,7 @@
             android:layout_marginEnd="15dp"
             android:drawablePadding="10dp"
             android:ellipsize="marquee"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:shadowColor="@android:color/white"
@@ -86,7 +84,7 @@
             android:layout_marginEnd="15dp"
             android:drawablePadding="10dp"
             android:ellipsize="marquee"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:shadowColor="@android:color/white"
@@ -111,6 +109,7 @@
 
 
             <Button
+                android:drawableTop="@drawable/admin"
                 android:id="@+id/admin_panel_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -233,55 +232,6 @@
             android:layout_margin="10dp"
             android:orientation="horizontal"
             android:weightSum="2">
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/donate"
-                    android:fontFamily="@font/lemonada"
-                    android:onClick="donate"
-                    android:text="@string/donate" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/letter"
-                    android:fontFamily="@font/lemonada"
-                    android:onClick="newsLetters"
-                    android:text="@string/news_letters" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:weightSum="2">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
@@ -380,6 +330,55 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/letter"
+                    android:fontFamily="@font/lemonada"
+                    android:onClick="newsLetters"
+                    android:text="@string/news_letters" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/profile"
+                    android:fontFamily="@font/lemonada"
+                    android:onClick="settings"
+                    android:text="@string/my_profile" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
@@ -429,7 +428,6 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="100dp"
@@ -443,12 +441,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/profile"
+                    android:drawableTop="@drawable/donate"
                     android:fontFamily="@font/lemonada"
-                    android:onClick="settings"
-                    android:text="@string/my_profile" />
+                    android:onClick="donate"
+                    android:text="@string/donate" />
 
             </com.google.android.material.card.MaterialCardView>
+
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
@@ -493,281 +492,6 @@
         </com.google.android.material.card.MaterialCardView>
 
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textAllCaps="true"
-                    android:text="@string/social_media_links"
-                    android:textColor="#000"
-                    android:textSize="18sp"/>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="20dp"
-                    android:onClick="facebook"
-                    android:layout_margin="10dp"
-                    android:text="@string/facebook"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    app:drawableStartCompat="@drawable/facebook" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="20dp"
-                    android:layout_margin="10dp"
-                    android:onClick="youtubeTelugu"
-                    android:text="@string/youtube_telugu"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    app:drawableStartCompat="@drawable/youtube" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="20dp"
-                    android:layout_margin="10dp"
-                    android:onClick="youtubeHindi"
-                    android:text="@string/youtube_hindi"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    app:drawableStartCompat="@drawable/youtube" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="20dp"
-                    android:onClick="youtubeEnglish"
-                    android:layout_margin="10dp"
-                    android:text="@string/youtube_english"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    app:drawableStartCompat="@drawable/youtube" />
-
-            </LinearLayout>
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/if_you_are_contacting_for"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/_1_counselling"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="counsellingEnglishAndHindiNumber"
-                    android:text="@string/_917899801922_english_and_hindi"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="counsellingTeluguNumber"
-                    android:text="@string/_916303465603_telugu"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/_2_for_workshops"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="workshopNumber"
-                    android:text="@string/_918885352809"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="workshopSecondNumber"
-                    android:text="@string/_918333052547"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/_3_for_anandobrahma_activity"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="anandobrahmaNumber"
-                    android:text="@string/_919246648405"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/_4_europe_sessions"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="europeSessionsNumber"
-                    android:text="@string/_919883583399"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/_5_donation"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="donationNumber"
-                    android:text="@string/_919553801801"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/_6_spiritual_parenting"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="spiritualParentingNumber"
-                    android:text="@string/_918008117037"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/_7_personal_appointment"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="personalAppointmentNumber"
-                    android:text="@string/_919550093952"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/_8_pmc_uk_youtube_channel"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:onClick="pmcUKYoutubeChannelNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/_447440604222"
-                    android:textAllCaps="true"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>
 

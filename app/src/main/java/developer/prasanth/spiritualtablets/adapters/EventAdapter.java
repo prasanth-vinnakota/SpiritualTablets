@@ -3,7 +3,6 @@ package developer.prasanth.spiritualtablets.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import developer.prasanth.spiritualtablets.DashBoardActivity;
 import developer.prasanth.spiritualtablets.R;
-import developer.prasanth.spiritualtablets.ViewEventActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,8 +29,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -74,9 +70,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                  if (snapshot.exists()){
 
                      if (snapshot.child("completed").exists() && Objects.requireNonNull(snapshot.child("completed").getValue()).toString().equalsIgnoreCase("true"))
-                         holder.eventCardView.setCardBackgroundColor(Color.GREEN);
+                         holder.eventCardView.setCardBackgroundColor(context.getResources().getColor(R.color.completed));
                      else
-                         holder.eventCardView.setCardBackgroundColor(Color.RED);
+                         holder.eventCardView.setCardBackgroundColor(context.getResources().getColor(R.color.up_coming));
 
                          holder.eventName.setText(Objects.requireNonNull(snapshot.child("name").getValue()).toString());
 
@@ -96,8 +92,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                              holder.eventTimingTitle.setVisibility(View.GONE);
                          }
 
-                         if (snapshot.child("image").getValue() != null)
+                         if (snapshot.child("image").getValue() != null) {
                              Glide.with(context).load(Objects.requireNonNull(snapshot.child("image").getValue()).toString()).into(holder.eventImage);
+                         }
                          else holder.eventImage.setVisibility(View.GONE);
 
                          if (snapshot.child("link").getValue() != null){
@@ -119,8 +116,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
 
@@ -190,8 +185,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-
-                                showMessage(error.getMessage());
                             }
                         });
 
@@ -242,10 +235,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     private void showMessage(String message) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(message);
-        builder.setCancelable(true);
-        builder.create().show();
-
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }

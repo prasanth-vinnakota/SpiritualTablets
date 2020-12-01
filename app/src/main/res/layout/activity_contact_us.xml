@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
     tools:context="developer.prasanth.spiritualtablets.ContactUsActivity">
 
     <LinearLayout
@@ -12,7 +11,10 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:background="@drawable/title_background"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
@@ -126,8 +128,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
@@ -165,6 +166,7 @@
 
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -174,15 +176,18 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/_1_counselling"
                     android:textAllCaps="true"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:drawableEndCompat="@drawable/cousnelling" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -193,6 +198,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -203,15 +209,18 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/_2_for_workshops"
                     android:textAllCaps="true"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:drawableEndCompat="@drawable/workshop" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -222,6 +231,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -233,15 +243,18 @@
 
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/_3_for_anandobrahma_activity"
                     android:textAllCaps="true"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:drawableEndCompat="@drawable/happiness" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -252,15 +265,18 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/_4_europe_sessions"
                     android:textAllCaps="true"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:drawableEndCompat="@drawable/europe" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -271,15 +287,18 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/_5_donation"
                     android:textAllCaps="true"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:drawableEndCompat="@drawable/donate" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -290,15 +309,18 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/_6_spiritual_parenting"
                     android:textAllCaps="true"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:drawableEndCompat="@drawable/parenting" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -309,15 +331,18 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/_7_personal_appointment"
                     android:textAllCaps="true"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:drawableEndCompat="@drawable/appointment" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -328,15 +353,18 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/_8_pmc_uk_youtube_channel"
                     android:textAllCaps="true"
                     android:textColor="#000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:drawableEndCompat="@drawable/youtube" />
 
                 <TextView
+                    android:fontFamily="@font/antic"
                     android:onClick="pmcUKYoutubeChannelNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

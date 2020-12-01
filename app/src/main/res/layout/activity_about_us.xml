@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_gradient"
     android:weightSum="10"
     tools:context="developer.prasanth.spiritualtablets.AboutUsActivity">
 
@@ -17,7 +16,11 @@
         android:layout_weight="2">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/title_background"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/bungee"
@@ -175,6 +178,87 @@
 
 
     </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:fontFamily="@font/antic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textAllCaps="true"
+                    android:text="@string/social_media_links"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+
+
+                <TextView
+                    android:fontFamily="@font/antic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="20dp"
+                    android:onClick="facebook"
+                    android:layout_margin="10dp"
+                    android:text="@string/facebook"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    app:drawableStartCompat="@drawable/facebook" />
+
+                <TextView
+                    android:fontFamily="@font/antic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="20dp"
+                    android:layout_margin="10dp"
+                    android:onClick="youtubeTelugu"
+                    android:text="@string/youtube_telugu"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    app:drawableStartCompat="@drawable/youtube" />
+
+                <TextView
+                    android:fontFamily="@font/antic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="20dp"
+                    android:layout_margin="10dp"
+                    android:onClick="youtubeHindi"
+                    android:text="@string/youtube_hindi"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    app:drawableStartCompat="@drawable/youtube" />
+
+                <TextView
+                    android:fontFamily="@font/antic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="20dp"
+                    android:onClick="youtubeEnglish"
+                    android:layout_margin="10dp"
+                    android:text="@string/youtube_english"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    app:drawableStartCompat="@drawable/youtube" />
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </ScrollView>
 

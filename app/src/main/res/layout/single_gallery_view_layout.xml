@@ -23,7 +23,7 @@
         android:fontFamily="@font/bungee"
         android:text="@string/gallery"
         android:textAllCaps="true"
-        android:textColor="#000"
+        android:textColor="#FFF"
         android:textSize="20sp" />
 
 

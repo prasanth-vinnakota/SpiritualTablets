@@ -2,11 +2,13 @@ package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.WindowManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +34,24 @@ public class VolunteersListActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_volunteers_list);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VolunteersListActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VolunteersListActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
 
         init();
 
@@ -52,14 +72,12 @@ public class VolunteersListActivity extends AppCompatActivity {
                             recyclerView.setAdapter(volunteerAdapter);
                         }
                         else {
-                            showMessage("No Data Available");
+                            showMessage();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
-                        showMessage(error.getMessage());
                     }
                 });
                 loadingDialog.dismiss();
@@ -79,14 +97,12 @@ public class VolunteersListActivity extends AppCompatActivity {
                             recyclerView.setAdapter(volunteerAdapter);
                         }
                         else {
-                            showMessage("No Data Available");
+                            showMessage();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
-                        showMessage(error.getMessage());
                     }
                 });
                 loadingDialog.dismiss();
@@ -106,14 +122,12 @@ public class VolunteersListActivity extends AppCompatActivity {
                         }
                         else {
 
-                            showMessage("No Data Available");
+                            showMessage();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
-                        showMessage(error.getMessage());
                     }
                 });
                 loadingDialog.dismiss();
@@ -129,8 +143,11 @@ public class VolunteersListActivity extends AppCompatActivity {
         loadingDialog = new LoadingDialog(VolunteersListActivity.this);
     }
 
-    private void showMessage(String message){
+    private void showMessage(){
 
-        Toast.makeText(VolunteersListActivity.this, message, Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(VolunteersListActivity.this);
+        builder.setMessage("No Data Available");
+        builder.setCancelable(true);
+        builder.create().show();
     }
 }

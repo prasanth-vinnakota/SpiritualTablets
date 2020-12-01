@@ -3,8 +3,9 @@ package developer.prasanth.spiritualtablets;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,8 +13,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     private StorageReference storageReference;
     ProgressDialog progressDialog;
-    SwitchCompat dobSwitch, mobileNumberSwitch, profileStatusSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +63,23 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         init();
 
@@ -78,53 +93,10 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        dobSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-
-                    userReference.child("settings").child("dob").setValue("true");
-                } else {
-
-                    userReference.child("settings").child("dob").setValue("false");
-                }
-            }
-        });
-
-        mobileNumberSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-
-                    userReference.child("settings").child("mobile_number").setValue("true");
-                } else {
-
-                    userReference.child("settings").child("mobile_number").setValue("false");
-                }
-            }
-        });
-
-        profileStatusSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-
-                    userReference.child("settings").child("profile_status").setValue("true");
-                } else {
-
-                    userReference.child("settings").child("profile_status").setValue("false");
-                }
-            }
-        });
-
         retrieveUserDataFromDatabase();
     }
 
     private void init() {
-
-        dobSwitch = findViewById(R.id.show_dob_switch);
-        mobileNumberSwitch = findViewById(R.id.show_mobile_number_switch);
-        profileStatusSwitch = findViewById(R.id.show_profile_status_switch);
 
         userName = findViewById(R.id.set_user_name);
         userStatus = findViewById(R.id.set_user_profile_status);
@@ -138,25 +110,6 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.setTitle("Profile is updating");
         progressDialog.setMessage("Please wait while we are updating your profile");
         progressDialog.setCancelable(false);
-
-
-        TextInputEditText userMobileNumber = findViewById(R.id.set_user_mobile_number);
-        TextInputLayout user_mobile_no_parent = findViewById(R.id.profile_mobile_number_parent);
-
-        if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getPhoneNumber() != null) {
-
-            userMobileNumber.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getPhoneNumber());
-            user_mobile_no_parent.setVisibility(View.VISIBLE);
-        }
-
-        TextInputEditText userEmail = findViewById(R.id.profile_email);
-        TextInputLayout user_email_parent = findViewById(R.id.profile_email_parent);
-
-        if (FirebaseAuth.getInstance().getCurrentUser().getEmail() != null) {
-
-            userEmail.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
-            user_email_parent.setVisibility(View.VISIBLE);
-        }
 
         storageReference = FirebaseStorage.getInstance().getReference().child("user_photos");
 
@@ -246,6 +199,22 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
 
+                    if (snapshot.child("mobile_no").getValue() != null) {
+
+                        TextInputEditText userMobileNumber = findViewById(R.id.set_user_mobile_number);
+                        TextInputLayout userMobileNumberParent = findViewById(R.id.profile_mobile_number_parent);
+
+                        userMobileNumber.setText(Objects.requireNonNull(snapshot.child("mobile_no").getValue()).toString());
+                        userMobileNumberParent.setVisibility(View.VISIBLE);
+
+                    }
+                    if (snapshot.child("email").getValue() != null) {
+                        TextInputEditText userEmail = findViewById(R.id.profile_email);
+                        TextInputLayout userEmailParent = findViewById(R.id.profile_email_parent);
+
+                        userEmail.setText(Objects.requireNonNull(snapshot.child("email").getValue()).toString());
+                        userEmailParent.setVisibility(View.VISIBLE);
+                    }
                     if (snapshot.child("full_name").getValue() != null)
                         userName.setText(Objects.requireNonNull(snapshot.child("full_name").getValue()).toString());
 
@@ -271,42 +240,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
-            }
-        });
-
-        userReference.child("settings").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-
-                    if (Objects.requireNonNull(snapshot.child("dob").getValue()).toString().equals("true")) {
-
-                        dobSwitch.setChecked(true);
-                    } else {
-                        dobSwitch.setChecked(false);
-                    }
-
-                    if (Objects.requireNonNull(snapshot.child("mobile_number").getValue()).toString().equals("true")) {
-
-                        mobileNumberSwitch.setChecked(true);
-                    } else {
-                        mobileNumberSwitch.setChecked(false);
-                    }
-
-                    if (Objects.requireNonNull(snapshot.child("profile_status").getValue()).toString().equals("true")) {
-
-                        profileStatusSwitch.setChecked(true);
-                    } else {
-                        profileStatusSwitch.setChecked(false);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -325,13 +258,6 @@ public class ProfileActivity extends AppCompatActivity {
             userName.setError("must not be empty");
             return;
         }
-
-        if (TextUtils.isEmpty(user_status)) {
-
-            userState.setError("must not be empty");
-            return;
-        }
-
 
         if (TextUtils.isEmpty(user_dob)) {
 
@@ -364,7 +290,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         profileMap.put("full_name", user_name);
         profileMap.put("profile_status", user_status);
-        profileMap.put("date_of_birth", user_dob);
+
+        if (!TextUtils.isEmpty(user_status))
+            profileMap.put("date_of_birth", user_dob);
         profileMap.put("country", user_country);
         profileMap.put("state", user_state);
         profileMap.put("city", user_city);
@@ -423,7 +351,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showMessage(String message) {
 
-        Toast.makeText(ProfileActivity.this, message, Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(false);
+
+        builder.create().show();
     }
 
 }

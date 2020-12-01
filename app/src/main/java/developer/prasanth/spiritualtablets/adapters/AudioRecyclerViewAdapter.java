@@ -72,8 +72,6 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        showMessage(databaseError.getMessage());
                     }
                 });
             }

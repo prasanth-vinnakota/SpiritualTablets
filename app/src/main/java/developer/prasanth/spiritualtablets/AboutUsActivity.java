@@ -1,11 +1,22 @@
 package developer.prasanth.spiritualtablets;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 import developer.prasanth.spiritualtablets.about_us.FounderActivity;
 import developer.prasanth.spiritualtablets.about_us.HistoryActivity;
@@ -21,7 +32,26 @@ public class AboutUsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(AboutUsActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(AboutUsActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
+
 
     public void introduction(View view) {
 
@@ -53,5 +83,29 @@ public class AboutUsActivity extends AppCompatActivity {
         startActivity(new Intent(this, FounderActivity.class));
     }
 
+
+    public void facebook(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://www.facebook.com/spiritualhealth.care"));
+        startActivity(intent);
+    }
+
+    public void youtubeTelugu(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://www.youtube.com/channel/UCvdbtwFCC-4OYU7zy_bM9aw"));
+        startActivity(intent);
+    }
+
+    public void youtubeEnglish(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://www.youtube.com/channel/UCRIdLxE7-YefPnNJOraYThQ"));
+        startActivity(intent);
+    }
+
+    public void youtubeHindi(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://www.youtube.com/channel/UCa7wUGcDCsX0KfNQnX-WNeg/videos"));
+        startActivity(intent);
+    }
 
 }

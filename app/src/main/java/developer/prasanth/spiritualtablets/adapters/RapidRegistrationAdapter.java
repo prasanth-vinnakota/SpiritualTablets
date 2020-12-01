@@ -149,8 +149,6 @@ public class RapidRegistrationAdapter extends RecyclerView.Adapter<RapidRegistra
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
 

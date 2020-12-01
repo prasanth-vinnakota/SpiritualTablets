@@ -8,8 +8,7 @@
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
     android:paddingBottom="30dp"
-    tools:context="developer.prasanth.spiritualtablets.about_us.HistoryActivity"
-    android:background="@drawable/background_gradient">
+    tools:context="developer.prasanth.spiritualtablets.about_us.HistoryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +18,10 @@
         android:paddingEnd="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:background="@drawable/title_background"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
@@ -29,7 +31,7 @@
             android:textSize="30sp" />
 
         <TextView
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:layout_marginTop="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

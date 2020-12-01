@@ -10,7 +10,7 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            app:cardBackgroundColor="@android:color/holo_red_dark">
+            app:cardBackgroundColor="@color/completed">
 
             <Button
                 android:drawableTop="@drawable/call"
@@ -27,7 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_weight="1"
-        app:cardBackgroundColor="@android:color/holo_green_light">
+        app:cardBackgroundColor="@color/up_coming">
 
         <Button
             android:drawableTop="@drawable/copy"

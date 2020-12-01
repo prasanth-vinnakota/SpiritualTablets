@@ -7,8 +7,7 @@
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
     android:paddingBottom="30dp"
-    tools:context="developer.prasanth.spiritualtablets.about_us.FounderActivity"
-    android:background="@drawable/background_gradient">
+    tools:context="developer.prasanth.spiritualtablets.about_us.FounderActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +17,8 @@
         android:paddingEnd="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/click_here_to_listen_his_speech"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textSize="20sp"
             android:onClick="loadGkSirSpeech"
             android:textColor="@android:color/holo_red_dark"/>
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:text="@string/founder_desc"
             android:textSize="15sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textColor="#FFF"/>
 
 

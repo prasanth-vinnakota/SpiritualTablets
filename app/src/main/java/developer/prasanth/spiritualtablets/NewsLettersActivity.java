@@ -1,6 +1,8 @@
 package developer.prasanth.spiritualtablets;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +11,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import developer.prasanth.spiritualtablets.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
+
 
 public class NewsLettersActivity extends AppCompatActivity {
 
@@ -20,6 +29,22 @@ public class NewsLettersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news_letters);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(NewsLettersActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(NewsLettersActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     public void july2018(View view) {

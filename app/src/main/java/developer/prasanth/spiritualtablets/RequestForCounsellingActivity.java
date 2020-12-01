@@ -2,6 +2,7 @@ package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,14 +13,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +45,22 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(RequestForCounsellingActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(RequestForCounsellingActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
         inti();
     }
 
@@ -52,7 +71,6 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         age = findViewById(R.id.request_for_counselling_age);
         mobile = findViewById(R.id.request_for_counselling_mobile);
         email = findViewById(R.id.request_for_counselling_email);
-        email.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
         disease = findViewById(R.id.request_for_counselling_disease);
         gender = findViewById(R.id.request_for_counselling_gender);
         mode = findViewById(R.id.request_for_counselling_mode);
@@ -126,14 +144,11 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
             mobile.setError("required field");
             showMessage("Required Filed Is Missing");
             return;
+        } else {
+            if (patient_mobile.charAt(0) != '+')
+                patient_mobile = "+" + patient_mobile;
         }
 
-        if (TextUtils.isEmpty(patient_email)) {
-
-            email.setError("required field");
-            showMessage("Required Filed Is Missing");
-            return;
-        }
 
         if (TextUtils.isEmpty(patient_disease)) {
 
@@ -152,7 +167,8 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         map.put("age", patient_age);
         map.put("mobile", patient_mobile);
         map.put("disease", patient_disease);
-        map.put("email", patient_email);
+        if (!TextUtils.isEmpty(patient_email))
+            map.put("email", patient_email);
         map.put("mode", getMode(patient_mode));
         map.put("gender", getGender(patient_gender));
         map.put("id", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
@@ -206,7 +222,9 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
     }
 
     private void showMessage(String message) {
-
-        Toast.makeText(RequestForCounsellingActivity.this, message, Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(RequestForCounsellingActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(true);
+        builder.create().show();
     }
 }

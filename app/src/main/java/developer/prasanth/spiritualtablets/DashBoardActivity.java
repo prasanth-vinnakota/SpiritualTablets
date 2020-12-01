@@ -3,16 +3,10 @@ package developer.prasanth.spiritualtablets;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -23,7 +17,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +28,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
@@ -50,8 +42,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     private DatabaseReference updatedReference;
     private DatabaseReference userReference;
     private String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-    private int VERSION_CODE = 15;
-    private static final int REQUEST_CODE = 1;
+    private int VERSION_CODE = 18;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +53,22 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         init();
+
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DashBoardActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DashBoardActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
         DatabaseReference versionReference = FirebaseDatabase.getInstance().getReference("version");
 
@@ -110,8 +117,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
 
@@ -131,8 +136,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
 
@@ -151,8 +154,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
 
@@ -178,8 +179,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
-                            showMessage(error.getMessage());
                         }
                     });
                 }
@@ -187,8 +186,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
 
@@ -212,8 +209,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
 
@@ -278,8 +273,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-
-                                    showMessage(error.getMessage());
                                 }
                             });
                         }
@@ -287,8 +280,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
-                        showMessage(error.getMessage());
                     }
                 });
             }
@@ -307,6 +298,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         volunteer = findViewById(R.id.dashboard_volunteer);
         volunteer.setSelected(true);
     }
+
 
     @Override
     protected void onStart() {
@@ -327,9 +319,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
                 if (!snapshot.child("updated").exists()) {
 
                     updatedReference.child("books").setValue("no");
-                    updatedReference.child("settings").child("mobile_number").setValue("false");
-                    updatedReference.child("settings").child("dob").setValue("false");
-                    updatedReference.child("settings").child("profile_status").setValue("true");
                     AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
                     builder.setMessage("You Need To Update Your Profile");
                     builder.setCancelable(false);
@@ -353,8 +342,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
     }
@@ -549,7 +536,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
     public void registerParticipate(View view) {
 
-        View dialog_view = getLayoutInflater().inflate(R.layout.patient_registration_dialog, null);
+        View dialog_view = getLayoutInflater().inflate(R.layout.participate_registration_dialog, null);
 
         Button rapid_registration = dialog_view.findViewById(R.id.rapid_registration);
         Button request_for_counselling = dialog_view.findViewById(R.id.request_for_counselling);
@@ -671,30 +658,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         startActivity(intent);
     }
 
-    public void facebook(View view) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://www.facebook.com/spiritualhealth.care"));
-        startActivity(intent);
-    }
-
-    public void youtubeTelugu(View view) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://www.youtube.com/channel/UCvdbtwFCC-4OYU7zy_bM9aw"));
-        startActivity(intent);
-    }
-
-    public void youtubeEnglish(View view) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://www.youtube.com/channel/UCRIdLxE7-YefPnNJOraYThQ"));
-        startActivity(intent);
-    }
-
-    public void youtubeHindi(View view) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://www.youtube.com/channel/UCa7wUGcDCsX0KfNQnX-WNeg/videos"));
-        startActivity(intent);
-    }
-
     public void openAdminPanel(View view) {
         startActivity(new Intent(DashBoardActivity.this, AdminPanelActivity.class));
         finish();
@@ -730,8 +693,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
-                    showMessage(error.getMessage());
                 }
             });
 
@@ -740,123 +701,13 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
             showMessage("Event Name Must Not Be Empty");
         }
     }
-    private void copyOrCallAlertDialog(final String message){
-
-        @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(DashBoardActivity.this).inflate(R.layout.copy_or_call_dialog,null);
-
-        final Button call = view.findViewById(R.id.copy_or_call_dialog_call);
-        final Button copy = view.findViewById(R.id.copy_or_call_dialog_copy);
-
-        final AlertDialog alertDialog = new AlertDialog.Builder(DashBoardActivity.this)
-                .setCancelable(true)
-                .setView(view)
-                .create();
-
-        alertDialog.show();
-
-        call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                call(message);
-                alertDialog.dismiss();
-            }
-        });
-
-        copy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                copy(message);
-                alertDialog.dismiss();
-            }
-        });
-    }
-
-    private void call(String number){
-
-        if (ContextCompat.checkSelfPermission(DashBoardActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(DashBoardActivity.this, new String[]{Manifest.permission.CALL_PHONE},REQUEST_CODE);
-        }else {
-            String dial = "tel:" +number;
-            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-            finish();
-        }
-    }
-
-    private void copy(String message){
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("number", message);
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-            showMessage("Number copied to clipboard");
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        if (requestCode == REQUEST_CODE){
-
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                showMessage("Permissions Granted Now You Can Make Calls");
-        }
-    }
-
-    public void counsellingEnglishAndHindiNumber(View view) {
-
-        copyOrCallAlertDialog("+917899801922");
-    }
-
-    public void counsellingTeluguNumber(View view) {
-
-
-        copyOrCallAlertDialog("+916303465603");
-    }
-
-    public void workshopNumber(View view) {
-
-        copyOrCallAlertDialog("+918885352809");
-    }
-
-    public void workshopSecondNumber(View view) {
-
-        copyOrCallAlertDialog("+918333052547");
-    }
-
-    public void anandobrahmaNumber(View view) {
-
-        copyOrCallAlertDialog("+919246648405");
-    }
-
-    public void europeSessionsNumber(View view) {
-
-        copyOrCallAlertDialog("+919246648405");
-    }
-
-    public void donationNumber(View view) {
-
-        copyOrCallAlertDialog("+919553801801");
-    }
-
-    public void spiritualParentingNumber(View view) {
-
-        copyOrCallAlertDialog("+918008117037");
-    }
-
-    public void personalAppointmentNumber(View view) {
-
-        copyOrCallAlertDialog("+919550093952");
-    }
-
-    public void pmcUKYoutubeChannelNumber(View view) {
-
-        copyOrCallAlertDialog("+447440604222");
-    }
-
     private void showMessage(String message){
-
-        Toast.makeText(DashBoardActivity.this, message, Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
+        builder.setCancelable(true);
+        builder.setMessage(message);
+        builder.create().show();
     }
+
 
     @Override
     public void onBackPressed() {

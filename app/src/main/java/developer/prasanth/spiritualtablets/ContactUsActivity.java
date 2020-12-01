@@ -19,7 +19,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 import developer.prasanth.spiritualtablets.contact_us.PrimaryCentersActivity;
 
@@ -32,6 +39,24 @@ public class ContactUsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ContactUsActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ContactUsActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     public void registeredOffice(View view) {
@@ -39,14 +64,14 @@ public class ContactUsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Registered Office");
-        builder.setMessage("SPIRITUAL TABLETS RESEARCH FOUNDATION," +
-                "VUDA COLONY," +
-                "48 A LAST BUS STOP," +
-                "MADHAVADHARA," +
-                "VISAKHAPATNAM," +
-                "PIN CODE - 53007" +
-                "PH NO : 9246648401/402" +
-                "MAIL TO : SPIRITUALTABLET@GMAIL.COM");
+        builder.setMessage("SPIRITUAL TABLETS RESEARCH FOUNDATION,\n" +
+                "VUDA COLONY,\n" +
+                "48 A LAST BUS STOP,\n" +
+                "MADHAVADHARA,\n" +
+                "VISAKHAPATNAM,\n" +
+                "PIN CODE - 53007\n" +
+                "PH NO : 9246648401/402\n" +
+                "MAIL TO : spiritualtablet@gmail.com");
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -80,7 +105,7 @@ public class ContactUsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(ContactUsActivity.this);
 
         builder.setTitle("Holistic Centers");
-        builder.setMessage("Pyramid Valley, Bengaluru\n" +
+        builder.setMessage("Pyramid Valley,\n Bengaluru\n" +
                 "www.pyamidvalley.org\n" +
                 "\n" +
                 "\n" +
@@ -236,6 +261,9 @@ public class ContactUsActivity extends AppCompatActivity {
 
     private void showMessage(String message){
 
-        Toast.makeText(ContactUsActivity.this, message, Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(ContactUsActivity.this);
+        builder.setCancelable(true);
+        builder.setMessage(message);
+        builder.create().show();
     }
 }

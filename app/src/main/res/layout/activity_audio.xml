@@ -4,14 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="@drawable/background_gradient"
     tools:context="developer.prasanth.spiritualtablets.AudioActivity"
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_gravity="center"
+        android:padding="5dp"
+        android:background="@drawable/title_background"
         android:layout_margin="10dp"
         android:fontFamily="@font/bungee"
         android:text="@string/audios"

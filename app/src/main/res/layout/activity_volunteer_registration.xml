@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="@drawable/background_gradient"
     tools:context="developer.prasanth.spiritualtablets.VolunteerRegistrationActivity">
 
     <LinearLayout
@@ -60,40 +59,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/email"
-                    android:textColor="@android:color/black"
-                    android:textSize="25sp" />
-
-                <EditText
-                    android:id="@+id/volunteer_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:autofillHints="@string/your_email_address"
-                    android:hint="@string/your_email_address"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
-
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:cardCornerRadius="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/name"
                     android:textColor="@android:color/black"
                     android:textSize="25sp" />
@@ -105,7 +70,7 @@
                     android:layout_marginTop="20dp"
                     android:autofillHints="@string/your_name"
                     android:hint="@string/your_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapWords"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -139,7 +104,7 @@
                     android:layout_marginTop="20dp"
                     android:autofillHints="@string/your_address"
                     android:hint="@string/your_address"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -174,6 +139,40 @@
                     android:autofillHints="@string/your_whats_app_number"
                     android:hint="@string/your_whats_app_number"
                     android:inputType="phone"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/volunteer_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:autofillHints="@string/your_email_address"
+                    android:hint="@string/your_email_address"
+                    android:inputType="textEmailAddress"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 

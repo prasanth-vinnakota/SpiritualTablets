@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="@drawable/background_gradient"
     tools:context=".RapidRegistrationActivity">
 
     <LinearLayout
@@ -71,7 +70,7 @@
                     android:layout_marginTop="20dp"
                     android:hint="@string/first_name"
                     android:autofillHints="@string/first_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapWords"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -105,7 +104,7 @@
                     android:layout_marginTop="20dp"
                     android:hint="@string/last_name"
                     android:autofillHints="@string/last_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapWords"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -293,7 +292,7 @@
                     android:layout_marginTop="20dp"
                     android:autofillHints="@string/address_with_pin_code"
                     android:hint="@string/address_with_pin_code"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -327,7 +326,7 @@
                     android:layout_marginTop="20dp"
                     android:autofillHints="@string/education"
                     android:hint="@string/education"
-                    android:inputType="text"
+                    android:inputType="textCapWords"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -361,7 +360,7 @@
                     android:layout_marginTop="20dp"
                     android:autofillHints="@string/describe_your_disease_in_detail"
                     android:hint="@string/describe_your_disease_in_detail"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -395,7 +394,7 @@
                     android:layout_marginTop="20dp"
                     android:autofillHints="@string/mother_tongue"
                     android:hint="@string/mother_tongue"
-                    android:inputType="text"
+                    android:inputType="textCapWords"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -429,7 +428,7 @@
                     android:layout_marginTop="20dp"
                     android:autofillHints="@string/name"
                     android:hint="@string/name"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapWords"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 

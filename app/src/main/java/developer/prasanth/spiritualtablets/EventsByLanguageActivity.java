@@ -2,12 +2,13 @@ package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 
 import developer.prasanth.spiritualtablets.adapters.EventAdapter;
@@ -38,6 +39,22 @@ public class EventsByLanguageActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(EventsByLanguageActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(EventsByLanguageActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
         loadingDialog = new LoadingDialog(EventsByLanguageActivity.this);
 
         loadingDialog.startLoading();
@@ -60,20 +77,22 @@ public class EventsByLanguageActivity extends AppCompatActivity {
                     recyclerView.setAdapter(eventAdapter);
                 }
                 else
-                    showMessage("No Events Found");
+                    showMessage();
                 loadingDialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
     }
 
-    private void showMessage(String message){
+    private void showMessage() {
 
-        Toast.makeText(EventsByLanguageActivity.this, message, Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(EventsByLanguageActivity.this);
+        builder.setCancelable(true);
+        builder.setMessage("No Events Found");
+        builder.create().show();
+
     }
 }

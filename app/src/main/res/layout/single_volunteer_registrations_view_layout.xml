@@ -19,6 +19,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -27,12 +28,14 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -41,12 +44,14 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -55,6 +60,7 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,6 +68,7 @@
 
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -70,6 +77,7 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_mobile_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,6 +85,7 @@
 
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -85,6 +94,7 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_way_of_contribution"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,6 +102,7 @@
 
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -100,6 +111,7 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_time_to_contribute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,6 +119,7 @@
 
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -115,6 +128,7 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_time_to_communicate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,6 +136,7 @@
 
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -130,12 +145,14 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -144,12 +161,14 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -158,6 +177,7 @@
             android:textSize="25sp" />
 
         <TextView
+            android:fontFamily="@font/antic"
             android:id="@+id/single_volunteer_registrations_view_layout_work_assigned"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

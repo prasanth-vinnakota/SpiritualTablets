@@ -9,22 +9,26 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 
 public class RapidRegistrationActivity extends AppCompatActivity {
 
@@ -50,17 +54,32 @@ public class RapidRegistrationActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(RapidRegistrationActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(RapidRegistrationActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
         init();
     }
 
-    private void init(){
+    private void init() {
 
         firstName = findViewById(R.id.rapid_registration_first_name);
         lastName = findViewById(R.id.rapid_registration_last_name);
         age = findViewById(R.id.rapid_registration_age);
         mobile = findViewById(R.id.rapid_registration_mobile);
         email = findViewById(R.id.rapid_registration_email);
-        email.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
         address = findViewById(R.id.rapid_registration_address);
         education = findViewById(R.id.rapid_registration_education);
         disease = findViewById(R.id.rapid_registration_disease);
@@ -127,13 +146,9 @@ public class RapidRegistrationActivity extends AppCompatActivity {
             mobile.setError("required field");
             showMessage("Required Filed Is Missing");
             return;
-        }
-
-        if (TextUtils.isEmpty(patient_email)) {
-
-            email.setError("required field");
-            showMessage("Required Filed Is Missing");
-            return;
+        } else {
+            if (patient_mobile.charAt(0) != '+')
+                patient_mobile = "+" + patient_mobile;
         }
 
         if (TextUtils.isEmpty(patient_address)) {
@@ -166,16 +181,15 @@ public class RapidRegistrationActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(patient_referred_by_name)) {
 
-            referredByName.setError("required field");
-            showMessage("Required Filed Is Missing");
-            return;
+            patient_referred_by_name = "SELF";
         }
 
         if (TextUtils.isEmpty(patient_referred_by_mobile)) {
 
-            referredByMobile.setError("required field");
-            showMessage("Required Filed Is Missing");
-            return;
+            patient_referred_by_mobile = "0";
+        } else {
+            if (patient_referred_by_mobile.charAt(0) != '+')
+                patient_referred_by_mobile = "+" + patient_referred_by_mobile;
         }
 
         DatabaseReference rapidRegistrationReference = FirebaseDatabase.getInstance().getReference("rapid_registration").push();
@@ -191,7 +205,9 @@ public class RapidRegistrationActivity extends AppCompatActivity {
         map.put("education", patient_education);
         map.put("disease", patient_disease);
         map.put("mother_tongue", patient_mother_tongue);
-        map.put("email", patient_email);
+        if (!TextUtils.isEmpty(patient_email)) {
+            map.put("email", patient_email);
+        }
         map.put("referred_by_name", patient_referred_by_name);
         map.put("referred_by_mobile", patient_referred_by_mobile);
         map.put("gender", getGender(patient_gender));
@@ -199,54 +215,56 @@ public class RapidRegistrationActivity extends AppCompatActivity {
 
         rapidRegistrationReference.updateChildren(map)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                if (task.isComplete()) {
+                        if (task.isComplete()) {
 
-                    DatabaseReference books_ref = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("books");
-                    books_ref.setValue("yes")
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                            DatabaseReference books_ref = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("books");
+                            books_ref.setValue("yes")
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(RapidRegistrationActivity.this);
-                            builder.setTitle("Patient Registered Successfully");
-                            builder.setMessage("We will contact you soon");
-                            builder.setCancelable(false);
-                            builder.setPositiveButton("dismiss", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    startActivity(new Intent(RapidRegistrationActivity.this, DashBoardActivity.class));
-                                    finish();
-                                }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(RapidRegistrationActivity.this);
+                                            builder.setTitle("Patient Registered Successfully");
+                                            builder.setMessage("We will contact you soon");
+                                            builder.setCancelable(false);
+                                            builder.setPositiveButton("dismiss", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    startActivity(new Intent(RapidRegistrationActivity.this, DashBoardActivity.class));
+                                                    finish();
+                                                }
+                                            });
+                                            AlertDialog dialog = builder.create();
+                                            dialog.show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
 
-                            showMessage(e.getMessage());
-                        }
-                    });
-                }
-                else
-                    showMessage(Objects.requireNonNull(task.getException()).getMessage());
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                showMessage(e.getMessage());
-            }
-        });
+                                            showMessage(e.getMessage());
+                                        }
+                                    });
+                        } else
+                            showMessage(Objects.requireNonNull(task.getException()).getMessage());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showMessage(e.getMessage());
+                    }
+                });
     }
 
-    private void showMessage(String message){
+    private void showMessage(String message) {
 
-        Toast.makeText(RapidRegistrationActivity.this, message, Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(RapidRegistrationActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(true);
+        builder.create().show();
     }
 }

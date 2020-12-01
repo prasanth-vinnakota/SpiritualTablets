@@ -2,6 +2,7 @@ package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -15,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -177,7 +177,6 @@ public class LoggedInActivity extends AppCompatActivity {
                             DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id);
                             db_ref.child("mobile_no").setValue(full_mobile_number);
                             db_ref.child("device_token").setValue(FirebaseInstanceId.getInstance().getToken());
-                            db_ref.child("profile_status").setValue("Available");
                             progressDialog.dismiss();
                             startActivity(new Intent(LoggedInActivity.this, DashBoardActivity.class));
                         } else {
@@ -282,7 +281,6 @@ public class LoggedInActivity extends AppCompatActivity {
                             db_ref.child("full_name").setValue(account.getDisplayName());
                             db_ref.child("email").setValue(account.getEmail());
                             db_ref.child("device_token").setValue(FirebaseInstanceId.getInstance().getToken());
-                            db_ref.child("profile_status").setValue("Available");
                             progressDialog.dismiss();
                             startActivity(new Intent(LoggedInActivity.this, DashBoardActivity.class));
                         } else {
@@ -302,7 +300,10 @@ public class LoggedInActivity extends AppCompatActivity {
 
     private void showMessage(String message) {
 
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoggedInActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(true);
+        builder.create().show();
     }
 
     @Override

@@ -1,9 +1,11 @@
 package developer.prasanth.spiritualtablets;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import developer.prasanth.spiritualtablets.youtube.YoutubeConfig;
 
@@ -29,6 +31,24 @@ public class VideoPlayerActivity extends YouTubeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VideoPlayerActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VideoPlayerActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
         init();
 
@@ -61,8 +81,6 @@ public class VideoPlayerActivity extends YouTubeBaseActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
-                        showMessage(error.getMessage());
                     }
                 });
 
@@ -71,13 +89,16 @@ public class VideoPlayerActivity extends YouTubeBaseActivity {
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
-                showMessage("Initialization Failure");
+                showMessage();
             }
         };
     }
 
-    private void showMessage(String  message){
+    private void showMessage(){
 
-        Toast.makeText(VideoPlayerActivity.this, message, Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlayerActivity.this);
+        builder.setMessage("Initialization Failure");
+        builder.setCancelable(true);
+        builder.create().show();
     }
 }

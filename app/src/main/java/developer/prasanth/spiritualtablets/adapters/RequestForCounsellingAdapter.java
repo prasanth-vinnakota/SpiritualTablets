@@ -138,8 +138,6 @@ public class RequestForCounsellingAdapter extends RecyclerView.Adapter<RequestFo
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
 

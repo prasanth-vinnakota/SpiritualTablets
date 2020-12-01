@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="developer.prasanth.spiritualtablets.about_us.PrincipleActivity"
-    android:background="@drawable/background_gradient">
+    tools:context="developer.prasanth.spiritualtablets.about_us.PrincipleActivity">
 
 
     <LinearLayout
@@ -15,7 +14,10 @@
         android:padding="20dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:background="@drawable/title_background"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
@@ -25,7 +27,7 @@
             android:textSize="30sp" />
 
         <TextView
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
@@ -38,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:text="@string/key_quotes"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="#FFF"/>
@@ -47,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:text="@string/key_quotes_desc"
             android:textSize="15sp"
             android:textColor="#FFF"/>
@@ -57,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:text="@string/reason_for_illness"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="#FFF"/>
@@ -68,7 +70,7 @@
             android:layout_marginTop="20sp"
             android:text="@string/reason_for_illness_desc"
             android:textSize="15sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textColor="#FFF"/>
 
         <TextView
@@ -78,7 +80,7 @@
             android:text="@string/flow_chart"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textColor="#FFF"/>
 
         <HorizontalScrollView
@@ -99,7 +101,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:gravity="center"
                         android:layout_marginHorizontal="1dp"
                         android:layout_marginBottom="1dp"
@@ -111,7 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:gravity="center"
                         android:layout_marginEnd="1dp"
                         android:layout_marginBottom="1dp"
@@ -123,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
                         android:text="@string/knowledge"
@@ -135,7 +137,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_marginBottom="1dp"
                         android:gravity="center"
                         android:background="#FFF"
@@ -147,7 +149,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:gravity="center"
                         android:layout_marginEnd="1dp"
                         android:layout_marginBottom="1dp"
@@ -166,7 +168,7 @@
                         android:layout_marginHorizontal="1dp"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:text="@string/chakras"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -176,7 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
                         android:text="@string/body_parts"
@@ -188,7 +190,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
                         android:text="@string/gland"
@@ -200,7 +202,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
                         android:text="@string/chakra"
@@ -212,7 +214,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
                         android:text="@string/affirmation"
@@ -232,7 +234,7 @@
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
                         android:text="@string/body_part"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:textColor="@color/colorPrimaryDark"/>
@@ -241,7 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
                         android:text="@string/intellect"
@@ -253,7 +255,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
                         android:text="@string/mind"
@@ -265,7 +267,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
                         android:text="@string/energy_blocks"
@@ -278,7 +280,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="1dp"
                         android:layout_marginBottom="1dp"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:background="#FFF"
                         android:text="@string/body_part_1"
                         android:layout_weight="1"
@@ -295,7 +297,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="1dp"
                         android:background="#FFF"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:text="@string/household"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -309,7 +311,7 @@
                         android:background="#FFF"
                         android:text="@string/lack_of_clarity_on_purpose_of_life"
                         android:layout_weight="1"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:gravity="center"
                         android:textColor="@color/colorPrimaryDark"/>
 
@@ -321,7 +323,7 @@
                         android:background="#FFF"
                         android:text="@string/unwanted_and_irregular_thoughts"
                         android:layout_weight="1"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:gravity="center"
                         android:textColor="@color/colorPrimaryDark"/>
 
@@ -331,7 +333,7 @@
                         android:layout_marginEnd="1dp"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:text="@string/failure_of_the_household_objects"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -343,7 +345,7 @@
                         android:layout_marginEnd="1dp"
                         android:layout_marginBottom="1dp"
                         android:background="#FFF"
-                        android:fontFamily="@font/lemonada"
+                        android:fontFamily="@font/antic"
                         android:text="@string/co_relates_to_the_illness"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -362,7 +364,7 @@
             android:text="@string/mode_of_training_in_spiritual_health_care_centers"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textColor="#FFF"/>
 
         <TextView
@@ -371,7 +373,7 @@
             android:layout_marginTop="20sp"
             android:text="@string/mode_of_training_in_spiritual_health_care_centers_desc"
             android:textSize="15sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textColor="#FFF"/>
 
         <TextView
@@ -379,7 +381,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:text="@string/procedure_initiation"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="#FFF"/>
@@ -390,14 +392,14 @@
             android:layout_marginTop="20sp"
             android:text="@string/procedure_initiation_desc"
             android:textSize="15sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textColor="#FFF"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:text="@string/follow_up"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -407,7 +409,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:text="@string/follow_up_desc"
             android:textSize="15sp"
             android:textColor="#FFF"/>
@@ -416,7 +418,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:text="@string/spiritual_doctor"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -426,7 +428,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:text="@string/spiritual_doctor_desc"
             android:textSize="15sp"
             android:textColor="#FFF"/>
@@ -437,7 +439,7 @@
             android:layout_marginTop="20sp"
             android:text="@string/_12_tablets_for_complete_health"
             android:textSize="30sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textStyle="bold"
             android:textColor="#FFF"/>
 
@@ -447,14 +449,14 @@
             android:layout_marginTop="20sp"
             android:text="@string/_12_tablets_for_complete_health_desc"
             android:textSize="15sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:textColor="#FFF"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:text="@string/centre_facilities"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -464,7 +466,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
-            android:fontFamily="@font/lemonada"
+            android:fontFamily="@font/antic"
             android:text="@string/centre_facilities_desc"
             android:textSize="15sp"
             android:textColor="#FFF"/>

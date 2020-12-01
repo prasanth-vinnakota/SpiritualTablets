@@ -1,17 +1,26 @@
 package developer.prasanth.spiritualtablets;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.WindowManager;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import developer.prasanth.spiritualtablets.adapters.BooksRecyclerViewAdapter;
 import developer.prasanth.spiritualtablets.models.DataItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TeluguBookListActivity extends AppCompatActivity {
 
@@ -24,6 +33,21 @@ public class TeluguBookListActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(TeluguBookListActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(TeluguBookListActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
         dataItems = new ArrayList<>();
         dataItems.add(new DataItem("Dhyanam", "Telugu", R.drawable.dhyanam));
@@ -40,7 +64,7 @@ public class TeluguBookListActivity extends AppCompatActivity {
         dataItems.add(new DataItem("Dhayna Vidya Sanjeevini Vidya", "Telugu", R.drawable.book_cover_page));
         dataItems.add(new DataItem("Aathma Kutumba Dharmam", "Telugu", R.drawable.book_cover_page));
         dataItems.add(new DataItem("Chalakudi nundi Saasanudu", "Telugu", R.drawable.book_cover_page));
-        dataItems.add(new DataItem("Jeevitha Dhyeyam", "Telugu", R.drawable.book_cover_page));
+        dataItems.add(new DataItem("Jeevitha Dheyeyam", "Telugu", R.drawable.book_cover_page));
         dataItems.add(new DataItem("Mudu Gunaalu", "Telugu", R.drawable.book_cover_page));
         dataItems.add(new DataItem("Yogaparampara", "Telugu", R.drawable.book_cover_page));
         dataItems.add(new DataItem("Paraspara Sambandhalu", "Telugu", R.drawable.book_cover_page));
@@ -70,4 +94,5 @@ public class TeluguBookListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         recyclerView.setAdapter(myAdapter);
     }
+
 }

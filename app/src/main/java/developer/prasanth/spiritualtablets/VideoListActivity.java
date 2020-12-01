@@ -2,12 +2,13 @@ package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +35,22 @@ public class VideoListActivity extends AppCompatActivity{
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VideoListActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VideoListActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
         init();
 
         final String language = Objects.requireNonNull(getIntent().getStringExtra("language"));
@@ -53,14 +70,12 @@ public class VideoListActivity extends AppCompatActivity{
                     recyclerView.setAdapter(youtubeAdapter);
                 }
                 else {
-                    showMessage("No Videos Available");
+                    showMessage();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
     }
@@ -71,9 +86,12 @@ public class VideoListActivity extends AppCompatActivity{
         stringList = new ArrayList<>();
     }
 
-    private void showMessage(String message){
+    private void showMessage(){
 
-        Toast.makeText(VideoListActivity.this, message, Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(VideoListActivity.this);
+        builder.setMessage("No Videos Available");
+        builder.setCancelable(true);
+        builder.create().show();
     }
 }
 

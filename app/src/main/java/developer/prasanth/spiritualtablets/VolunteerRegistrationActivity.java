@@ -2,6 +2,7 @@ package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,15 +15,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +58,22 @@ public class VolunteerRegistrationActivity extends Activity {
         setContentView(R.layout.activity_volunteer_registration);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VolunteerRegistrationActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VolunteerRegistrationActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
         init();
 
@@ -91,9 +110,6 @@ public class VolunteerRegistrationActivity extends Activity {
         comment = findViewById(R.id.volunteer_comments);
         otherContribute = findViewById(R.id.others_contribute_edit_text);
         otherTiming = findViewById(R.id.others_timing_edit_text);
-        mailId.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
-        if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null)
-            name.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
         wayOfContribution = findViewById(R.id.volunteer_way_of_contribution);
         timeToContribute = findViewById(R.id.volunteer_time_to_contribute);
@@ -112,7 +128,7 @@ public class VolunteerRegistrationActivity extends Activity {
 
         final String volunteer_mail = mailId.getText().toString();
         final String volunteer_name = name.getText().toString();
-        final String volunteer_phone = phone.getText().toString();
+        String volunteer_phone = phone.getText().toString();
         final String volunteer_address = address.getText().toString();
         final String volunteer_communicate_time = communicateTime.getText().toString();
         final String volunteer_comment = comment.getText().toString();
@@ -133,6 +149,9 @@ public class VolunteerRegistrationActivity extends Activity {
             phone.setError("required field");
             showMessage("Mobile Number Must Not Be Empty");
             return;
+        } else {
+            if (volunteer_phone.charAt(0) != '+')
+                volunteer_phone = "+" + volunteer_phone;
         }
 
         if (TextUtils.isEmpty(volunteer_communicate_time)) {
@@ -209,6 +228,7 @@ public class VolunteerRegistrationActivity extends Activity {
 
         map.put("submitted_time", ServerValue.TIMESTAMP);
 
+        final String finalVolunteer_phone = volunteer_phone;
         volunteer_registration.updateChildren(map)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -276,7 +296,7 @@ public class VolunteerRegistrationActivity extends Activity {
                                     intent.putExtra(Intent.EXTRA_SUBJECT, "volunteer registration");
                                     intent.putExtra(Intent.EXTRA_TEXT, "email : " + volunteer_mail +
                                             "\nname : " + volunteer_name +
-                                            "\nphone : " + volunteer_phone +
+                                            "\nphone : " + finalVolunteer_phone +
                                             "\naddress : " + volunteer_address +
                                             "\nway of communication : " + volunteer_communicate_time +
                                             "\ncomments : " + volunteer_comment +
@@ -289,7 +309,7 @@ public class VolunteerRegistrationActivity extends Activity {
                                     intent2.putExtra(Intent.EXTRA_SUBJECT, "volunteer registration");
                                     intent2.putExtra(Intent.EXTRA_TEXT, "email : " + volunteer_mail +
                                             "\nname : " + volunteer_name +
-                                            "\nphone : " + volunteer_phone +
+                                            "\nphone : " + finalVolunteer_phone +
                                             "\naddress : " + volunteer_address +
                                             "\nway of communication : " + volunteer_communicate_time +
                                             "\ncomments : " + volunteer_comment +
@@ -302,7 +322,7 @@ public class VolunteerRegistrationActivity extends Activity {
                                     intent3.putExtra(Intent.EXTRA_SUBJECT, "volunteer registration");
                                     intent3.putExtra(Intent.EXTRA_TEXT, "email : " + volunteer_mail +
                                             "\nname : " + volunteer_name +
-                                            "\nphone : " + volunteer_phone +
+                                            "\nphone : " + finalVolunteer_phone +
                                             "\naddress : " + volunteer_address +
                                             "\nway of communication : " + volunteer_communicate_time +
                                             "\ncomments : " + volunteer_comment +
@@ -384,7 +404,10 @@ public class VolunteerRegistrationActivity extends Activity {
 
     private void showMessage(String message){
 
-        Toast.makeText(VolunteerRegistrationActivity.this, message, Toast.LENGTH_SHORT).show();
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(VolunteerRegistrationActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(true);
+        builder.create().show();
     }
 
 }

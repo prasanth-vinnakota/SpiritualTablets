@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="developer.prasanth.spiritualtablets.ViewBookActivity"
-    android:background="@drawable/background_gradient">
+    android:background="#EC5610">
 
     <WebView
         android:layout_width="match_parent"

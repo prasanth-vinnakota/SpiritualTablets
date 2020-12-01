@@ -4,11 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/loading_background"
+    android:background="@drawable/background_gradient"
     tools:context="developer.prasanth.spiritualtablets.MainActivity"
     android:gravity="center">
 
+
     <TextView
+        android:textColor="#FFF"
         android:id="@+id/nav_user_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,10 +24,10 @@
 
 
     <TextView
+        android:textColor="#FFF"
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:fontFamily="@font/bangers"
         android:text="@string/research_foundation"
         android:transitionName="home_image"

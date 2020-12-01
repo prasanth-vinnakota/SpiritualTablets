@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,7 +46,6 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.MyViewHo
                 Intent intent = new Intent(context, VideoPlayerActivity.class);
                 intent.putExtra("language", language);
                 intent.putExtra("name",stringList.get(position));
-                showMessage("Loading " + stringList.get(position));
                 context.startActivity(intent);
             }
         });
@@ -67,10 +65,5 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.MyViewHo
             super(itemView);
             videoName = itemView.findViewById(R.id.single_video_view_layout_video_name);
         }
-    }
-
-    private void showMessage(String message){
-
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

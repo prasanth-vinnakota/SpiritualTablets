@@ -2,6 +2,7 @@ package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -39,6 +40,23 @@ public class DailyQuoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_daily_quote);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DailyQuoteActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DailyQuoteActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         init();
 
         final Date date = new Date();
@@ -70,13 +88,13 @@ public class DailyQuoteActivity extends AppCompatActivity {
                             }
 
                     progressBar.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(DailyQuoteActivity.this, "Today's Quote Is Not Available", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                showMessage(databaseError.getMessage());
             }
         });
     }
@@ -95,10 +113,6 @@ public class DailyQuoteActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(time);
         return DateFormat.format("dd-MM-yyyy", calendar).toString();
-    }
-
-    private void showMessage(String message){
-        Toast.makeText(DailyQuoteActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
 }

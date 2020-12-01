@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -51,7 +50,6 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
                 intent.putExtra("language",dataItems.get(position).getCategory());
                 intent.putExtra("book_name",dataItems.get(position).getTitle());
                 context.startActivity(intent);
-                showMessage("Loading " + dataItems.get(position).getTitle());
             }
         });
     }
@@ -75,8 +73,5 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
 
         }
-    }
-    private void showMessage(String message){
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

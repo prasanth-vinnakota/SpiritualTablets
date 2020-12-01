@@ -2,11 +2,13 @@ package developer.prasanth.spiritualtablets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.WindowManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +34,24 @@ public class RequestForCounsellingListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_for_counselling_list);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(RequestForCounsellingListActivity.this, R.drawable.background_gradient));
+
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        fullMoonReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(RequestForCounsellingListActivity.this, R.drawable.gradient_background));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
 
         recyclerView = findViewById(R.id.request_for_counsellingRV);
         recyclerView.setLayoutManager(new LinearLayoutManager(RequestForCounsellingListActivity.this));
@@ -52,13 +72,12 @@ public class RequestForCounsellingListActivity extends AppCompatActivity {
                             recyclerView.setAdapter(requestForCounsellingAdapter);
                         }
                         else {
-                            Toast.makeText(RequestForCounsellingListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                            showMessage();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
                 loadingDialog.dismiss();
@@ -76,13 +95,12 @@ public class RequestForCounsellingListActivity extends AppCompatActivity {
                             recyclerView.setAdapter(requestForCounsellingAdapter);
                         }
                         else {
-                            Toast.makeText(RequestForCounsellingListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                            showMessage();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
                 loadingDialog.dismiss();
@@ -100,17 +118,24 @@ public class RequestForCounsellingListActivity extends AppCompatActivity {
                             recyclerView.setAdapter(requestForCounsellingAdapter);
                         }
                         else {
-                            Toast.makeText(RequestForCounsellingListActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
+                            showMessage();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
                 loadingDialog.dismiss();
                 break;
         }
+    }
+
+    private void showMessage() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(RequestForCounsellingListActivity.this);
+        builder.setMessage("No Data Available");
+        builder.setCancelable(true);
+        builder.create().show();
     }
 }

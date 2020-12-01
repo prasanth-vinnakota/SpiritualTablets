@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     android:layout_gravity="center_horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
     android:orientation="vertical"
     tools:context=".GalleryActivity">
 
@@ -13,13 +12,17 @@
         android:layout_gravity="center_horizontal"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@drawable/title_background"
+        android:padding="5dp"
         android:layout_margin="10dp"
         android:fontFamily="@font/bungee"
         android:text="@string/gallery"
@@ -35,4 +38,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

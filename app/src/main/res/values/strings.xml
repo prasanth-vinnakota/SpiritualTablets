@@ -17,8 +17,8 @@
     <string name="verify_mobile_no">Verify Mobile No</string>
     <string name="enter_verification_code_if_not_automatically_authenticated">Enter verification code if not automatically authenticated</string>
     <string name="verify">Verify</string>
-    <string name="audio">Audio</string>
-    <string name="video">Video</string>
+    <string name="audio">Audios</string>
+    <string name="video">Videos</string>
     <string name="books">Books</string>
     <string name="news_letters">News Letters</string>
     <string name="log_out">Log out</string>
@@ -29,7 +29,7 @@
     <string name="telugu_books_list">Telugu Books List</string>
     <string name="list">List</string>
     <string name="english_books_list">English Books List</string>
-    <string name="telugu_audio_list">Telugu Audio List</string>
+    <string name="telugu_audio_list">Telugu Audios List</string>
     <string name="zero">0:00</string>
     <string name="about_us">About Us</string>
     <string name="founder">Founder</string>
@@ -489,5 +489,9 @@
     <string name="mark_as_complete">Mark As Complete</string>
     <string name="call">Call</string>
     <string name="copy">Copy</string>
+    <string name="completed">Completed Events</string>
+    <string name="up_coming">Up Coming or On Going Events</string>
+    <string name="add_image">Add Image</string>
+    <string name="song_name">Song Name</string>
 
 </resources>

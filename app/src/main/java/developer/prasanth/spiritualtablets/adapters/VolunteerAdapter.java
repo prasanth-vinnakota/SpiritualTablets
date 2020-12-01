@@ -184,8 +184,6 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
 

@@ -101,8 +101,6 @@ public class ViewBookActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                showMessage(error.getMessage());
             }
         });
     }
@@ -148,8 +146,6 @@ public class ViewBookActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    showMessage(databaseError.getMessage());
                 }
             });
         } else {

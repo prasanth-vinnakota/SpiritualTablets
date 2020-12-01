@@ -3,16 +3,18 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="developer.prasanth.spiritualtablets.VideoListActivity"
+        tools:context="developer.prasanth.spiritualtablets.VolunteersListActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/background_gradient">
+        android:orientation="vertical">
 
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:background="@drawable/title_background"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
@@ -25,7 +27,5 @@
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/volunteersRV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_marginTop="20dp" />
+            android:layout_height="wrap_content" />
     </LinearLayout>

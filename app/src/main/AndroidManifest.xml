@@ -24,7 +24,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
         <activity android:name=".FullScreenImageActivity"/>
-        <activity android:name=".ViewEventActivity" />
         <activity android:name=".RequestForCounsellingListActivity" />
         <activity android:name=".RequestForCounsellingActivity" />
         <activity android:name=".RapidRegistrationListActivity" />
