@@ -45,7 +45,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     private DatabaseReference updatedReference;
     private DatabaseReference userReference;
     private String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-    private int VERSION_CODE = 20;
+    private int VERSION_CODE = 21;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
