@@ -40,13 +40,12 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
     private TextView marquee;
     private TextView counselor;
-    private TextView volunteer;
     private DatabaseReference userAdminReference;
     private DatabaseReference latestEventsReference;
     private DatabaseReference updatedReference;
     private DatabaseReference userReference;
     private String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-    private int VERSION_CODE = 19;
+    private int VERSION_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -300,7 +299,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         counselor = findViewById(R.id.dashboard_counselor);
         counselor.setSelected(true);
 
-        volunteer = findViewById(R.id.dashboard_volunteer);
+        TextView volunteer = findViewById(R.id.dashboard_volunteer);
         volunteer.setSelected(true);
     }
 

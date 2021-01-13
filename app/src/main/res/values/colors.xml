@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#2D2D2D</color>
     <color name="colorAccent">#D81B60</color>
     <color name="text">#2D2D2D</color>
-    <color name="up_coming">#FF0400</color>
-    <color name="completed">#00FF00</color>
+    <color name="up_coming">#18D2D8</color>
+    <color name="completed">#E7A4D6</color>
 </resources>
+
