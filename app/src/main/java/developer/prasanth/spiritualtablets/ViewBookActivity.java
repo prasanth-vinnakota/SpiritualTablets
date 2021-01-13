@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -111,10 +110,10 @@ public class ViewBookActivity extends AppCompatActivity {
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("books").child(Objects.requireNonNull(getIntent().getStringExtra("language"))).child(Objects.requireNonNull(getIntent().getStringExtra("book_name")));
 
-            final ProgressDialog progressDialog = new ProgressDialog(ViewBookActivity.this);
-            progressDialog.setTitle("Loading " + getIntent().getStringExtra("book_name"));
-            progressDialog.setMessage("If books are not opening press back button and open the book again");
-            progressDialog.setCancelable(false);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(ViewBookActivity.this);
+            builder.setTitle(R.string.loading);
+            builder.setCancelable(true);
+            builder.setMessage("If books are not opening press back button and open the book again");
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -124,7 +123,7 @@ public class ViewBookActivity extends AppCompatActivity {
                         @Override
                         public void onPageStarted(WebView view, String url, Bitmap favicon) {
                             super.onPageStarted(view, url, favicon);
-                            progressDialog.show();
+                            builder.create().show();
                         }
 
                         @Override
@@ -132,7 +131,6 @@ public class ViewBookActivity extends AppCompatActivity {
                             super.onPageFinished(view, url);
                             pdfView.loadUrl("javascript:(function() { " +
                                     "document.querySelector('[role=\"toolbar\"]').remove();})()");
-                            progressDialog.dismiss();
                         }
                     });
                     String url = "";

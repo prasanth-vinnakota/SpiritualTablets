@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:text="@string/send_required_mails"
+        android:text="@string/registered_successfully"
         android:textColor="#000"/>
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:textSize="18sp"
-        android:text="@string/please_send_required_mails_after_clicking_on_ok_it_will_redirect_you_to_mails"
+        android:text="@string/we_will_contact_you_soon"
         android:textColor="@android:color/darker_gray"/>
 
     <Button

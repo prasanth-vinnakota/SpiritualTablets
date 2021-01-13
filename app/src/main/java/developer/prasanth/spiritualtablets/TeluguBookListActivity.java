@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.WindowManager;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,8 +20,10 @@ import developer.prasanth.spiritualtablets.adapters.BooksRecyclerViewAdapter;
 import developer.prasanth.spiritualtablets.models.DataItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 
 public class TeluguBookListActivity extends AppCompatActivity {
 
@@ -35,13 +38,12 @@ public class TeluguBookListActivity extends AppCompatActivity {
 
         getWindow().getDecorView().setBackground(ContextCompat.getDrawable(TeluguBookListActivity.this, R.drawable.background_gradient));
 
-        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon_days").child(getDate());
         fullMoonReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
-                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(TeluguBookListActivity.this, R.drawable.gradient_background));
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(TeluguBookListActivity.this, R.drawable.full_moon_background));
             }
 
             @Override
@@ -95,4 +97,10 @@ public class TeluguBookListActivity extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
     }
 
+    private String getDate() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy", calendar).toString();
+    }
 }

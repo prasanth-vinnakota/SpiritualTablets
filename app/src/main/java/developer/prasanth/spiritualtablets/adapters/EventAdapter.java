@@ -2,6 +2,7 @@ package developer.prasanth.spiritualtablets.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import developer.prasanth.spiritualtablets.DashBoardActivity;
+import developer.prasanth.spiritualtablets.FullScreenImageActivity;
 import developer.prasanth.spiritualtablets.R;
 
 import com.bumptech.glide.Glide;
@@ -94,12 +96,22 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
                          if (snapshot.child("image").getValue() != null) {
                              Glide.with(context).load(Objects.requireNonNull(snapshot.child("image").getValue()).toString()).into(holder.eventImage);
+                             holder.eventImage.setVisibility(View.VISIBLE);
+                             holder.eventImage.setOnClickListener(new View.OnClickListener() {
+                                 @Override
+                                 public void onClick(View view) {
+
+                                     Intent intent = new Intent(Intent.ACTION_VIEW);
+                                     intent.setData(Uri.parse(Objects.requireNonNull(snapshot.child("image").getValue()).toString()));
+                                     context.startActivity(intent);
+                                 }
+                             });
                          }
                          else holder.eventImage.setVisibility(View.GONE);
 
                          if (snapshot.child("link").getValue() != null){
                              holder.eventLink.setText(Objects.requireNonNull(snapshot.child("link").getValue()).toString());
-                             holder.eventCardView.setOnClickListener(new View.OnClickListener() {
+                             holder.eventLink.setOnClickListener(new View.OnClickListener() {
                                  @Override
                                  public void onClick(View view) {
                                      Intent intent = new Intent(Intent.ACTION_VIEW);

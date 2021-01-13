@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -34,7 +35,10 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -66,13 +70,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.background_gradient));
 
-        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon_days").child(getDate());
         fullMoonReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
-                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.gradient_background));
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.full_moon_background));
             }
 
             @Override
@@ -353,9 +356,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
         builder.setMessage(message);
-        builder.setCancelable(false);
+        builder.setCancelable(true);
 
         builder.create().show();
+    }
+
+    private String getDate() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy", calendar).toString();
     }
 
 }

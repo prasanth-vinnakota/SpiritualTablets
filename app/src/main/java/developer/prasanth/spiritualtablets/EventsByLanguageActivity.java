@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.WindowManager;
 
 
@@ -20,7 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class EventsByLanguageActivity extends AppCompatActivity {
@@ -41,13 +45,12 @@ public class EventsByLanguageActivity extends AppCompatActivity {
 
         getWindow().getDecorView().setBackground(ContextCompat.getDrawable(EventsByLanguageActivity.this, R.drawable.background_gradient));
 
-        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon_days").child(getDate());
         fullMoonReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
-                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(EventsByLanguageActivity.this, R.drawable.gradient_background));
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(EventsByLanguageActivity.this, R.drawable.full_moon_background));
             }
 
             @Override
@@ -60,7 +63,10 @@ public class EventsByLanguageActivity extends AppCompatActivity {
         loadingDialog.startLoading();
         list = new ArrayList<>();
         recyclerView = findViewById(R.id.events_by_language_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(EventsByLanguageActivity.this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(EventsByLanguageActivity.this);
+        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         reference = FirebaseDatabase.getInstance().getReference().child("events").child(Objects.requireNonNull(getIntent().getStringExtra("language")));
 
@@ -94,5 +100,12 @@ public class EventsByLanguageActivity extends AppCompatActivity {
         builder.setMessage("No Events Found");
         builder.create().show();
 
+    }
+
+    private String getDate() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy", calendar).toString();
     }
 }

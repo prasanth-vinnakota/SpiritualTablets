@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -27,7 +28,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -61,13 +65,12 @@ public class VolunteerRegistrationActivity extends Activity {
 
         getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VolunteerRegistrationActivity.this, R.drawable.background_gradient));
 
-        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon_days").child(getDate());
         fullMoonReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
-                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VolunteerRegistrationActivity.this, R.drawable.gradient_background));
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(VolunteerRegistrationActivity.this, R.drawable.full_moon_background));
             }
 
             @Override
@@ -98,6 +101,13 @@ public class VolunteerRegistrationActivity extends Activity {
                 }
             }
         });
+    }
+
+    private String getDate() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy", calendar).toString();
     }
 
     private void init(){
@@ -212,7 +222,10 @@ public class VolunteerRegistrationActivity extends Activity {
         map.put("phone", volunteer_phone);
         map.put("address", volunteer_address);
         map.put("work", false);
-        map.put("id", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        String id = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        map.put("id", id);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(id).child("registered_as_volunteer");
+        databaseReference.setValue(true);
         map.put("time_to_communicate", volunteer_communicate_time);
         if (!TextUtils.isEmpty(comment.getText().toString()))
             map.put("comment", volunteer_comment);
@@ -291,51 +304,7 @@ public class VolunteerRegistrationActivity extends Activity {
                             ok.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse("mailto:prasanth_vinnakota@yahoo.com"));
-                                    intent.putExtra(Intent.EXTRA_SUBJECT, "volunteer registration");
-                                    intent.putExtra(Intent.EXTRA_TEXT, "email : " + volunteer_mail +
-                                            "\nname : " + volunteer_name +
-                                            "\nphone : " + finalVolunteer_phone +
-                                            "\naddress : " + volunteer_address +
-                                            "\nway of communication : " + volunteer_communicate_time +
-                                            "\ncomments : " + volunteer_comment +
-                                            "\nway of contribution : " + checkedRadioButtonMessageForWayOfContribution(wayOfContribution.getCheckedRadioButtonId()) +
-                                            "\ntime to contribute : " + checkedRadioButtonMessageForTimeToContribute(timeToContribute.getCheckedRadioButtonId()) +
-                                            "\nkey : " + volunteer_registration.getKey());
-
-                                    Intent intent2 = new Intent(Intent.ACTION_VIEW);
-                                    intent2.setData(Uri.parse("mailto:spiritualtablet@gmail.com"));
-                                    intent2.putExtra(Intent.EXTRA_SUBJECT, "volunteer registration");
-                                    intent2.putExtra(Intent.EXTRA_TEXT, "email : " + volunteer_mail +
-                                            "\nname : " + volunteer_name +
-                                            "\nphone : " + finalVolunteer_phone +
-                                            "\naddress : " + volunteer_address +
-                                            "\nway of communication : " + volunteer_communicate_time +
-                                            "\ncomments : " + volunteer_comment +
-                                            "\nway of contribution : " + checkedRadioButtonMessageForWayOfContribution(wayOfContribution.getCheckedRadioButtonId()) +
-                                            "\ntime to contribute : " + checkedRadioButtonMessageForTimeToContribute(timeToContribute.getCheckedRadioButtonId()) +
-                                            "\nkey : " + volunteer_registration.getKey());
-
-                                    Intent intent3 = new Intent(Intent.ACTION_VIEW);
-                                    intent3.setData(Uri.parse("mailto:ramya.gunisetty@gmail.com"));
-                                    intent3.putExtra(Intent.EXTRA_SUBJECT, "volunteer registration");
-                                    intent3.putExtra(Intent.EXTRA_TEXT, "email : " + volunteer_mail +
-                                            "\nname : " + volunteer_name +
-                                            "\nphone : " + finalVolunteer_phone +
-                                            "\naddress : " + volunteer_address +
-                                            "\nway of communication : " + volunteer_communicate_time +
-                                            "\ncomments : " + volunteer_comment +
-                                            "\nway of contribution : " + checkedRadioButtonMessageForWayOfContribution(wayOfContribution.getCheckedRadioButtonId()) +
-                                            "\ntime to contribute : " + checkedRadioButtonMessageForTimeToContribute(timeToContribute.getCheckedRadioButtonId()) +
-                                            "\nkey : " + volunteer_registration.getKey());
-
-
-                                    alertDialog.dismiss();
-                                    startActivities(new Intent[]{intent, intent2, intent3});
-                                    //startActivity(new Intent(VolunteerRegistrationActivity.this, DashBoardActivity.class));
-                                    finish();
-
+                                        alertDialog.dismiss();
                                 }
                             });
                         }

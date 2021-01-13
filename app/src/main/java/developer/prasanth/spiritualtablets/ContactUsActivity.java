@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,6 +27,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import developer.prasanth.spiritualtablets.contact_us.PrimaryCentersActivity;
@@ -42,13 +46,12 @@ public class ContactUsActivity extends AppCompatActivity {
 
         getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ContactUsActivity.this, R.drawable.background_gradient));
 
-        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon_days").child(getDate());
         fullMoonReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
-                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ContactUsActivity.this, R.drawable.gradient_background));
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(ContactUsActivity.this, R.drawable.full_moon_background));
             }
 
             @Override
@@ -265,5 +268,12 @@ public class ContactUsActivity extends AppCompatActivity {
         builder.setCancelable(true);
         builder.setMessage(message);
         builder.create().show();
+    }
+
+    private String getDate() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy", calendar).toString();
     }
 }

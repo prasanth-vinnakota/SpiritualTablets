@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,6 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class DashBoardActivity extends AppCompatActivity implements LatestEventsDialog.LatestEventListener {
@@ -42,7 +46,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     private DatabaseReference updatedReference;
     private DatabaseReference userReference;
     private String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-    private int VERSION_CODE = 18;
+    private int VERSION_CODE = 19;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +60,12 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
         getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DashBoardActivity.this, R.drawable.background_gradient));
 
-        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon_days").child(getDate());
         fullMoonReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
-                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DashBoardActivity.this, R.drawable.gradient_background));
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DashBoardActivity.this, R.drawable.full_moon_background));
             }
 
             @Override
@@ -70,7 +73,24 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
             }
         });
 
-        DatabaseReference versionReference = FirebaseDatabase.getInstance().getReference("version");
+        DatabaseReference volunteer_ref = FirebaseDatabase.getInstance().getReference("users").child(currentUserId).child("registered_as_volunteer");
+        volunteer_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    Button button = findViewById(R.id.volunteer_button);
+                    button.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        DatabaseReference versionReference = FirebaseDatabase.getInstance().getReference("app_version").child("current_version");
 
         versionReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -120,25 +140,6 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
             }
         });
 
-        DatabaseReference workReference = FirebaseDatabase.getInstance().getReference("users").child(currentUserId).child("work");
-
-        workReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.exists()) {
-
-                    String work = "Your work is to " + Objects.requireNonNull(snapshot.getValue()).toString();
-                    volunteer.setVisibility(View.VISIBLE);
-                    volunteer.setText(work);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-
         userAdminReference = FirebaseDatabase.getInstance().getReference("users").child(currentUserId).child("admin");
 
         userAdminReference.addValueEventListener(new ValueEventListener() {
@@ -158,6 +159,10 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         });
 
         userReference = FirebaseDatabase.getInstance().getReference("users");
+
+        userReference.child(currentUserId).child("settings").removeValue();
+        userReference.child(currentUserId).child("user_state").removeValue();
+
 
         userReference.child(currentUserId).child("counselor").addValueEventListener(new ValueEventListener() {
             @Override
@@ -727,5 +732,12 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         intent.putExtra(Intent.EXTRA_SUBJECT,subject);
         intent.putExtra(Intent.EXTRA_TEXT, body);
         startActivity(Intent.createChooser(intent,"Share Using"));
+    }
+
+    private String getDate() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy", calendar).toString();
     }
 }

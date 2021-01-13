@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context="developer.prasanth.spiritualtablets.NoInternetActivity"
     android:gravity="center"
-    android:background="@drawable/background_gradient">
+    android:background="@drawable/app_background">
 
     <ImageView
         android:layout_width="match_parent"

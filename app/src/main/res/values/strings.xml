@@ -493,5 +493,7 @@
     <string name="up_coming">Up Coming or On Going Events</string>
     <string name="add_image">Add Image</string>
     <string name="song_name">Song Name</string>
+    <string name="registered_successfully">Registered Successfully</string>
+    <string name="we_will_contact_you_soon">We will contact you soon</string>
 
 </resources>

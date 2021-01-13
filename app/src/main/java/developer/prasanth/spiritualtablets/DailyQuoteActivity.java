@@ -42,13 +42,12 @@ public class DailyQuoteActivity extends AppCompatActivity {
 
         getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DailyQuoteActivity.this, R.drawable.background_gradient));
 
-        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon_days").child(getDate());
         fullMoonReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
-                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DailyQuoteActivity.this, R.drawable.gradient_background));
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DailyQuoteActivity.this, R.drawable.full_moon_background));
             }
 
             @Override
@@ -59,9 +58,7 @@ public class DailyQuoteActivity extends AppCompatActivity {
 
         init();
 
-        final Date date = new Date();
-
-        DatabaseReference dailyTipReference = FirebaseDatabase.getInstance().getReference("daily_tip").child(timestampToString(date.getTime()));
+        DatabaseReference dailyTipReference = FirebaseDatabase.getInstance().getReference("daily_tip").child(getDate());
 
         dailyTipReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,10 +105,10 @@ public class DailyQuoteActivity extends AppCompatActivity {
         image = findViewById(R.id.daily_tip_image);
     }
 
-    private String timestampToString(long time) {
+    private String getDate() {
 
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        calendar.setTimeInMillis(time);
+        calendar.setTimeInMillis(new Date().getTime());
         return DateFormat.format("dd-MM-yyyy", calendar).toString();
     }
 

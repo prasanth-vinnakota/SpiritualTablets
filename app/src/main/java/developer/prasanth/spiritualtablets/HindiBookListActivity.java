@@ -2,6 +2,7 @@ package developer.prasanth.spiritualtablets;
 
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,10 @@ import developer.prasanth.spiritualtablets.adapters.BooksRecyclerViewAdapter;
 import developer.prasanth.spiritualtablets.models.DataItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class HindiBookListActivity extends AppCompatActivity {
@@ -35,13 +39,12 @@ public class HindiBookListActivity extends AppCompatActivity {
 
         getWindow().getDecorView().setBackground(ContextCompat.getDrawable(HindiBookListActivity.this, R.drawable.background_gradient));
 
-        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon");
+        DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon_days").child(getDate());
         fullMoonReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                    if (Objects.requireNonNull(snapshot.getValue()).toString().equalsIgnoreCase("true"))
-                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(HindiBookListActivity.this, R.drawable.gradient_background));
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(HindiBookListActivity.this, R.drawable.full_moon_background));
             }
 
             @Override
@@ -58,4 +61,10 @@ public class HindiBookListActivity extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
     }
 
+    private String getDate() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy", calendar).toString();
+    }
 }
