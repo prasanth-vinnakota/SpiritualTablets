@@ -16,13 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="bottom"
         android:layout_marginTop="50sp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="190dp"
-            android:id="@+id/audio_image_view"
-            android:contentDescription="@string/book_title" />
 
         <TextView
             android:id="@+id/song_name"

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:id="@+id/single_user_view_layout_card"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    app:cardCornerRadius="8dp"
+    android:elevation="8dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:padding="10dp">
+
+    <TextView
+        android:id="@+id/single_user_view_layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textColor="#000"
+        android:visibility="gone"
+        android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/single_user_view_layout_user_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="#000"
+            android:visibility="gone"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/single_user_view_layout_mobile_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="#000"
+            android:visibility="gone"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/single_user_view_layout_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="#000"
+            android:visibility="gone"
+            android:textSize="20sp"/>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

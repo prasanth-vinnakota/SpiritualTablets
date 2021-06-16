@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -86,6 +87,7 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         mode = findViewById(R.id.request_for_counselling_mode);
     }
 
+    @SuppressLint("NonConstantResourceId")
     private String getGender(int checkedRadioButtonId) {
         switch (checkedRadioButtonId) {
             case R.id.request_for_counselling_male:
@@ -99,6 +101,7 @@ public class RequestForCounsellingActivity extends AppCompatActivity {
         return "Male";
     }
 
+    @SuppressLint("NonConstantResourceId")
     private String getMode(int checkedRadioButtonId) {
         switch (checkedRadioButtonId) {
             case R.id.request_for_counselling_phone_mode:

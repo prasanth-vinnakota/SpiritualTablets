@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,10 +18,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -44,8 +39,8 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     private DatabaseReference latestEventsReference;
     private DatabaseReference updatedReference;
     private DatabaseReference userReference;
-    private String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-    private int VERSION_CODE = 21;
+    private final String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+    private final int VERSION_CODE = 21;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,27 +97,21 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
                             builder.setTitle("App update required");
                             builder.setCancelable(false);
-                            builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=developer.prasanth.spiritualtablets"));
-                                    dialogInterface.dismiss();
-                                    startActivity(intent);
-                                    finish();
-                                }
+                            builder.setPositiveButton("Update", (dialogInterface, i) -> {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=developer.prasanth.spiritualtablets"));
+                                dialogInterface.dismiss();
+                                startActivity(intent);
+                                finish();
                             });
 
-                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(final DialogInterface dialog, int which) {
-                                    Intent a = new Intent(Intent.ACTION_MAIN);
-                                    a.addCategory(Intent.CATEGORY_HOME);
-                                    a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    dialog.dismiss();
-                                    startActivity(a);
-                                    finish();
-                                }
+                            builder.setNegativeButton("Cancel", (dialog, which) -> {
+                                Intent a = new Intent(Intent.ACTION_MAIN);
+                                a.addCategory(Intent.CATEGORY_HOME);
+                                a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                dialog.dismiss();
+                                startActivity(a);
+                                finish();
                             });
 
                             AlertDialog dialog = builder.create();
@@ -217,77 +206,64 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         });
 
 
-        marquee.setOnClickListener(new View.OnClickListener() {
+        marquee.setOnClickListener(v-> userAdminReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                userAdminReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        if (snapshot.exists()) {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
+                if (snapshot.exists()) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
 
-                            builder.setNegativeButton("Go to link", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    latestEventsReference.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            if (snapshot.child("link").exists()) {
+                    builder.setNegativeButton("Go to link", (dialogInterface, i) -> latestEventsReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot1) {
+                            if (snapshot1.child("link").exists()) {
 
-                                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                                intent.setData(Uri.parse(Objects.requireNonNull(snapshot.child("link").getValue()).toString()));
-                                                startActivity(intent);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-                                }
-                            });
-
-                            builder.setPositiveButton("Add Event", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(final DialogInterface dialog, int which) {
-
-                                    LatestEventsDialog latestEventsDialog = new LatestEventsDialog();
-                                    latestEventsDialog.show(getSupportFragmentManager(), "Add event");
-                                }
-                            });
-
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-
-                        } else {
-
-                            latestEventsReference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                    if (snapshot.child("link").exists()) {
-
-                                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setData(Uri.parse(Objects.requireNonNull(snapshot.child("link").getValue()).toString()));
-                                        startActivity(intent);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                }
-                            });
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse(Objects.requireNonNull(snapshot1.child("link").getValue()).toString()));
+                                startActivity(intent);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    }));
+
+                    builder.setPositiveButton("Add Event", (dialog, which) -> {
+
+                        LatestEventsDialog latestEventsDialog = new LatestEventsDialog();
+                        latestEventsDialog.show(getSupportFragmentManager(), "Add event");
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                } else {
+
+                    latestEventsReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            if (snapshot.child("link").exists()) {
+
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse(Objects.requireNonNull(snapshot.child("link").getValue()).toString()));
+                                startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
             }
-        });
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        }));
 
     }
 
@@ -326,19 +302,11 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
                     AlertDialog.Builder builder = new AlertDialog.Builder(DashBoardActivity.this);
                     builder.setMessage("You Need To Update Your Profile");
                     builder.setCancelable(false);
-                    builder.setPositiveButton("Update Now", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(DashBoardActivity.this, ProfileActivity.class));
-                            dialogInterface.dismiss();
-                        }
+                    builder.setPositiveButton("Update Now", (dialogInterface, i) -> {
+                        startActivity(new Intent(DashBoardActivity.this, ProfileActivity.class));
+                        dialogInterface.dismiss();
                     });
-                    builder.setNegativeButton("Later", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
+                    builder.setNegativeButton("Later", (dialogInterface, i) -> dialogInterface.dismiss());
 
                     builder.create().show();
                 }
@@ -385,49 +353,74 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
         dialog.show();
 
-        telugu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DashBoardActivity.this, TeluguBookListActivity.class));
-                dialog.dismiss();
-            }
+        telugu.setOnClickListener(v -> {
+            Intent intent = new Intent(DashBoardActivity.this, BooksActivity.class);
+            intent.putExtra("language", "Telugu");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        english.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DashBoardActivity.this, EnglishBookListActivity.class));
-                dialog.dismiss();
-            }
+        english.setOnClickListener(v -> {
+            Intent intent = new Intent(DashBoardActivity.this, BooksActivity.class);
+            intent.putExtra("language", "English");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        hindi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DashBoardActivity.this, HindiBookListActivity.class));
-                dialog.dismiss();
-            }
+        hindi.setOnClickListener(v -> {
+            Intent intent = new Intent(DashBoardActivity.this, BooksActivity.class);
+            intent.putExtra("language", "Hindi");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        kannada.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DashBoardActivity.this, KannadaBookListActivity.class));
-                dialog.dismiss();
-            }
+        kannada.setOnClickListener(v -> {
+            Intent intent = new Intent(DashBoardActivity.this, BooksActivity.class);
+            intent.putExtra("language", "Kannada");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        cancel.setOnClickListener(v -> dialog.dismiss());
     }
 
-    public void playMusic(View view) {
+    public void playAudio(View view) {
 
-        startActivity(new Intent(DashBoardActivity.this, AudioActivity.class));
+        LayoutInflater inflater = LayoutInflater.from(DashBoardActivity.this);
+
+        View view1 = inflater.inflate(R.layout.language_dialog, null);
+
+        Button telugu = view1.findViewById(R.id.telugu_books);
+        Button english = view1.findViewById(R.id.english_books);
+        english.setVisibility(View.GONE);
+        Button hindi = view1.findViewById(R.id.hindi_books);
+        Button kannada = view1.findViewById(R.id.kannada_books);
+        kannada.setVisibility(View.GONE);
+        Button cancel = view1.findViewById(R.id.alert_language_cancel);
+
+        final AlertDialog dialog = new AlertDialog.Builder(DashBoardActivity.this)
+                .setCancelable(false)
+                .setView(view1)
+                .create();
+
+        dialog.show();
+
+
+        telugu.setOnClickListener(view23 -> {
+            Intent intent = new Intent(DashBoardActivity.this, AudioActivity.class);
+            intent.putExtra("language", "Telugu");
+            startActivity(intent);
+            dialog.dismiss();
+        });
+
+        hindi.setOnClickListener(view22 -> {
+            Intent intent = new Intent(DashBoardActivity.this, AudioActivity.class);
+            intent.putExtra("language", "Hindi");
+            startActivity(intent);
+            dialog.dismiss();
+        });
+
+        cancel.setOnClickListener(view2 -> dialog.dismiss());
     }
 
     public void loadVideo(View view) {
@@ -450,42 +443,28 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
         dialog.show();
 
-        telugu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DashBoardActivity.this, VideoListActivity.class);
-                intent.putExtra("language", "telugu");
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        telugu.setOnClickListener(view24 -> {
+            Intent intent = new Intent(DashBoardActivity.this, VideoListActivity.class);
+            intent.putExtra("language", "Telugu");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        english.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DashBoardActivity.this, VideoListActivity.class);
-                intent.putExtra("language", "english");
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        english.setOnClickListener(view23 -> {
+            Intent intent = new Intent(DashBoardActivity.this, VideoListActivity.class);
+            intent.putExtra("language", "English");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        hindi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DashBoardActivity.this, VideoListActivity.class);
-                intent.putExtra("language", "hindi");
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        hindi.setOnClickListener(view22 -> {
+            Intent intent = new Intent(DashBoardActivity.this, VideoListActivity.class);
+            intent.putExtra("language", "Hindi");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        cancel.setOnClickListener(view2 -> dialog.dismiss());
 
     }
 
@@ -506,26 +485,21 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
     }
 
     public void donate(View view) {
-        showMessage("Loading please wait...");
+        //showMessage("Loading please wait...");
 
         DatabaseReference booksReference = FirebaseDatabase.getInstance().getReference("users").child(currentUserId).child("books");
 
         booksReference.setValue("yes")
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
+                .addOnSuccessListener(aVoid -> {
 
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://www.payumoney.com/react/app/merchant/#/pay/merchant/A381DF3EC1177559CC7B5B2440F3DC67?param=7102505"));
-                startActivity(intent);
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                showMessage("Changing Books Field In Current User Id Is Failed");
-            }
-        });
+                    startActivity(new Intent(DashBoardActivity.this,DonationActivity.class));
+
+                   /* Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("https://www.payumoney.com/react/app/merchant/#/pay/merchant/A381DF3EC1177559CC7B5B2440F3DC67?param=7102505"));
+                    startActivity(intent);*/
+
+                })
+        .addOnFailureListener(e -> showMessage("Changing Books Field In Current User Id Is Failed"));
     }
 
     public void contactUs(View view) {
@@ -535,7 +509,7 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
     public void dailyTip(View view) {
 
-        startActivity(new Intent(this, DailyQuoteActivity.class));
+        startActivity(new Intent(this, WeeklyQuoteActivity.class));
     }
 
     public void registerParticipate(View view) {
@@ -552,28 +526,18 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
                 .create();
         alertDialog.show();
 
-        rapid_registration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DashBoardActivity.this, RapidRegistrationActivity.class));
-                alertDialog.dismiss();
-            }
+        rapid_registration.setOnClickListener(v -> {
+            startActivity(new Intent(DashBoardActivity.this, RapidRegistrationActivity.class));
+            alertDialog.dismiss();
         });
 
-        request_for_counselling.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DashBoardActivity.this, RequestForCounsellingActivity.class));
-                alertDialog.dismiss();
-            }
+        request_for_counselling.setOnClickListener(v -> {
+            Intent intent = new Intent(DashBoardActivity.this,RequestForCounsellingActivity.class);
+            startActivity(intent);
+            alertDialog.dismiss();
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
+        cancel.setOnClickListener(v -> alertDialog.dismiss());
 
     }
 
@@ -602,51 +566,34 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
 
         dialog.show();
 
-        telugu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DashBoardActivity.this, EventsByLanguageActivity.class);
-                intent.putExtra("language", "Telugu");
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        telugu.setOnClickListener(view25 -> {
+            Intent intent = new Intent(DashBoardActivity.this, EventsByLanguageActivity.class);
+            intent.putExtra("language", "Telugu");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        english.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DashBoardActivity.this, EventsByLanguageActivity.class);
-                intent.putExtra("language", "English");
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        english.setOnClickListener(view24 -> {
+            Intent intent = new Intent(DashBoardActivity.this, EventsByLanguageActivity.class);
+            intent.putExtra("language", "English");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        hindi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DashBoardActivity.this, EventsByLanguageActivity.class);
-                intent.putExtra("language", "Hindi");
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        hindi.setOnClickListener(view23 -> {
+            Intent intent = new Intent(DashBoardActivity.this, EventsByLanguageActivity.class);
+            intent.putExtra("language", "Hindi");
+            startActivity(intent);
+            dialog.dismiss();
         });
-        kannada.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DashBoardActivity.this, EventsByLanguageActivity.class);
-                intent.putExtra("language", "Others");
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        kannada.setOnClickListener(view22 -> {
+            Intent intent = new Intent(DashBoardActivity.this, EventsByLanguageActivity.class);
+            intent.putExtra("language", "Others");
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        cancel.setOnClickListener(view2 -> dialog.dismiss());
 
     }
 
@@ -677,22 +624,14 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                     latestEventsReference.child("value").setValue(event_name)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            marquee.setText(event_name);
-                            if (!TextUtils.isEmpty(event_link)) {
-                                latestEventsReference.child("link").setValue(event_link);
-                            }
-                            showMessage("Event Added Successfully");
-                        }
-                    })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    showMessage(e.getMessage());
+                            .addOnCompleteListener(task -> {
+                                marquee.setText(event_name);
+                                if (!TextUtils.isEmpty(event_link)) {
+                                    latestEventsReference.child("link").setValue(event_link);
                                 }
-                            });
+                                showMessage("Event Added Successfully");
+                            })
+                            .addOnFailureListener(e -> showMessage(e.getMessage()));
                 }
 
                 @Override
@@ -733,10 +672,24 @@ public class DashBoardActivity extends AppCompatActivity implements LatestEvents
         startActivity(Intent.createChooser(intent,"Share Using"));
     }
 
+    public void admissionCenters(View view) {
+
+        startActivity(new Intent(DashBoardActivity.this,AdmissionCentersActivity.class));
+    }
+
+
     private String getDate() {
 
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(new Date().getTime());
         return DateFormat.format("dd-MM-yyyy", calendar).toString();
+    }
+
+    public void playMusic(View view) {
+        startActivity(new Intent(DashBoardActivity.this,MusicMeditationActivity.class));
+    }
+
+    public void loadTablets(View view) {
+        startActivity(new Intent(DashBoardActivity.this, TabletsActivity.class));
     }
 }

@@ -146,7 +146,8 @@
                     android:drawableTop="@drawable/daily_tip"
                     android:fontFamily="@font/lemonada"
                     android:onClick="dailyTip"
-                    android:text="@string/daily_tip" />
+                    android:text="@string/weekly_quote"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -167,7 +168,8 @@
                     android:drawableTop="@drawable/book"
                     android:fontFamily="@font/lemonada"
                     android:onClick="openBooks"
-                    android:text="@string/books" />
+                    android:text="@string/books"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -198,10 +200,49 @@
                     android:background="@android:color/transparent"
                     android:drawableTop="@drawable/audio"
                     android:fontFamily="@font/lemonada"
-                    android:onClick="playMusic"
-                    android:text="@string/audio" />
+                    android:onClick="playAudio"
+                    android:text="@string/audio"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+
+
+
+                <Button
+                    android:id="@+id/music"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/audio"
+                    android:fontFamily="@font/lemonada"
+                    android:onClick="playMusic"
+                    android:text="@string/music"
+                    tools:ignore="UsingOnClickInXml" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
@@ -220,11 +261,85 @@
                     android:drawableTop="@drawable/video"
                     android:fontFamily="@font/lemonada"
                     android:onClick="loadVideo"
-                    android:text="@string/video" />
+                    android:text="@string/video"
+                    tools:ignore="UsingOnClickInXml" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/lemonada"
+                    android:onClick="admissionCenters"
+                    android:drawableTop="@drawable/admission_center"
+                    android:text="@string/admission_centers"
+                    android:textColor="@color/colorPrimaryDark"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
+   <!--     <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+
+                <Button
+                    android:id="@+id/music"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/audio"
+                    android:fontFamily="@font/lemonada"
+                    android:onClick="playMusic"
+                    android:text="@string/music" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <Button
+                    android:id="@+id/tablet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/video"
+                    android:fontFamily="@font/lemonada"
+                    android:onClick="loadTablets"
+                    android:text="@string/tablets" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -249,7 +364,8 @@
                     android:drawableTop="@drawable/register"
                     android:fontFamily="@font/lemonada"
                     android:onClick="registerParticipate"
-                    android:text="@string/participate_registration" />
+                    android:text="@string/participate_registration"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -270,7 +386,8 @@
                     android:drawableTop="@drawable/register"
                     android:fontFamily="@font/lemonada"
                     android:onClick="registerVolunteer"
-                    android:text="@string/volunteer_registration" />
+                    android:text="@string/volunteer_registration"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -299,7 +416,8 @@
                     android:drawableTop="@drawable/events"
                     android:fontFamily="@font/lemonada"
                     android:onClick="events"
-                    android:text="@string/events" />
+                    android:text="@string/events"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -319,7 +437,8 @@
                     android:drawableTop="@drawable/gallery"
                     android:fontFamily="@font/lemonada"
                     android:onClick="gallery"
-                    android:text="@string/gallery" />
+                    android:text="@string/gallery"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -347,7 +466,8 @@
                     android:drawableTop="@drawable/letter"
                     android:fontFamily="@font/lemonada"
                     android:onClick="newsLetters"
-                    android:text="@string/news_letters" />
+                    android:text="@string/news_letters"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -367,7 +487,8 @@
                     android:drawableTop="@drawable/profile"
                     android:fontFamily="@font/lemonada"
                     android:onClick="settings"
-                    android:text="@string/my_profile" />
+                    android:text="@string/my_profile"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -397,7 +518,8 @@
                     android:drawableTop="@drawable/contact_us"
                     android:fontFamily="@font/lemonada"
                     android:onClick="contactUs"
-                    android:text="@string/contact_us" />
+                    android:text="@string/contact_us"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -417,10 +539,13 @@
                     android:drawableTop="@drawable/about_us"
                     android:fontFamily="@font/lemonada"
                     android:onClick="about"
-                    android:text="@string/about_us" />
+                    android:text="@string/about_us"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -445,7 +570,8 @@
                     android:drawableTop="@drawable/donate"
                     android:fontFamily="@font/lemonada"
                     android:onClick="donate"
-                    android:text="@string/donate" />
+                    android:text="@string/donate"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -466,16 +592,19 @@
                     android:drawableTop="@drawable/logout"
                     android:fontFamily="@font/lemonada"
                     android:onClick="logout"
-                    android:text="@string/log_out" />
+                    android:text="@string/log_out"
+                    tools:ignore="UsingOnClickInXml" />
 
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
+
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             app:cardCornerRadius="8dp"
             app:cardBackgroundColor="@android:color/holo_orange_light"
             app:cardElevation="8dp">
@@ -488,10 +617,10 @@
                 android:drawableTop="@drawable/share"
                 android:fontFamily="@font/lemonada"
                 android:onClick="shareApp"
-                android:text="@string/share_app" />
+                android:text="@string/share_app"
+                tools:ignore="UsingOnClickInXml" />
 
         </com.google.android.material.card.MaterialCardView>
-
 
     </LinearLayout>
 </ScrollView>

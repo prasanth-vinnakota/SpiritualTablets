@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void init(){
 
-        topAnim = AnimationUtils.loadAnimation(this, R.anim.top_animation);
-        bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
+        topAnim = AnimationUtils.loadAnimation(this, R.anim.lefttoright);
+        bottomAnim = AnimationUtils.loadAnimation(this, R.anim.lefttoright);
 
         appName2 = findViewById(R.id.textView2);
         appName = findViewById(R.id.nav_user_email);

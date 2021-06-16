@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,28 +27,27 @@ import java.util.Locale;
 import java.util.Objects;
 
 @SuppressWarnings("ALL")
-public class DailyQuoteActivity extends AppCompatActivity {
+public class WeeklyQuoteActivity extends AppCompatActivity {
 
     TextView title;
     TextView description;
-    ImageView image;
     ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_daily_quote);
+        setContentView(R.layout.activity_weekly_quote);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DailyQuoteActivity.this, R.drawable.background_gradient));
+        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(WeeklyQuoteActivity.this, R.drawable.background_gradient));
 
         DatabaseReference fullMoonReference = FirebaseDatabase.getInstance().getReference("full_moon_days").child(getDate());
         fullMoonReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(DailyQuoteActivity.this, R.drawable.full_moon_background));
+                        getWindow().getDecorView().setBackground(ContextCompat.getDrawable(WeeklyQuoteActivity.this, R.drawable.full_moon_background));
             }
 
             @Override
@@ -58,7 +58,47 @@ public class DailyQuoteActivity extends AppCompatActivity {
 
         init();
 
-        DatabaseReference dailyTipReference = FirebaseDatabase.getInstance().getReference("daily_tip").child(getDate());
+        String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference user_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id).child("Weekly Quotes");
+        user_ref.addValueEventListener(new ValueEventListener() {
+            boolean check = true;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (check){
+                    long count = snapshot.getChildrenCount();
+                    count++;
+                    user_ref.child(String.valueOf(count)).setValue(getDate());
+                }
+                check = false;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference weekly_quotes_ref = FirebaseDatabase.getInstance().getReference("Weekly Quote").child("Users").child(current_user_id);
+
+        weekly_quotes_ref.addValueEventListener(new ValueEventListener() {
+            boolean check = true;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (check){
+                    long count = snapshot.getChildrenCount();
+                    count++;
+                    weekly_quotes_ref.child(String.valueOf(count)).setValue(getDate());
+                }
+                check = false;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference dailyTipReference = FirebaseDatabase.getInstance().getReference("Weekly Quote").child(getDate());
 
         dailyTipReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -71,13 +111,6 @@ public class DailyQuoteActivity extends AppCompatActivity {
                                 title.setText(Objects.requireNonNull(dataSnapshot.child("Title").getValue().toString()));
                                 title.setVisibility(View.VISIBLE);
                             }
-
-                            if (dataSnapshot.child("Image").getValue() != null) {
-
-                                Glide.with(DailyQuoteActivity.this).load(dataSnapshot.child("Image").getValue().toString()).into(image);
-                                image.setVisibility(View.VISIBLE);
-                            }
-
                             if (dataSnapshot.child("Description").getValue() != null) {
 
                                 description.setText(Objects.requireNonNull(dataSnapshot.child("Description").getValue().toString()));
@@ -86,7 +119,7 @@ public class DailyQuoteActivity extends AppCompatActivity {
 
                     progressBar.setVisibility(View.GONE);
                 } else {
-                    Toast.makeText(DailyQuoteActivity.this, "Today's Quote Is Not Available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WeeklyQuoteActivity.this, "Today's Quote Is Not Available", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -102,7 +135,6 @@ public class DailyQuoteActivity extends AppCompatActivity {
         title = findViewById(R.id.daily_tip_title);
         description = findViewById(R.id.daily_tip_description);
 
-        image = findViewById(R.id.daily_tip_image);
     }
 
     private String getDate() {

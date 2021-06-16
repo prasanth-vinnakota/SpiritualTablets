@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import developer.prasanth.spiritualtablets.adapters.YoutubeAdapter;
+import developer.prasanth.spiritualtablets.models.VideoBean;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +30,7 @@ import java.util.Objects;
 public class VideoListActivity extends AppCompatActivity{
 
     DatabaseReference databaseReference;
-    List<String> stringList;
+    List<VideoBean> videoBeans;
     RecyclerView recyclerView;
 
     @Override
@@ -58,18 +59,28 @@ public class VideoListActivity extends AppCompatActivity{
 
         final String language = Objects.requireNonNull(getIntent().getStringExtra("language"));
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("youtube").child(language);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Youtube").child(language);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
-
+                    videoBeans = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        stringList.add(dataSnapshot.getKey());
+                        VideoBean videoBean = new VideoBean();
+                        videoBean.setKey(dataSnapshot.getKey());
+                        videoBean.setDate(dataSnapshot.child("date").getValue().toString());
+                        videoBean.setLink(dataSnapshot.child("link").getValue().toString());
+                        videoBean.setName(dataSnapshot.child("name").getValue().toString());
+                        videoBean.setKey(dataSnapshot.getKey());
+                        videoBeans.add(videoBean);
+
                     }
-                    recyclerView.setLayoutManager(new LinearLayoutManager(VideoListActivity.this));
-                    YoutubeAdapter youtubeAdapter = new YoutubeAdapter(language, stringList, VideoListActivity.this);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(VideoListActivity.this);
+                    linearLayoutManager.setStackFromEnd(true);
+                    linearLayoutManager.setReverseLayout(true);
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    YoutubeAdapter youtubeAdapter = new YoutubeAdapter(language, videoBeans, VideoListActivity.this);
                     recyclerView.setAdapter(youtubeAdapter);
                 }
                 else {
@@ -86,7 +97,6 @@ public class VideoListActivity extends AppCompatActivity{
     private void init(){
 
         recyclerView = findViewById(R.id.youtube_videos_list);
-        stringList = new ArrayList<>();
     }
 
     private void showMessage(){

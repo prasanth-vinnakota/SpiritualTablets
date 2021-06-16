@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.inappmessaging.internal.DeveloperListenerManager;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -87,20 +88,7 @@ public class ContactUsActivity extends AppCompatActivity {
 
     public void admissionCenters(View view) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Admission Centers");
-        builder.setMessage("1.NITYANADHA PYRAMID\n" +
-                "2.JAGANNATH PYRAMID\n" +
-                "3.MAADUGULA PYRAMID\n" +
-                "4.GUDIWADA PYRAMID\n" +
-                "5.MUMMIDIVARAM PYRAMID\n" +
-                "6.PEDAGADI PYRAMID\n" +
-                "7.KOTALA PYRAMID" );
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
+        startActivity(new Intent(ContactUsActivity.this,AdmissionCentersActivity.class));
     }
 
     public void holisticCenters(View view) {
@@ -123,29 +111,7 @@ public class ContactUsActivity extends AppCompatActivity {
 
     public void developer(View view) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(ContactUsActivity.this);
-        builder.setTitle("Contact App Developer");
-        builder.setMessage("Name : Srinivas Prasanth Vinnakota\nEmail : prasanth_vinnakota@yahoo.com\nMobile no : +919100362607");
-        builder.setPositiveButton("Call", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                copyOrCallAlertDialog("+919100362607");
-            }
-        });
-
-        builder.setNegativeButton("Email", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("mailto:prasanth_vinnakota@yahoo.com"));
-                intent.putExtra(Intent.EXTRA_SUBJECT,"Contact Developer");
-                startActivity(intent);
-            }
-        });
-
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        startActivity(new Intent(ContactUsActivity.this, DeveloperActivity.class));
     }
 
     private void copyOrCallAlertDialog(final String message){
@@ -204,7 +170,8 @@ public class ContactUsActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == REQUEST_CODE){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE) {
 
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 showMessage("Permissions Granted Now You Can Make Calls");

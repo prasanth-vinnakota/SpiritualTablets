@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="developer.prasanth.spiritualtablets">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission-sdk-23 android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
@@ -23,7 +25,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".FullScreenImageActivity"/>
+        <activity android:name=".AdmissionCentersBriefActivity"></activity>
+        <activity android:name=".DeveloperActivity" />
+        <activity android:name=".DonationActivity" />
+        <activity android:name=".MusicPlayerActivity" />
+        <activity android:name=".MusicListActivity" />
+        <activity android:name=".MusicMeditationActivity" />
+        <activity android:name=".AdmissionCentersActivity" />
+        <activity android:name=".BooksActivity" />
+        <activity android:name=".DeveloperPanelActivity" />
+        <activity android:name=".TabletDisplayActivity" />
+        <activity android:name=".TabletsActivity" />
+        <activity android:name=".FullScreenImageActivity" />
         <activity android:name=".RequestForCounsellingListActivity" />
         <activity android:name=".RequestForCounsellingActivity" />
         <activity android:name=".RapidRegistrationListActivity" />
@@ -33,15 +46,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".VolunteersListActivity" />
         <activity android:name=".AdminPanelActivity" />
-        <activity android:name=".KannadaBookListActivity" />
-        <activity android:name=".HindiBookListActivity" />
         <activity android:name=".AddEventActivity" />
         <activity android:name=".VideoPlayerActivity" />
         <activity android:name=".VideoListActivity" />
         <activity android:name=".EventsByLanguageActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".VolunteerRegistrationActivity" />
-        <activity android:name=".DailyQuoteActivity" />
+        <activity android:name=".WeeklyQuoteActivity" />
         <activity android:name=".contact_us.PrimaryCentersActivity" />
         <activity android:name=".ContactUsActivity" />
         <activity android:name=".about_us.FounderActivity" />
@@ -55,8 +66,6 @@
         <activity android:name=".AudioPlayerActivity" />
         <activity android:name=".AudioActivity" />
         <activity android:name=".ViewBookActivity" />
-        <activity android:name=".EnglishBookListActivity" />
-        <activity android:name=".TeluguBookListActivity" />
         <activity android:name=".GalleryActivity" />
         <activity android:name=".NoInternetActivity" />
         <activity android:name=".DashBoardActivity" />

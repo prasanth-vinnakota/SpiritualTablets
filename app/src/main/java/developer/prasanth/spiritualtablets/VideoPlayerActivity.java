@@ -14,6 +14,7 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +29,6 @@ import java.util.Objects;
 public class VideoPlayerActivity extends YouTubeBaseActivity {
 
     YouTubePlayerView playerView;
-    DatabaseReference databaseReference;
     YouTubePlayer.OnInitializedListener initializedListener;
 
     @Override
@@ -66,27 +66,50 @@ public class VideoPlayerActivity extends YouTubeBaseActivity {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean b) {
 
-                String videoName = getIntent().getStringExtra("name");
                 String language = getIntent().getStringExtra("language");
+                String link = getIntent().getStringExtra("link");
+                String key = getIntent().getStringExtra("key");
 
-                assert videoName != null;
-                assert language != null;
+                youTubePlayer.loadVideo(link);
 
-                databaseReference = FirebaseDatabase.getInstance().getReference("youtube").child(language).child(videoName);
-
-                databaseReference.addValueEventListener(new ValueEventListener() {
+                String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference user_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id).child("Videos").child(language).child(key);
+                user_ref.addValueEventListener(new ValueEventListener() {
+                    boolean check = true;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            youTubePlayer.loadVideo(Objects.requireNonNull(snapshot.getValue()).toString    ());
+                        if (check){
+                            long count = snapshot.getChildrenCount();
+                            count++;
+                            user_ref.child(String.valueOf(count)).setValue(getDateAndTime());
                         }
+                        check = false;
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
 
+                DatabaseReference video_ref  = FirebaseDatabase.getInstance().getReference("Youtube").child(language).child(key).child("Users").child(current_user_id);
+                video_ref.addValueEventListener(new ValueEventListener() {
+                    boolean check = true;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (check){
+                            long count = snapshot.getChildrenCount();
+                            count++;
+                            video_ref.child(String.valueOf(count)).setValue(getDateAndTime());
+                        }
+                        check = false;
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override
@@ -102,6 +125,12 @@ public class VideoPlayerActivity extends YouTubeBaseActivity {
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(new Date().getTime());
         return DateFormat.format("dd-MM-yyyy", calendar).toString();
+    }
+    private String getDateAndTime() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy HH:mm:ss", calendar).toString();
     }
 
     private void showMessage(){

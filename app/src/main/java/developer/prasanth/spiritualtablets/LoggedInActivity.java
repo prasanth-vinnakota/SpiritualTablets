@@ -39,7 +39,6 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.hbb20.CountryCodePicker;
 
 import java.util.Objects;
@@ -176,7 +175,6 @@ public class LoggedInActivity extends AppCompatActivity {
                             String full_mobile_number = "+" + countryCodePicker.getFullNumberWithPlus() + Objects.requireNonNull(mobileNumber.getText()).toString();
                             DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id);
                             db_ref.child("mobile_no").setValue(full_mobile_number);
-                            db_ref.child("device_token").setValue(FirebaseInstanceId.getInstance().getToken());
                             progressDialog.dismiss();
                             startActivity(new Intent(LoggedInActivity.this, DashBoardActivity.class));
                         } else {
@@ -280,7 +278,6 @@ public class LoggedInActivity extends AppCompatActivity {
                             DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id);
                             db_ref.child("full_name").setValue(account.getDisplayName());
                             db_ref.child("email").setValue(account.getEmail());
-                            db_ref.child("device_token").setValue(FirebaseInstanceId.getInstance().getToken());
                             progressDialog.dismiss();
                             startActivity(new Intent(LoggedInActivity.this, DashBoardActivity.class));
                         } else {

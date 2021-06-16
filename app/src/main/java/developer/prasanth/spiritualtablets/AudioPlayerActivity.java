@@ -16,8 +16,10 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +39,6 @@ public class AudioPlayerActivity extends AppCompatActivity {
     TextView totalDuration;
     TextView currentPosition;
     ImageView playOrPause;
-    ImageView bookImage;
     SeekBar seekBar;
     MediaPlayer mediaPlayer;
     Handler handler = new Handler();
@@ -115,16 +116,55 @@ public class AudioPlayerActivity extends AppCompatActivity {
         currentPosition = findViewById(R.id.timer);
 
         playOrPause = findViewById(R.id.play_pause);
-        bookImage = findViewById(R.id.audio_image_view);
 
         seekBar = findViewById(R.id.seek_bar);
 
         mediaPlayer = new MediaPlayer();
-        songName.setText(getIntent().getStringExtra("song_name"));
-        bookImage.setImageResource(getIntent().getIntExtra("image", 0));
+        String audioName = getIntent().getStringExtra("audio_name");
+        songName.setText(audioName);
+        String language = getIntent().getStringExtra("language");
+
+        String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference user_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id).child("Audios").child(audioName);
+        user_ref.addValueEventListener(new ValueEventListener() {
+            boolean check = true;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (check) {
+                    long count = snapshot.getChildrenCount();
+                    count++;
+                    user_ref.child(String.valueOf(count)).setValue(getDateAndTime());
+                }
+                check = false;
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference audios_ref = FirebaseDatabase.getInstance().getReference("Audios").child(language).child(audioName).child("Users").child(current_user_id);
+        audios_ref.addValueEventListener(new ValueEventListener() {
+            boolean check = true;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (check){
+                    long count = snapshot.getChildrenCount();
+                    count++;
+                    audios_ref.child(String.valueOf(count)).setValue(getDateAndTime());
+                    }
+                    check = false;
+                }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
-    private Runnable updater = new Runnable() {
+    private final Runnable updater = new Runnable() {
         @Override
         public void run() {
 
@@ -188,5 +228,12 @@ public class AudioPlayerActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(new Date().getTime());
         return DateFormat.format("dd-MM-yyyy", calendar).toString();
+    }
+
+    private String getDateAndTime() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy HH:mm:ss", calendar).toString();
     }
 }

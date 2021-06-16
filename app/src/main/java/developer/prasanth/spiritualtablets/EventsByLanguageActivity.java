@@ -61,7 +61,6 @@ public class EventsByLanguageActivity extends AppCompatActivity {
         loadingDialog = new LoadingDialog(EventsByLanguageActivity.this);
 
         loadingDialog.startLoading();
-        list = new ArrayList<>();
         recyclerView = findViewById(R.id.events_by_language_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(EventsByLanguageActivity.this);
         linearLayoutManager.setStackFromEnd(true);
@@ -76,6 +75,7 @@ public class EventsByLanguageActivity extends AppCompatActivity {
 
                 if (snapshot.exists()){
 
+                    list = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                         list.add(dataSnapshot.getKey());
                     }

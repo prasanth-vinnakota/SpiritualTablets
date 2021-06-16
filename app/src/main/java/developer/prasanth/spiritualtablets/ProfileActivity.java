@@ -256,90 +256,72 @@ public class ProfileActivity extends AppCompatActivity {
         String user_state = Objects.requireNonNull(userState.getText()).toString();
         String user_city = Objects.requireNonNull(userCity.getText()).toString();
 
-        if (TextUtils.isEmpty(user_name)) {
+        Map<String, Object> profileMap = new HashMap<>();
 
+        if (!TextUtils.isEmpty(user_name))
+            profileMap.put("full_name", user_name);
+        else{
             userName.setError("must not be empty");
             return;
         }
 
-        if (TextUtils.isEmpty(user_dob)) {
+        if (!TextUtils.isEmpty(user_dob))
+            profileMap.put("date_of_birth", user_dob);
 
-            userDob.setError("must not be empty");
-            return;
-        }
+        if (!TextUtils.isEmpty(user_country))
+            profileMap.put("country", user_country);
 
-        if (TextUtils.isEmpty(user_country)) {
+        if (TextUtils.isEmpty(user_state))
+            profileMap.put("state", user_state);
 
-            userCountry.setError("must not be empty");
-            return;
-        }
-
-        if (TextUtils.isEmpty(user_state)) {
-
-            userState.setError("must not be empty");
-            return;
-        }
-
-        if (TextUtils.isEmpty(user_city)) {
-
-            userCity.setError("must not be empty");
-            return;
-        }
-
-        progressDialog.show();
-        userReference.child("updated").setValue("true");
-
-        final Map<String, Object> profileMap = new HashMap<>();
-
-        profileMap.put("full_name", user_name);
-        profileMap.put("profile_status", user_status);
+        if (TextUtils.isEmpty(user_city))
+            profileMap.put("city", user_city);
 
         if (!TextUtils.isEmpty(user_status))
-            profileMap.put("date_of_birth", user_dob);
-        profileMap.put("country", user_country);
-        profileMap.put("state", user_state);
-        profileMap.put("city", user_city);
+            profileMap.put("profile_status", user_status);
+
+        progressDialog.show();
+
+        userReference.child("updated").setValue("true");
+
 
         final UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                 .setDisplayName(user_name)
                 .build();
 
         Objects.requireNonNull(firebaseAuth.getCurrentUser()).updateProfile(profileChangeRequest)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                .addOnCompleteListener(task -> {
 
-                        if (task.isSuccessful()) {
+                    if (task.isSuccessful()) {
 
-                            userReference.updateChildren(profileMap)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
+                        userReference.updateChildren(profileMap)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
 
-                                                showMessage("Profile Updates Successfully");
-                                                progressDialog.dismiss();
-                                                retrieveUserDataFromDatabase();
-                                            } else {
+                                            showMessage("Profile Updates Successfully");
+                                            progressDialog.dismiss();
+                                            retrieveUserDataFromDatabase();
+                                        } else {
 
-                                                showMessage(Objects.requireNonNull(task.getException()).getMessage());
-                                                progressDialog.dismiss();
-                                            }
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-                                            showMessage(e.getMessage());
+                                            showMessage(Objects.requireNonNull(task.getException()).getMessage());
                                             progressDialog.dismiss();
                                         }
-                                    });
-                        } else {
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
 
-                            showMessage(Objects.requireNonNull(task.getException()).getMessage());
-                            progressDialog.dismiss();
-                        }
+                                        showMessage(e.getMessage());
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                    } else {
+
+                        showMessage(Objects.requireNonNull(task.getException()).getMessage());
+                        progressDialog.dismiss();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

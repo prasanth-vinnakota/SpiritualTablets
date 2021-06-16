@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,6 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ViewBookActivity extends AppCompatActivity {
@@ -30,6 +34,7 @@ public class ViewBookActivity extends AppCompatActivity {
     WebView pdfView;
     String language;
     String bookName;
+    String stringUrl;
 
 
     @Override
@@ -53,8 +58,9 @@ public class ViewBookActivity extends AppCompatActivity {
         pdfView.getSettings().setBuiltInZoomControls(true);
         pdfView.getSettings().setDisplayZoomControls(false);
 
-        language = getIntent().getStringExtra("language");
+        stringUrl = getIntent().getStringExtra("url");
         bookName = getIntent().getStringExtra("book_name");
+        language = getIntent().getStringExtra("language");
     }
 
     private void check() {
@@ -70,7 +76,7 @@ public class ViewBookActivity extends AppCompatActivity {
         }
         if (language.equals("Telugu")) {
 
-            if (bookName.equals("Dhyanam") | bookName.equals("Lakshmi Paravathi Saraswathi") | bookName.equals("12 Tablets") | bookName.equals("Aadhyathmika Putrulu") | bookName.equals("Aacharya Saangatyam") | bookName.equals("Yeadu Shakthi Kendralu")) {
+            if (bookName.equals("ధ్యానం") | bookName.equals("లక్ష్మి పార్వతి సరస్వతి") | bookName.equals("పన్నెండు ఆధ్యాత్మిక టాబ్లెట్లు") | bookName.equals("ఆధ్యాత్మిక పుత్రులు") | bookName.equals("ఆచార్య సాంగత్యం") | bookName.equals("ఏడు శక్తి కేంద్రాలు")) {
 
                 check = true;
                 openBook();
@@ -105,47 +111,77 @@ public class ViewBookActivity extends AppCompatActivity {
     }
 
     void openBook() {
+        String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         if (check) {
+            DatabaseReference user_books_ref = FirebaseDatabase.getInstance().getReference("users").child(current_user_id).child("Books").child(bookName);
+            user_books_ref.addValueEventListener(new ValueEventListener() {
+                boolean check = true;
 
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("books").child(Objects.requireNonNull(getIntent().getStringExtra("language"))).child(Objects.requireNonNull(getIntent().getStringExtra("book_name")));
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (check) {
+                        long count = snapshot.getChildrenCount();
+                        count += 1;
+                        user_books_ref.child(String.valueOf(count)).setValue(getDateAndTime());
+                    }
+                    check = false;
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            DatabaseReference books_ref = FirebaseDatabase.getInstance().getReference("Books").child(language).child(bookName).child("Users").child(current_user_id);
+            books_ref.addValueEventListener(new ValueEventListener() {
+                boolean check = true;
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (check) {
+                        long count = snapshot.getChildrenCount();
+                        count++;
+                        books_ref.child(String.valueOf(count)).setValue(getDateAndTime());
+                    }
+                    check = false;
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(ViewBookActivity.this);
             builder.setTitle(R.string.loading);
             builder.setCancelable(true);
             builder.setMessage("If books are not opening press back button and open the book again");
-            databaseReference.addValueEventListener(new ValueEventListener() {
+
+            pdfView.setWebViewClient(new WebViewClient() {
+
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    pdfView.setWebViewClient(new WebViewClient() {
-
-                        @Override
-                        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                            super.onPageStarted(view, url, favicon);
-                            builder.create().show();
-                        }
-
-                        @Override
-                        public void onPageFinished(WebView view, String url) {
-                            super.onPageFinished(view, url);
-                            pdfView.loadUrl("javascript:(function() { " +
-                                    "document.querySelector('[role=\"toolbar\"]').remove();})()");
-                        }
-                    });
-                    String url = "";
-                    try {
-                        url = URLEncoder.encode(Objects.requireNonNull(dataSnapshot.getValue()).toString(), "UTF-8");
-                    } catch (UnsupportedEncodingException e) {
-                        showMessage(e.getMessage());
-                    }
-                    pdfView.loadUrl("https://docs.google.com/gview?embedded=true&url=" + url);
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    super.onPageStarted(view, url, favicon);
+                    builder.create().show();
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    pdfView.loadUrl("javascript:(function() { " +
+                            "document.querySelector('[role=\"toolbar\"]').remove();})()");
                 }
             });
+            String url = "";
+            try {
+                url = URLEncoder.encode(stringUrl, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                showMessage(e.getMessage());
+            }
+            pdfView.loadUrl("https://docs.google.com/gview?embedded=true&url=" + url);
         } else {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -173,4 +209,12 @@ public class ViewBookActivity extends AppCompatActivity {
 
         Toast.makeText(ViewBookActivity.this, message, Toast.LENGTH_LONG).show();
     }
+
+    private String getDateAndTime() {
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(new Date().getTime());
+        return DateFormat.format("dd-MM-yyyy HH:mm:ss", calendar).toString();
+    }
+
 }

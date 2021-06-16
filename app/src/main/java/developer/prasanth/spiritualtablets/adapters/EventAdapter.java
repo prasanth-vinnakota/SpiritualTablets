@@ -18,7 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import developer.prasanth.spiritualtablets.DashBoardActivity;
-import developer.prasanth.spiritualtablets.FullScreenImageActivity;
+import developer.prasanth.spiritualtablets.EventsByLanguageActivity;
 import developer.prasanth.spiritualtablets.R;
 
 import com.bumptech.glide.Glide;
@@ -31,6 +31,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +43,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     private Context context;
     private List<String> stringList;
     private DatabaseReference userAdminReference;
+    private DatabaseReference developerReference;
     private View dialogView;
     private String language;
 
@@ -69,61 +73,60 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             @Override
             public void onDataChange(@NonNull final DataSnapshot snapshot) {
 
-                 if (snapshot.exists()){
+                if (snapshot.exists()) {
 
-                     if (snapshot.child("completed").exists() && Objects.requireNonNull(snapshot.child("completed").getValue()).toString().equalsIgnoreCase("true"))
-                         holder.eventCardView.setCardBackgroundColor(context.getResources().getColor(R.color.completed));
-                     else
-                         holder.eventCardView.setCardBackgroundColor(context.getResources().getColor(R.color.up_coming));
+                    if (snapshot.child("completed").exists() && Objects.requireNonNull(snapshot.child("completed").getValue()).toString().equalsIgnoreCase("true"))
+                        holder.eventCardView.setCardBackgroundColor(context.getResources().getColor(R.color.completed));
+                    else
+                        holder.eventCardView.setCardBackgroundColor(context.getResources().getColor(R.color.up_coming));
 
-                         holder.eventName.setText(Objects.requireNonNull(snapshot.child("name").getValue()).toString());
+                    holder.eventName.setText(Objects.requireNonNull(snapshot.child("name").getValue()).toString());
 
-                         if (snapshot.child("description").getValue() != null)
+                    if (snapshot.child("description").getValue() != null)
 
-                             holder.eventDescription.setText(Objects.requireNonNull(snapshot.child("description").getValue()).toString());
-                         else {
+                        holder.eventDescription.setText(Objects.requireNonNull(snapshot.child("description").getValue()).toString());
+                    else {
 
-                             holder.eventDescription.setVisibility(View.GONE);
-                             holder.eventDescriptionTitle.setVisibility(View.GONE);
-                         }
+                        holder.eventDescription.setVisibility(View.GONE);
+                        holder.eventDescriptionTitle.setVisibility(View.GONE);
+                    }
 
-                         if (snapshot.child("timing").getValue() != null)
-                             holder.eventTiming.setText(Objects.requireNonNull(snapshot.child("timing").getValue()).toString());
-                         else {
-                             holder.eventTiming.setVisibility(View.GONE);
-                             holder.eventTimingTitle.setVisibility(View.GONE);
-                         }
+                    if (snapshot.child("timing").getValue() != null)
+                        holder.eventTiming.setText(Objects.requireNonNull(snapshot.child("timing").getValue()).toString());
+                    else {
+                        holder.eventTiming.setVisibility(View.GONE);
+                        holder.eventTimingTitle.setVisibility(View.GONE);
+                    }
 
-                         if (snapshot.child("image").getValue() != null) {
-                             Glide.with(context).load(Objects.requireNonNull(snapshot.child("image").getValue()).toString()).into(holder.eventImage);
-                             holder.eventImage.setVisibility(View.VISIBLE);
-                             holder.eventImage.setOnClickListener(new View.OnClickListener() {
-                                 @Override
-                                 public void onClick(View view) {
+                    if (snapshot.child("image").getValue() != null) {
+                        Glide.with(context).load(Objects.requireNonNull(snapshot.child("image").getValue()).toString()).into(holder.eventImage);
+                        holder.eventImage.setVisibility(View.VISIBLE);
+                        holder.eventImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
 
-                                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                                     intent.setData(Uri.parse(Objects.requireNonNull(snapshot.child("image").getValue()).toString()));
-                                     context.startActivity(intent);
-                                 }
-                             });
-                         }
-                         else holder.eventImage.setVisibility(View.GONE);
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse(Objects.requireNonNull(snapshot.child("image").getValue()).toString()));
+                                context.startActivity(intent);
+                            }
+                        });
+                    } else holder.eventImage.setVisibility(View.GONE);
 
-                         if (snapshot.child("link").getValue() != null){
-                             holder.eventLink.setText(Objects.requireNonNull(snapshot.child("link").getValue()).toString());
-                             holder.eventLink.setOnClickListener(new View.OnClickListener() {
-                                 @Override
-                                 public void onClick(View view) {
-                                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                                     intent.setData(Uri.parse(Objects.requireNonNull(snapshot.child("link").getValue()).toString()));
-                                     context.startActivity(intent);
-                                 }
-                             });
-                         } else {
-                             holder.eventLink.setVisibility(View.GONE);
-                             holder.eventLinkTitle.setVisibility(View.GONE);
-                         }
-                 }
+                    if (snapshot.child("link").getValue() != null) {
+                        holder.eventLink.setText(Objects.requireNonNull(snapshot.child("link").getValue()).toString());
+                        holder.eventLink.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse(Objects.requireNonNull(snapshot.child("link").getValue()).toString()));
+                                context.startActivity(intent);
+                            }
+                        });
+                    } else {
+                        holder.eventLink.setVisibility(View.GONE);
+                        holder.eventLinkTitle.setVisibility(View.GONE);
+                    }
+                }
             }
 
             @Override
@@ -131,85 +134,109 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             }
         });
 
-        holder.eventCardView.setOnLongClickListener(new View.OnLongClickListener() {
+        userAdminReference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("admin");
+
+        userAdminReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
 
-                Button markAsCompleteButton = dialogView.findViewById(R.id.mark_as_complete_event_dialog_mark_as_complete_button);
-                Button cancelButton = dialogView.findViewById(R.id.mark_as_complete_event_dialog_cancel_button);
+                    holder.eventCardView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
 
-                if (dialogView.getParent() != null)
-                    ((ViewGroup)dialogView.getParent()).removeView(dialogView);
+                            Button markAsCompleteButton = dialogView.findViewById(R.id.mark_as_complete_event_dialog_mark_as_complete_button);
+                            Button deleteEvent = dialogView.findViewById(R.id.mark_as_complete_event_dialog_delete_button);
+                            developerReference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("developer");
+                            developerReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists())
+                                        deleteEvent.setVisibility(View.VISIBLE);
+                                }
 
-                final AlertDialog alertDialog = new AlertDialog.Builder(context)
-                        .setView(dialogView)
-                        .setCancelable(false)
-                        .create();
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
 
-                alertDialog.show();
+                                }
+                            });
+                            Button cancelButton = dialogView.findViewById(R.id.mark_as_complete_event_dialog_cancel_button);
 
-                markAsCompleteButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                        userAdminReference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("admin");
+                            if (dialogView.getParent() != null)
+                                ((ViewGroup) dialogView.getParent()).removeView(dialogView);
 
-                        userAdminReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            final AlertDialog alertDialog = new AlertDialog.Builder(context)
+                                    .setView(dialogView)
+                                    .setCancelable(false)
+                                    .create();
 
-                                if (snapshot.exists()) {
+                            alertDialog.show();
 
+                            markAsCompleteButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
                                     eventReference.child("completed").setValue(true)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                eventReference.child("link").removeValue()
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if(task.isSuccessful()) {
-                                                                    showMessage("Event Marked As Completed");
-                                                                    context.startActivity(new Intent(context, DashBoardActivity.class));
-                                                                }
-                                                                else
-                                                                    showMessage(Objects.requireNonNull(task.getException()).getMessage());
-                                                            }
-                                                        });
-                                            } else
-                                                showMessage(Objects.requireNonNull(task.getException()).getMessage());
-                                            alertDialog.dismiss();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            showMessage(e.getMessage());
-                                        }
-                                    });
-                                } else {
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        eventReference.child("link").removeValue()
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            showMessage("Event Marked As Completed");
+                                                                            alertDialog.dismiss();
+                                                                        } else
+                                                                            showMessage(Objects.requireNonNull(task.getException()).getMessage());
+                                                                        alertDialog.dismiss();
+                                                                    }
+                                                                });
+                                                    } else
+                                                        showMessage(Objects.requireNonNull(task.getException()).getMessage());
+                                                    alertDialog.dismiss();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    showMessage(e.getMessage());
+                                                }
+                                            });
+                                }
+                            });
 
-                                    showMessage("You Don't Have Permission To Complete The Event");
+                            deleteEvent.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    eventReference.removeValue()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Toast.makeText(context, "Event Deleted", Toast.LENGTH_SHORT).show();
+                                                    alertDialog.dismiss();
+                                                }
+                                            });
+                                }
+                            });
+
+                            cancelButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
                                     alertDialog.dismiss();
                                 }
-                            }
+                            });
+                            return false;
+                        }
+                    });
+                }
+            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                            }
-                        });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
-
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-                return false;
             }
         });
     }
@@ -230,6 +257,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         TextView eventLinkTitle;
         CardView eventCardView;
         ImageView eventImage;
+
         MyViewHolder(@NonNull View itemView) {
 
             super(itemView);

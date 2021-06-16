@@ -30,7 +30,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/telugu"
+        android:text="@string/telugu_in_telugu"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         style="@style/Widget.AppCompat.Button.Colored"/>
@@ -48,7 +48,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hindi"
+        android:text="@string/hindi_in_hindi"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         style="@style/Widget.AppCompat.Button.Colored"/>
@@ -57,7 +57,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/kannada"
+        android:text="@string/kannada_in_kannada"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         style="@style/Widget.AppCompat.Button.Colored"/>

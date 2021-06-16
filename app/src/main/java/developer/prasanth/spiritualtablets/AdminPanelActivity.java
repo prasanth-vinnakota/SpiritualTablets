@@ -13,10 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +35,7 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
 
     DatabaseReference latestEventsReference;
     DatabaseReference youtubeReference;
+    DatabaseReference developerReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,27 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         });
 
         init();
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        developerReference = FirebaseDatabase.getInstance().getReference("users").child(currentUserId).child("developer");
+
+        developerReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists()) {
+
+                    MaterialCardView cardView = findViewById(R.id.developer_panel);
+                    cardView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
     }
 
     private void init() {
@@ -292,5 +317,9 @@ public class AdminPanelActivity extends AppCompatActivity implements LatestEvent
         builder.setMessage(message);
         builder.setCancelable(true);
         builder.create().show();
+    }
+
+    public void developerPanel(View view) {
+        startActivity(new Intent(this,DeveloperPanelActivity.class));
     }
 }

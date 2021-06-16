@@ -28,6 +28,27 @@
 
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/developer_panel"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+            android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp">
+
+        <Button
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:fontFamily="@font/lemonada"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:onClick="developerPanel"
+            android:text="@string/developer_panel"
+            tools:ignore="UsingOnClickInXml" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_margin="20dp"
@@ -41,7 +62,8 @@
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:onClick="adminPanelAddEvent"
-                android:text="@string/add_event" />
+                android:text="@string/add_event"
+                tools:ignore="UsingOnClickInXml" />
 
         </com.google.android.material.card.MaterialCardView>
 

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AdmissionCentersActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:background="@drawable/title_background"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/bungee"
+            android:text="@string/admission_centers"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="34sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <Button
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lemonada"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="nithyanandaPyramid"
+                android:text="NIthyananda Pyramind"
+                tools:ignore="UsingOnClickInXml" />
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <Button
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lemonada"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="jagannathPyramid"
+                android:text="@string/jagannath_pyramid"
+                tools:ignore="UsingOnClickInXml" />
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <Button
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lemonada"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="maadugulaPyramid"
+                android:text="@string/maadugula_pyramid"
+                tools:ignore="UsingOnClickInXml" />
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <Button
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lemonada"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="gudiwadaPyramid"
+                android:text="@string/gudiwada_pyramind"
+                tools:ignore="UsingOnClickInXml" />
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <Button
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lemonada"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="mummidivaramPyramid"
+                android:text="@string/mummidivaram_pyramid"
+                tools:ignore="UsingOnClickInXml" />
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <Button
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lemonada"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="pedagadiPyramid"
+                android:text="@string/pedagadi_pyramind"
+                tools:ignore="UsingOnClickInXml" />
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <Button
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lemonada"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:onClick="kotalaPyramid"
+                android:text="@string/kotala_pyramid"
+                tools:ignore="UsingOnClickInXml" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</ScrollView>
